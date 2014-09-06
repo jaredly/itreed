@@ -1,0 +1,23 @@
+{
+  "name": "itreed",
+  "version": "0.0.0",
+  "description": "An alternate interface to ipython",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jaredly/itreed.git"
+  },
+  "keywords": [
+    "ipython",
+    "react",
+    "treed"
+  ],
+  "author": "Jared Forsyth <jared@jaredforsyth.com>",
+  "license": "Apache v2",
+  "bugs": {
+    "url": "https://github.com/jaredly/itreed/issues"
+  }
+}
