@@ -1,0 +1,5 @@
+/.ipynb_checkpoints
+*.swp
+/www/build.js
+/www/build.css
+/node_modules
