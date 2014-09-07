@@ -22,7 +22,15 @@
   margin: 5px 0 10px 50px;
   min-height: 20px;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  
+
+  &-hiding {
+    height: 0;
+    border: 5px solid #ccc;
+    overflow: hidden;
+    padding: 0;
+    min-height: 0;
+  }
+
   pre {
     margin: 0;
     word-break: break-all;
@@ -32,7 +40,6 @@
 }
 
 .m_IPython_output {
-  white-space: pre-wrap;
 }
 
 .m_IPython_stream {
@@ -57,9 +64,13 @@
   font-family: monospace;
   font-size: 12px;
 
+  background-color: rgba(181, 255, 181, 0.9);
+  padding: 2px 5px;
+  border-radius: 5px;
+
   &-loading {
     right: 35px;
-    top: 4px;
+    top: 2px;
   }
 }
 
