@@ -4,7 +4,6 @@
 @import "../treed/rx/plugins/collapse/index.less";
 @import "../treed/rx/plugins/rebase/index.less";
 @import "../treed/rx/plugins/done/index.less";
-@import "../treed/rx/plugins/tags/index.less";
 
 @import "../treed/rx/skins/regular/index.less";
 
@@ -15,7 +14,39 @@ h1 {
 }
 
 body {
-  padding: 10px 100px;
+  padding: 10px 100px 100px;
 }
 
+.list_item_children {
+  border-left: 5px solid #eee;
 
+  .list_item-root > & {
+    border-left: none;
+  }
+}
+
+.treed_body-type-ipython {
+  margin-bottom: 5px;
+
+  > * {
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px #dadada inset;
+    margin: 0 0 0 5px;
+    background-color: white;
+    font-family: monospace;
+    font-size: 14px;
+  }
+  > .treed_body_rendered {
+    padding: 5px 10px;
+    min-height: 30px;
+  }
+  > .textarea-grow {
+    padding: 2px 3px;
+  }
+  > .textarea-grow textarea,
+  > .textarea-grow .shadow {
+    font-family: monospace;
+    font-size: 14px;
+  }
+}

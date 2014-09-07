@@ -22,7 +22,6 @@ window.onload = function () {
       plugins: [
         require('./lib/treed-plugin'),
         require('treed/rx/plugins/undo'),
-        require('treed/rx/plugins/tags'),
         require('treed/rx/plugins/rebase'),
         require('treed/rx/plugins/collapse'),
         require('treed/rx/plugins/done'),

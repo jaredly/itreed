@@ -10,16 +10,24 @@
 @import (reference) "./spinner.less";
 
 .m_IPython {
+  /*
   border: 1px solid rgb(219, 219, 219);
   border-radius: 5px;
   padding: 5px 10px;
   box-shadow: 1px 1px 4px rgb(218, 218, 218) inset;
-  margin: 2px 0 10px 20px;
   position: relative;
   min-height: 20px;
+  */
+  position: relative;
+  margin: 5px 0 10px 50px;
+  min-height: 20px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   
   pre {
     margin: 0;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre-wrap;
   }
 }
 
@@ -38,6 +46,6 @@
   font-size: 4px;
   position: absolute;
   right: 3px;
-  top: 5px;
+  top: 0px;
 }
 
