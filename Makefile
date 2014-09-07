@@ -15,5 +15,8 @@ css:
 start-ipython:
 	ipython notebook --NotebookApp.allow_origin='*'
 
+dumb-server:
+	cd www; python -mSimpleHTTPServer
+
 .PHONY: css watch js all start-ipython
 
