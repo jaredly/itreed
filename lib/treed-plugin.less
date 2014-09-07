@@ -1,0 +1,39 @@
+
+@keyframes spin {
+  to { transform: rotate(1turn); }
+}
+
+@-webkit-keyframes spin {
+  to { transform: rotate(1turn); }
+}
+
+@import (reference) "./spinner.less";
+
+.m_IPython {
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 5px;
+  padding: 5px 10px;
+  box-shadow: 1px 1px 4px rgb(218, 218, 218) inset;
+  margin: 2px 0 10px 20px;
+  position: relative;
+  min-height: 20px;
+}
+
+.m_IPython_output {
+  white-space: pre-wrap;
+}
+
+.m_IPython_stream {
+  white-space: pre-wrap;
+}
+
+
+.m_IPython_loading {
+  &:extend(.spinner all);
+
+  font-size: 4px;
+  position: absolute;
+  right: 3px;
+  top: 5px;
+}
+
