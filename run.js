@@ -2,6 +2,7 @@
  * bootstrap the app into document.body
  */
 
+var Gorilla = require('./lib/Gorilla')
 var Kernel = require('./lib/kernel')
 var React = require('treed/node_modules/react')
 var treed = require('treed/rx')
@@ -10,9 +11,10 @@ var convert = require('./lib/convert')
 window.React = React
 
 window.onload = function () {
-  var host = "localhost:8889"
+  // var host = "localhost:8889"
+  var host = "localhost:60830"
     , path = "test.ipynb"
-    , kernel = new Kernel(host, path)
+    , kernel = new Gorilla(host, path)
 
   kernel.init((notebook_data) => {
     var data = convert.fromNotebook(notebook_data.content.worksheets[0].cells)
