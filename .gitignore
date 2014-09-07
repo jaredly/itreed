@@ -3,3 +3,4 @@
 /www/build.js
 /www/build.css
 /node_modules
+.nfs*
