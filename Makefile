@@ -10,7 +10,7 @@ watch:
 	watchify -v ${ARGS} -d run.js -o www/build.js
 
 css:
-	lessc index.less www/build.css
+	lessc run.less www/build.css
 
 start-ipython:
 	ipython notebook --NotebookApp.allow_origin='*'
