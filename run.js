@@ -27,7 +27,7 @@ window.onload = function () {
     },
     React: React,
     plugins: [
-      require('./lib/treed-plugin'),
+      require('./lib/plugin'),
       require('treed/rx/plugins/undo'),
       require('treed/rx/plugins/rebase'),
       require('treed/rx/plugins/collapse'),
@@ -36,13 +36,6 @@ window.onload = function () {
   }, (store) => {
     window.store = store
     window.actions = store.actions
-    var kernel = new Gorilla()
-    store._globals.kernel = kernel
-    /*
-    kernel.init(host, () => {
-      store.changed('kernel-session')
-    })
-    */
   })
 
 }

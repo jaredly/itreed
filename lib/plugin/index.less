@@ -7,7 +7,7 @@
   to { transform: rotate(1turn); }
 }
 
-@import (reference) "./spinner.less";
+@import (reference) "../spinner.less";
 
 .m_IPython {
   /*
@@ -36,6 +36,51 @@
     word-break: break-all;
     word-wrap: break-word;
     white-space: pre-wrap;
+  }
+}
+
+.list {
+  position: relative;
+}
+
+.m_IPythonKernel {
+  position: absolute;
+  text-align: right;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  font-family: monospace;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid transparent;
+
+  button {
+    cursor: pointer;
+  }
+
+  &-disconnected {
+    color: #555;
+    background-color: #eee;
+    border-color: rgb(131, 131, 131);
+  }
+
+  &-error {
+    color: rgb(187, 0, 0);
+    background-color: #fee;
+    border-color: rgb(255, 131, 131);
+  }
+
+  &_indicator {
+  }
+
+  &_changer_btn {
+    opacity: .5;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+      outline: 1px solid #ccc;
+    }
   }
 }
 
