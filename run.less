@@ -163,8 +163,22 @@ body {
   }
 }
 
+.m_IPython_loading {
+  display: none;
+}
+
 .m_IPython_time {
   top: 4px;
+  background-color: transparent;
+  color: #009F09;
+
+  &-loading {
+    right: 3px;
+  }
+
+  &-stale {
+    color: rgb(255, 10, 10);
+  }
 
   .list_item_body:hover & {
     opacity: 1;
@@ -203,6 +217,7 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
+  left: -15px;
 }
 
 .m_RebaseDot {

@@ -69,7 +69,11 @@
   padding: 2px 5px;
   border-radius: 5px;
 
-  .list_item-active > .m_IPython > &,
+  &-stale {
+    background-color: rgba(255, 150, 150, 0.9);
+  }
+
+  .list_item-active > .list_item_head > .list_item_body > .m_IPython > &,
   .m_IPython:hover > &,
   .list_item_head:hover + .m_IPython > & {
     opacity: 1;

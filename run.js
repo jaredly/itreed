@@ -39,6 +39,7 @@ window.onload = function () {
     window.actions = store.actions
     store._globals.kernel = kernel
     kernel.init(() => {
+      store.changed('kernel-session')
     })
   })
 
