@@ -410,8 +410,6 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   right: 0;
   z-index: 100;
   font-family: monospace;
-  cursor: pointer;
-  padding: 10px;
   border: 1px solid transparent;
 }
 .m_IPythonKernel button {
@@ -427,9 +425,20 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   background-color: #fee;
   border-color: #ff8383;
 }
+.m_IPythonKernel_indicator {
+  padding: 10px;
+  cursor: pointer;
+}
+.m_IPythonKernel_changer {
+  padding: 5px;
+}
+.m_IPythonKernel_changer input {
+  padding: 5px;
+}
 .m_IPythonKernel_changer_btn {
   opacity: .5;
   cursor: pointer;
+  margin-left: 5px;
 }
 .m_IPythonKernel_changer_btn:hover {
   opacity: 1;
