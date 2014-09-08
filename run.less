@@ -46,11 +46,8 @@ body {
   word-wrap: break-word;
 
   > * {
-    border: 1px solid #dbdbdb;
-    border-radius: 5px;
-    box-shadow: 1px 1px 4px #dadada inset;
     margin: 0 0 0 5px;
-    background-color: white;
+    background-color: #dfe;
     font-family: monospace;
     font-size: 14px;
   }
@@ -68,3 +65,135 @@ body {
     padding-top: 3px;
   }
 }
+
+// gorilla style!
+
+.treed_body_rendered {
+  background-color: transparent;
+}
+
+.treed_body-type-ipython {
+  margin-bottom: 0;
+
+  > * {
+    margin: 0 0 0 5px;
+    background-color: transparent;
+  }
+  > .treed_body_rendered {
+    padding: 5px 0;
+  }
+  > .textarea-grow {
+    padding: 2px 0px;
+  }
+  > .textarea-grow textarea,
+  > .textarea-grow .shadow {
+    padding-left: 0;
+  }
+}
+
+.list_item_head:hover .treed_body {
+  background-color: transparent;
+}
+
+.list_item-active > .list_item_head .treed_body {
+  background-color: transparent;
+}
+
+.list_item_head {
+  margin-bottom: 5px;
+}
+
+.list_item_body {
+  border: 1px solid transparent;
+  position: relative;
+  margin-bottom: 0;
+}
+
+.m_Collapser {
+  display: block;
+  opacity: 0;
+  background-color: #ddd;
+
+  &:after {
+    content: '';
+  }
+
+  height: auto;
+  width: 10px;
+  margin-right: 5px;
+
+  .list_item-parent > .list_item_head:hover & {
+    opacity: 1;
+  }
+
+  &-collapsed {
+    opacity: 1;
+  }
+}
+
+
+.m_IPython {
+  position: static;
+  margin: 5px 10px 10px;
+}
+
+.m_IPython_output {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+
+  &-error {
+    border-color: red;
+    color: red;
+  }
+}
+
+.m_IPython_time {
+  top: 4px;
+
+  .list_item_body:hover & {
+    opacity: 1;
+  }
+}
+
+.list_item-type-ipython > .list_item_head > .list_item_body {
+  border: 1px solid #ccc;
+  background-color: #eee;
+
+}
+
+.list_item-active > .list_item_head > .list_item_body {
+  outline: 5px solid magenta;
+}
+
+.list_item-root > .list_item_head .treed_body {
+  margin-left: 20px;
+  padding-left: 0;
+  font-weight: bold;
+}
+
+.treed_body {
+  padding-left: 0;
+  margin-left: 0;
+  margin-bottom: 0;
+}
+
+.list_item_children {
+  border-left: 5px solid #eee;
+  padding-left: 20px;
+  margin-left: 0;
+}
+
+.m_Collapser {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.m_RebaseDot {
+  top: 3px;
+  left: 5px;
+  display: none;
+}
+

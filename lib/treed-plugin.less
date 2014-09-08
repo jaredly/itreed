@@ -63,14 +63,30 @@
   text-align: right;
   font-family: monospace;
   font-size: 12px;
+  opacity: .2;
 
   background-color: rgba(181, 255, 181, 0.9);
   padding: 2px 5px;
   border-radius: 5px;
 
+  .list_item-active > .m_IPython > &,
+  .m_IPython:hover > &,
+  .list_item_head:hover + .m_IPython > & {
+    opacity: 1;
+
+    &:hover {
+      opacity: .2;
+    }
+  }
+
   &-loading {
     right: 35px;
     top: 2px;
+    opacity: 1;
+
+    &:hover {
+      opacity: .2;
+    }
   }
 }
 
