@@ -134,7 +134,7 @@ body {
 
 .m_IPython {
   position: static;
-  margin: 5px 10px 10px;
+  margin: 5px;
 }
 
 .m_IPython_output {
@@ -146,6 +146,20 @@ body {
   &-error {
     border-color: red;
     color: red;
+  }
+}
+
+.m_IPython_output-list-like {
+  table {
+    border-collapse: collapse;
+  }
+  td {
+    border: 1px solid #999;
+  }
+
+  div.vega {
+    display: inline-block;
+    vertical-align: middle;
   }
 }
 
