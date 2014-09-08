@@ -21,8 +21,6 @@
     "url": "https://github.com/jaredly/itreed/issues"
   },
   "dependencies": {
-    "jstransform": "~6.2.0",
-    "reactify": "~0.14.0",
     "react": "~0.11.1",
     "majax": "git+https://github.com/jaredly/majaX.js",
     "async": "~0.9.0",
@@ -34,6 +32,7 @@
     "katex": "git+https://github.com/jaredly/KateX.git"
   },
   "devDependencies": {
-    "brfs": "~1.2.0"
+    "jstransform": "~6.2.0",
+    "reactify": "~0.14.0"
   }
 }
