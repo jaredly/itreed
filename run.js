@@ -15,7 +15,6 @@ window.onload = function () {
   // var host = "localhost:8889"
   var host = "localhost:" + location.hash.split('/')[0].slice(1)
     , path = "test.ipynb"
-    , kernel = new Gorilla(host, path)
 
   var data = convert.fromNotebook([
       {cell_type: 'markdown', source: '# Ok who is awesome?'},
@@ -37,10 +36,13 @@ window.onload = function () {
   }, (store) => {
     window.store = store
     window.actions = store.actions
+    var kernel = new Gorilla()
     store._globals.kernel = kernel
-    kernel.init(() => {
+    /*
+    kernel.init(host, () => {
       store.changed('kernel-session')
     })
+    */
   })
 
 }
