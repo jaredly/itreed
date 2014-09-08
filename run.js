@@ -8,19 +8,14 @@ var React = require('treed/node_modules/react')
 var treed = require('treed/rx')
 var LocalPL = require('treed/rx/pl/local')
 var convert = require('./lib/convert')
-var demoData = require('./demo-data.js')
 
 window.React = React
 
 window.onload = function () {
-  // var host = "localhost:8889"
-  var host = "localhost:" + location.hash.split('/')[0].slice(1)
-    , path = "test.ipynb"
-
   treed.quickstart(document.body, {
     storeOptions: {
-      data: demoData,
-      pl: new LocalPL({prefix: 'ipython'}),
+      data: window.demoData,
+      pl: new LocalPL({prefix: window.kernelType}),
     },
     React: React,
     plugins: [

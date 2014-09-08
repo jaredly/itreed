@@ -24,7 +24,7 @@
     "jstransform": "~6.2.0",
     "reactify": "~0.14.0",
     "react": "~0.11.1",
-    "majax": "~0.2.6",
+    "majax": "git+https://github.com/jaredly/majaX.js",
     "async": "~0.9.0",
     "eventemitter3": "~0.1.5",
     "ansi-to-html": "~0.2.0",
