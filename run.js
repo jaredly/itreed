@@ -8,6 +8,7 @@ var React = require('treed/node_modules/react')
 var treed = require('treed/rx')
 var LocalPL = require('treed/rx/pl/local')
 var convert = require('./lib/convert')
+var demoData = require('./demo-data.js')
 
 window.React = React
 
@@ -16,13 +17,9 @@ window.onload = function () {
   var host = "localhost:" + location.hash.split('/')[0].slice(1)
     , path = "test.ipynb"
 
-  var data = convert.fromNotebook([
-      {cell_type: 'markdown', source: '# Ok who is awesome?'},
-      {cell_type: 'code', language: 'clojure', input: '(+ 2 3)', outputs: []},
-  ])
   treed.quickstart(document.body, {
     storeOptions: {
-      data: data,
+      data: demoData,
       pl: new LocalPL({prefix: 'ipython'}),
     },
     React: React,

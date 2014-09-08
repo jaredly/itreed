@@ -3,6 +3,10 @@ ARGS=-t [ reactify --es6 --everything --visitors jstransform/visitors/es6-destru
 
 all: js css
 
+pages:
+	lessc -x run.less pages/demo/build.css
+	browserify ${ARGS} run.js | uglifyjs --screw-ie8 > pages/demo/build.js
+
 js:
 	browserify ${ARGS} -d run.js -o www/build.js
 
@@ -18,5 +22,5 @@ start-ipython:
 dumb-server:
 	cd www; python -mSimpleHTTPServer
 
-.PHONY: css watch js all start-ipython
+.PHONY: css watch js all start-ipython pages
 

@@ -32,5 +32,8 @@
     "marked": "~0.3.2",
     "highlight.js": "~8.2.0",
     "katex": "git+https://github.com/jaredly/KateX.git"
+  },
+  "devDependencies": {
+    "brfs": "~1.2.0"
   }
 }

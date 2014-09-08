@@ -50,8 +50,6 @@
   right: 0;
   z-index: 100;
   font-family: monospace;
-  cursor: pointer;
-  padding: 10px;
   border: 1px solid transparent;
 
   button {
@@ -71,11 +69,22 @@
   }
 
   &_indicator {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  &_changer {
+    padding: 5px;
+
+    input {
+      padding: 5px;
+    }
   }
 
   &_changer_btn {
     opacity: .5;
     cursor: pointer;
+    margin-left: 5px;
 
     &:hover {
       opacity: 1;

@@ -4,3 +4,4 @@
 /www/build.css
 /node_modules
 .nfs*
+/pages
