@@ -31,7 +31,8 @@
     "moment": "~2.8.3",
     "marked": "~0.3.2",
     "highlight.js": "~8.2.0",
-    "katex": "git+https://github.com/jaredly/KateX.git"
+    "katex": "git+https://github.com/jaredly/KateX.git",
+    "codemirror": "~4.5.0"
   },
   "devDependencies": {
     "brfs": "~1.2.0"

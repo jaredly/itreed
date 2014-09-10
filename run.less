@@ -10,6 +10,17 @@
 
 @import "./lib/plugin/index.less";
 
+@import (inline) "./node_modules/codemirror/lib/codemirror.css";
+
+.CodeMirror {
+  background: transparent;
+  height: auto;
+}
+.CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
 @import (inline) "./node_modules/highlight.js/styles/docco.css";
 
 h1 {
