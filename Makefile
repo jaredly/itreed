@@ -16,6 +16,9 @@ watch:
 css:
 	lessc run.less www/build.css
 
+start-ijulia:
+	ipython notebook --NotebookApp.allow_origin='*' --profile=julia
+
 start-ipython:
 	ipython notebook --NotebookApp.allow_origin='*'
 
