@@ -51,12 +51,14 @@ var Downloader = React.createClass({
   },
 
   render: function () {
-    return <Modal onClose={this.props.onClose} title="Download">
-      <FormatPicker formats={FORMATS} format={this.props.format} onChange={this._onChangeFormat}/>
-      <input className='Download_name' value={this.state.name} onChange={this._onChange}/>
+    return <Modal onClose={this.props.onClose} title="Download" className="Modal-download">
+      <FormatPicker formats={FORMATS} format={this.state.format} onChange={this._onChangeFormat}/>
+      <input className='Download_name' value={this.state.name} onChange={this._onChangeName}/>
+      .{convert[this.state.format].ext}
+      <br/>
       <a className="Download_link" ref="link"
           onClick={this.onDownload}>
-        Download {this.fileName()}
+        Download
       </a>
     </Modal>
   }

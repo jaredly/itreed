@@ -56,33 +56,40 @@
 // Downloader
 
 .Download_name {
-  padding: 5px 10px;
-  margin: 0 auto;
   width: 200px;
-  display: block;
+  padding: 5px 0 5px 10px;
+  text-align: right;
+  margin: 0;
 }
 
 .Download_link {
-  display: block;
   cursor: pointer;
-  width: 200px;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 5px 20px;
+  margin: 20px 0;
+  display: inline-block;
+  color: black;
+  text-decoration: none;
+  box-shadow: 0px 0px 4px #aaa;
 }
 
-.FormPicker {
+.FormatPicker {
   list-style: none;
   margin: 0 0 20px;
   padding: 0;
+  text-align: center;
 
   &_item {
     padding: 10px;
     margin-right: 10px;
     border: 1px solid #ccc;
+    display: inline-block;
+    cursor: pointer;
 
     &-selected {
       border-color: #555;
+      background-color: #eee;
     }
   }
 }
@@ -108,8 +115,8 @@
     background-color: white;
     border: 1px solid #555;
 
-    width: 400px;
-    margin-left: -200px;
+    width: 600px;
+    margin-left: -300px;
     height: 400px;
     margin-top: -200px;
     z-index: 10000;
@@ -134,10 +141,22 @@
   &_title {
     text-align: center;
     padding: 10px;
+    font-size: 20px;
   }
 
   &_body {
     padding: 10px;
+  }
+}
+
+.Modal-download {
+  .Modal_popup {
+    height: 250px;
+  }
+
+  .Modal_body {
+    text-align: center;
+    margin-top: 15px;
   }
 }
 

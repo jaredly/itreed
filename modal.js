@@ -4,7 +4,7 @@ var React = require('treed/node_modules/react')
 
 var Modal = React.createClass({
   render: function () {
-    return <div className='Modal'>
+    return this.transferPropsTo(<div className='Modal'>
       <div className='Modal_back' onClick={this.props.onClose}/>
       <div className='Modal_popup'>
         <div className='Modal_title'>{this.props.title}</div>
@@ -13,7 +13,7 @@ var Modal = React.createClass({
           {this.props.children}
         </div>
       </div>
-    </div>
+    </div>)
   }
 })
 
