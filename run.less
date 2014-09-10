@@ -1,6 +1,7 @@
 
 @import "../treed/rx/views/tree/index.less";
 @import "../treed/rx/views/body/simple.less";
+
 @import "../treed/rx/plugins/collapse/index.less";
 @import "../treed/rx/plugins/rebase/index.less";
 @import "../treed/rx/plugins/done/index.less";
@@ -8,6 +9,17 @@
 @import "../treed/rx/skins/regular/index.less";
 
 @import "./lib/plugin/index.less";
+
+@import (inline) "./node_modules/codemirror/lib/codemirror.css";
+
+.CodeMirror {
+  background: transparent;
+  height: auto;
+}
+.CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
 
 @import (inline) "./node_modules/highlight.js/styles/docco.css";
 
@@ -17,6 +29,8 @@ h1 {
 
 body {
   padding: 10px 100px 100px;
+  margin: 10px auto;
+  max-width: 1000px;
 }
 
 .list_item_children {
@@ -66,177 +80,10 @@ body {
   }
 }
 
-/* ************** gorilla style! **************** */
-
 // katex
 @import "node_modules/katex/static/katex.less";
 @import "katex/fonts/fonts.css";
 
-.m_IPythonKernel {
-  top: -5px;
-  right: -5px;
-}
-
-.treed_body_rendered {
-  background-color: transparent;
-}
-
-.treed_body-type-ipython {
-  margin-bottom: 0;
-
-  > * {
-    margin: 0 0 0 5px;
-    background-color: transparent;
-  }
-  > .treed_body_rendered {
-    padding: 5px 0;
-  }
-  > .textarea-grow {
-    padding: 2px 0px;
-  }
-  > .textarea-grow textarea,
-  > .textarea-grow .shadow {
-    padding-left: 0;
-  }
-}
-
-.list_item_head:hover .treed_body {
-  background-color: transparent;
-}
-
-.list_item-active > .list_item_head .treed_body {
-  background-color: transparent;
-}
-
-.list_item_head {
-  margin-bottom: 5px;
-}
-
-.list_item_body {
-  border: 1px solid transparent;
-  position: relative;
-  margin-bottom: 0;
-}
-
-.m_Collapser {
-  display: block;
-  opacity: 0;
-  background-color: #ddd;
-
-  &:after {
-    content: '';
-  }
-
-  height: auto;
-  width: 10px;
-  margin-right: 5px;
-
-  .list_item-parent > .list_item_head:hover & {
-    opacity: 1;
-  }
-
-  &-collapsed {
-    opacity: 1;
-  }
-}
-
-.list_item-ipython-disabled {
-  opacity: .5;
-  font-style: italic;
-}
-
-.m_IPython {
-  position: static;
-  margin: 5px;
-}
-
-.m_IPython_output {
-  background-color: white;
-  padding: 10px;
-  border: 1px solid #ccc;
-  margin-top: 5px;
-
-  &-error {
-    border-color: red;
-    color: red;
-  }
-}
-
-.m_IPython_output-list-like {
-  table {
-    border-collapse: collapse;
-  }
-  td {
-    border: 1px solid #999;
-  }
-
-  div.vega {
-    display: inline-block;
-    vertical-align: middle;
-  }
-}
-
-.m_IPython_loading {
-  display: none;
-}
-
-.m_IPython_time {
-  top: 4px;
-  background-color: transparent;
-  color: #009F09;
-  opacity: 1;
-
-  &-loading {
-    right: 3px;
-  }
-
-  &-stale {
-    color: rgb(255, 10, 10);
-  }
-
-  .list_item_body:hover & {
-    opacity: 1;
-  }
-}
-
-.list_item-type-ipython > .list_item_head > .list_item_body {
-  border: 1px solid #ccc;
-  background-color: #eee;
-
-}
-
-.list_item-active > .list_item_head > .list_item_body {
-  outline: 5px solid magenta;
-}
-
-.list_item-root > .list_item_head .treed_body {
-  margin-left: 20px;
-  padding-left: 0;
-  font-weight: bold;
-}
-
-.treed_body {
-  padding-left: 0;
-  margin-left: 0;
-  margin-bottom: 0;
-}
-
-.list_item_children {
-  border-left: 5px solid #eee;
-  padding-left: 20px;
-  margin-left: 0;
-}
-
-.m_Collapser {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -15px;
-}
-
-.m_RebaseDot {
-  top: 3px;
-  left: 5px;
-  display: none;
-}
+// gorilla style
+@import "./gorilla.less";
 
