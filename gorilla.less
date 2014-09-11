@@ -9,6 +9,20 @@
   right: -5px;
 }
 
+.m_IPythonKernel button {
+  padding: 3px 7px;
+  border-radius: 3px;
+  border: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  transition: background-color .2s ease;
+
+  &:hover {
+    background-color: #eee;
+  }
+}
+
 .treed_body_rendered {
   background-color: transparent;
 }
@@ -69,6 +83,12 @@
 
   &-collapsed {
     opacity: 1;
+  }
+}
+
+.list_item-ipython-running {
+  > .list_item_head > .list_item_body {
+    background-color: rgb(210, 255, 210);
   }
 }
 
@@ -140,6 +160,10 @@
 
 .list_item-active > .list_item_head > .list_item_body {
   outline: 5px solid magenta;
+}
+
+.list_item-editing > .list_item_head > .list_item_body {
+  outline: 5px solid rgb(0, 184, 0);
 }
 
 .list_item-selected > .list_item_head > .list_item_body {
