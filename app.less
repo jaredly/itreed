@@ -1,3 +1,21 @@
+/* latin-ext */
+@font-face {
+  font-family: 'Monda';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Monda Regular'), local('Monda-Regular'), url(vendor/Monda-Regular.ttf);
+}
+/* latin */
+@font-face {
+  font-family: 'Monda';
+  font-style: bold;
+  font-weight: 700;
+  src: local('Monda Bold'), local('Monda-Bold'), url(vendor/Monda-Bold.ttf);
+}
+
+.treed_body_rendered {
+  font-family: 'Monda';
+}
 
 .Header {
   display: flex;
@@ -56,10 +74,16 @@
 // Downloader
 
 .Download_name {
-  width: 200px;
-  padding: 5px 0 5px 10px;
+  width: 250px;
+  padding: 5px 0 5px 5px;
   text-align: right;
-  margin: 0;
+  margin: 0 5px 0 15px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.Download_ext {
+  color: #777;
 }
 
 .Download_link {
@@ -158,5 +182,9 @@
     text-align: center;
     margin-top: 15px;
   }
+}
+
+.list_item {
+  font-family: 'Monda', sans-serif;
 }
 
