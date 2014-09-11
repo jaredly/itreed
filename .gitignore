@@ -5,3 +5,5 @@
 /node_modules
 .nfs*
 /pages
+/www/vendor/d3.js
+/www/vendor/vega.js
