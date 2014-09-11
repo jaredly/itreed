@@ -41,6 +41,11 @@ var Dupload = React.createClass({
     })
   },
 
+  _onUploaded: function (filename, trees) {
+    this.props.store._actions[0].importTrees(null, trees)
+    this._onClose()
+  },
+
   // Draggage
   componentDidMount: function () {
     window.addEventListener('dragenter', this._onDragOver)
@@ -98,6 +103,7 @@ var Dupload = React.createClass({
     } else if (this.state.uploading) {
       modal = Uploader({
         initialFile: this.state.uploadFile,
+        onUploaded: this._onUploaded,
         store: this.props.store,
         onClose: this._onClose,
       })

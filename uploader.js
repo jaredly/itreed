@@ -73,7 +73,7 @@ var Uploader = React.createClass({
     }
 
     reader.onload = (evt) => {
-      var data = convert[this.state.format].from(evt.target.results)
+      var data = convert[this.state.format].treeFromStr(evt.target.result)
       if (data instanceof Error) {
         return this.setState({
           reader: null,
@@ -86,7 +86,7 @@ var Uploader = React.createClass({
         error: null
       })
 
-      this.props.onLoad(this.state.file.name, data, {})
+      this.props.onUploaded(this.state.file.name, data)
     }
 
     reader.readAsText(this.state.file)

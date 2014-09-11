@@ -1,25 +1,37 @@
 
+var parseGorilla = require('./parse-gorilla')
+
 module.exports = {
   nm: {
     ext: 'nm',
     mime: 'application/json',
-    strFromTree: function (tree) {
-      return JSON.stringify(tree, null, 2)
+    strFromTrees: function (trees) {
+      return JSON.stringify(trees, null, 2)
+    },
+    treeFromStr: function (str) {
+      try {
+        var tree = JSON.parse(str)
+      } catch (e) {
+        return new Error("Unable to parse file. Are you sure it's the right format?")
+      }
+      if (!tree.content || !tree.children) {
+        return new Error("This doesn't look like the right format.")
+      }
+      return tree
     },
   },
   ipython: {
     ext: 'pynb',
     mime: 'application/json',
-    strFromTree: function (tree) {
+    strFromTrees: function (trees) {
       return 'iPython WIP'
     },
   },
   gorilla: {
     ext: 'clj',
     mime: 'text/clojure',
-    strFromTree: function (tree) {
-      return 'Clojure WIP'
-    },
+    strFromTrees: parseGorilla.toStr,
+    treeFromStr: parseGorilla.fromStr,
   },
   formats: [
     ['nm', 'Notablemind (.nm)'],
