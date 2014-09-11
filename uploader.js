@@ -3,6 +3,7 @@ var React = require('treed/node_modules/react')
   , PT = React.PropTypes
   , Modal = require('./modal')
   , FormatPicker = require('./format-picker')
+  , convert = require('./convert')
 
 var Uploader = React.createClass({
   propTypes: {
@@ -12,14 +13,34 @@ var Uploader = React.createClass({
   getInitialState: function () {
     return {
       mode: 'insert',
+      format: 'nm',
       file: this.props.initialFile,
+      reader: null,
+      error: null,
     }
   },
 
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.initialFile !== this.props.initialFile) {
-      this.setState({file: nextProps.initialFile})
+      this.setFile(nextProps.initialFile)
     }
+  },
+
+  setFile: function (file) {
+    var update = {
+      file: file
+    }
+    if (file) {
+      var format = convert.detect(file.name)
+      if (format) {
+        update.format = format
+      }
+    }
+    this.setState(update)
+  },
+
+  _onChangeFormat: function (format) {
+    this.setState({format: format})
   },
 
   _onChangeMode: function (mode) {
@@ -27,7 +48,7 @@ var Uploader = React.createClass({
   },
 
   _onChangeFile: function (e) {
-    this.setState({file: e.target.files[0]})
+    this.setFile(e.target.files[0])
   },
 
   _onClearFile: function () {
@@ -35,6 +56,45 @@ var Uploader = React.createClass({
   },
 
   _onSubmit: function () {
+    var reader = new FileReader()
+
+    reader.onerror = () => {
+      this.setState({
+        reader: null,
+        error: 'Failed to load file.'
+      })
+    }
+
+    reader.onabort = () => {
+      this.setState({
+        reader: null,
+        error: 'Upload cancelled'
+      })
+    }
+
+    reader.onload = (evt) => {
+      var data = convert[this.state.format].from(evt.target.results)
+      if (data instanceof Error) {
+        return this.setState({
+          reader: null,
+          error: data.message
+        })
+      }
+
+      this.setState({
+        reader: null,
+        error: null
+      })
+
+      this.props.onLoad(this.state.file.name, data, {})
+    }
+
+    reader.readAsText(this.state.file)
+
+    this.setState({
+      reader: reader,
+      error: false,
+    })
   },
 
   file: function () {
@@ -48,12 +108,24 @@ var Uploader = React.createClass({
   },
 
   render: function () {
+    if (this.state.reader) {
+      return <Modal className="Modal-upload" onClose={this.props.onClose} title="Import">
+        Loading file...
+      </Modal>
+    }
+
     return <Modal className="Modal-upload" onClose={this.props.onClose} title="Import">
+      {this.state.error && <div className="Uploader_error">{this.state.error}</div>}
       <FormatPicker
         formats={[["replace", "Replace notebook"], ["insert", "Insert at cursor"]]}
         onChange={this._onChangeMode}
         format={this.state.mode}/>
       {this.file()}
+      {this.state.file && 
+        <FormatPicker
+          formats={convert.formats}
+          onChange={this._onChangeFormat}
+          format={this.state.format}/>}
       <br/>
       <button onClick={this._onSubmit} className="Uploader_submit">Import</button>
     </Modal>

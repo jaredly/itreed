@@ -5,14 +5,6 @@ var React = require('treed/node_modules/react')
   , FormatPicker = require('./format-picker')
   , convert = require('./convert')
 
-var FORMATS = [
-  ['nm', 'Notablemind (.nm)'],
-  ['ipython', 'IPython (.pynb)'],
-  ['gorilla', 'Gorilla (.clj)'],
-  // ['md', 'Markdown (.md)'],
-  // latex: 'Latex (.tx)',
-]
-
 var Downloader = React.createClass({
   propTypes: {
     exportMany: PT.func.isRequired,
@@ -64,7 +56,7 @@ var Downloader = React.createClass({
     }
     return <Modal onClose={this.props.onClose} title="Download" className="Modal-download">
       Download {what}
-      <FormatPicker formats={FORMATS} format={this.state.format} onChange={this._onChangeFormat}/>
+      <FormatPicker formats={convert.formats} format={this.state.format} onChange={this._onChangeFormat}/>
       File name:
       <input className='Download_name' value={this.state.name} onChange={this._onChangeName}/>
       <span className='Download_ext'>.{convert[this.state.format].ext}</span>
