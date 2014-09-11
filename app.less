@@ -49,6 +49,31 @@
   }
 }
 
+.Uploader_clear,
+.Uploader_submit {
+  border: 1px solid #999;
+  background-color: white;
+  padding: 3px 7px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #eee;
+  }
+}
+
+.Uploader_clear {
+  margin-left: 15px;
+}
+
+.Uploader_submit {
+  padding: 7px 60px;
+  border-radius: 5px;
+  font-size: 20px;
+  color: #555;
+}
+
 .Dupload_upload {
   &:extend(.m_icon all);
 
@@ -64,6 +89,21 @@
   > span {
     &:extend(.icon-download all);
   }
+}
+
+.Dupload_dropping {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  text-align: center;
+  background-color: rgb(35, 255, 48);
+  opacity: .7;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 100px 0;
 }
 
 .Dupload {
@@ -170,6 +210,18 @@
 
   &_body {
     padding: 10px;
+  }
+}
+
+.Modal-upload {
+  .Modal_popup {
+    height: auto;
+    padding-bottom: 20px;
+  }
+
+  .Modal_body {
+    text-align: center;
+    margin-top: 15px;
   }
 }
 

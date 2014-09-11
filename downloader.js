@@ -15,7 +15,7 @@ var FORMATS = [
 
 var Downloader = React.createClass({
   propTypes: {
-    exportTree: PT.func.isRequired,
+    exportMany: PT.func.isRequired,
     onClose: PT.func.isRequired,
   },
 
@@ -29,8 +29,8 @@ var Downloader = React.createClass({
   onDownload: function () {
     var format = this.state.format
       , a = this.refs.link.getDOMNode()
-      , tree = this.props.exportTree()
-      , data = convert[format].strFromTree(tree)
+      , trees = this.props.exportMany(this.props.ids)
+      , data = convert[format].strFromTrees(tree)
       , mime = convert[format].mime
       , blob = new Blob([data], {type: mime})
       , url = URL.createObjectURL(blob)
@@ -51,7 +51,19 @@ var Downloader = React.createClass({
   },
 
   render: function () {
+    var ids = this.props.ids
+      , what
+    if (ids.length === 1) {
+      if (ids[0] === this.props.root) {
+        what = 'the whole notebook'
+      } else {
+        what = '1 item'
+      }
+    } else {
+      what = ids.length + ' items'
+    }
     return <Modal onClose={this.props.onClose} title="Download" className="Modal-download">
+      Download {what}
       <FormatPicker formats={FORMATS} format={this.state.format} onChange={this._onChangeFormat}/>
       File name:
       <input className='Download_name' value={this.state.name} onChange={this._onChangeName}/>

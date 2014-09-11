@@ -27,8 +27,6 @@ window.onload = function () {
     pl: new LocalPL({prefix: window.dbPrefix || window.kernelType}),
   }
   treed.initStore(plugins, storeOptions, (store) => {
-    var storeView = store.registerView()
-
     treed.initView(null, store, plugins, null, (viewStore, viewProps) => {
       window.store = store
       window.actions = viewStore.actions
