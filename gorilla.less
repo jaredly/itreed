@@ -86,12 +86,6 @@
   }
 }
 
-.list_item-ipython-running {
-  > .list_item_head > .list_item_body {
-    background-color: rgb(210, 255, 210);
-  }
-}
-
 /** Taking a different approach
 .list_item-ipython-disabled {
   opacity: .5;
@@ -162,13 +156,19 @@
   outline: 5px solid magenta;
 }
 
+.list_item-selected > .list_item_head > .list_item_body {
+  background-color: #D5FFFC;
+  outline-color: cyan;
+}
+
 .list_item-editing > .list_item_head > .list_item_body {
   outline: 5px solid rgb(0, 184, 0);
 }
 
-.list_item-selected > .list_item_head > .list_item_body {
-  background-color: #D5FFFC;
-  outline-color: cyan;
+.list_item-ipython-running {
+  > .list_item_head > .list_item_body {
+    background-color: rgb(210, 255, 210);
+  }
 }
 
 .list_item-selected > .list_item_head .treed_body {
