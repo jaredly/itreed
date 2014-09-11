@@ -25,5 +25,13 @@ start-ipython:
 dumb-server:
 	cd www; python -mSimpleHTTPServer
 
-.PHONY: css watch js all start-ipython pages
+vendor: www/vendor/d3.js www/vendor/vega.js
+
+www/vendor/d3.js:
+	wget http://trifacta.github.io/vega/lib/d3.v3.min.js -O www/vendor/d3.js
+
+www/vendor/vega.js:
+	wget http://trifacta.github.io/vega/vega.js -O www/vendor/vega.js
+
+.PHONY: css watch js all start-ipython pages vendor
 
