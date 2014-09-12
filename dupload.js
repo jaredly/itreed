@@ -113,7 +113,7 @@ var Dupload = React.createClass({
       <span className='Dupload_download' onClick={this._onDownload}> <span/> </span>
       <span className='Dupload_upload' onClick={this._onUpload}> <span/> </span>
       {modal}
-      {this.state.dropping && <div className='Dupload_dropping'>Drop here to import</div>}
+      {this.state.dropping && <div className='Dupload_dropping'>Drop anywhere to import</div>}
     </div>
   },
 })

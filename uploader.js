@@ -13,7 +13,7 @@ var Uploader = React.createClass({
   getInitialState: function () {
     return {
       mode: 'insert',
-      format: 'nm',
+      format: this.props.initialFile && convert.detect(this.props.initialFile.name) || 'nm',
       file: this.props.initialFile,
       reader: null,
       error: null,
