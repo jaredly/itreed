@@ -4,6 +4,7 @@ ARGS=-t [ reactify --es6 --everything --visitors jstransform/visitors/es6-destru
 all: js css
 
 pages:
+	rsync www/* pages/demo -rLu
 	lessc -x run.less pages/demo/build.css
 	browserify ${ARGS} run.js | uglifyjs --screw-ie8 > pages/demo/build.js
 
