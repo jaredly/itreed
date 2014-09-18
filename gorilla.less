@@ -156,13 +156,20 @@
   outline: 5px solid magenta;
 }
 
-.list_item-selected > .list_item_head > .list_item_body {
-  background-color: #D5FFFC;
-  outline-color: cyan;
+.list_item-ipython-collapsed > .list_item_head > .list_item_body {
+  max-height: 100px;
+  overflow: hidden;
+  border-bottom: 10px solid #BBB;
 }
 
-.list_item-editing > .list_item_head > .list_item_body {
-  outline: 5px solid rgb(0, 184, 0);
+.m_IPython-hiding {
+  border: none;
+}
+
+.list_item-ipython-dirty {
+  > .list_item_head > .list_item_body {
+    background-color: #FFE4FD;
+  }
 }
 
 .list_item-ipython-running {
@@ -171,6 +178,29 @@
   }
 }
 
+.list_item-ipython-stale {
+  > .list_item_head > .list_item_body {
+    background-color: #FFE4E4;
+  }
+}
+
+.list_item-ipython {
+  > .list_item_head > .list_item_body {
+    background-color: #CBFFC6;
+  }
+}
+
+.list_item-selected > .list_item_head > .list_item_body {
+  background-color: #D5FFFC;
+  outline-color: cyan;
+}
+
+.list_item-editing > .list_item_head > .list_item_body {
+  outline: 5px solid rgb(0, 184, 0);
+  background-color: white;
+}
+
+// overriding default styles
 .list_item-selected > .list_item_head .treed_body {
   background-color: transparent;
 }
