@@ -31,11 +31,22 @@ window.onload = function () {
       window.store = store
       window.actions = viewStore.actions
 
-      React.renderComponent(App({
-        store: store,
-        View: require('treed/rx/views/tree'),
-        viewProps: viewProps,
-      }), document.body)
+      if (window.DUAL) {
+        treed.initView(null, store, plugins, null, (viewStore2, viewProps2) => {
+          React.renderComponent(App({
+            store: store,
+            View: require('treed/rx/views/tree'),
+            viewProps: viewProps,
+            viewProps2: viewProps2,
+          }), document.body)
+        })
+      } else {
+        React.renderComponent(App({
+          store: store,
+          View: require('treed/rx/views/tree'),
+          viewProps: viewProps,
+        }), document.body)
+      }
     })
   })
 }

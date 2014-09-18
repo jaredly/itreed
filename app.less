@@ -13,6 +13,28 @@
   src: local('Monda Bold'), local('Monda-Bold'), url(vendor/Monda-Bold.ttf);
 }
 
+.app-dual {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex-direction: column;
+}
+
+.app_dual {
+  flex: 1;
+  display: flex;
+}
+
+.app_left,
+.app_right {
+  flex: 1;
+  padding: 50px;
+  overflow: auto;
+}
+
 .treed_body_rendered {
   font-family: 'Monda';
 }
