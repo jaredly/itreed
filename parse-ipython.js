@@ -76,7 +76,7 @@ function cellToNode(cell) {
   }
   if (cell.cell_type === 'heading') {
     return {
-      type: 'base',
+      type: 'heading',
       content: cell.source.join('\n'),
       children: [],
     }
