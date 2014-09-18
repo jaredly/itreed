@@ -11,14 +11,14 @@ module.exports = {
     },
     treeFromStr: function (str) {
       try {
-        var tree = JSON.parse(str)
+        var trees = JSON.parse(str)
       } catch (e) {
         return new Error("Unable to parse file. Are you sure it's the right format?")
       }
-      if (!tree.content || !tree.children) {
+      if (!Array.isArray(trees) || !trees.length || !trees[0].content || !trees[0].children) {
         return new Error("This doesn't look like the right format.")
       }
-      return tree
+      return trees
     },
   },
   ipython: {

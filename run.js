@@ -4,7 +4,7 @@
 
 var React = require('treed/node_modules/react')
 var treed = require('treed/rx')
-var LocalPL = require('treed/rx/pl/local')
+var IxPL = require('treed/rx/pl/ixdb')
 
 var convert = require('./lib/convert')
 var App = require('./app')
@@ -24,7 +24,7 @@ window.onload = function () {
   ]
   var storeOptions = {
     data: window.demoData,
-    pl: new LocalPL({prefix: window.dbPrefix || window.kernelType}),
+    pl: new IxPL({prefix: window.dbPrefix || window.kernelType}),
   }
   treed.initStore(plugins, storeOptions, (store) => {
     treed.initView(null, store, plugins, null, (viewStore, viewProps) => {
