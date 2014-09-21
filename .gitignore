@@ -7,3 +7,4 @@
 /pages
 /www/vendor/d3.js
 /www/vendor/vega.js
+*.pyc
