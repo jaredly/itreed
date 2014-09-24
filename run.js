@@ -20,7 +20,7 @@ window.onload = function () {
     require('treed/rx/plugins/clipboard'),
     require('treed/rx/plugins/types'),
 
-    // require('treed/rx/plugins/rebase'),
+    require('treed/rx/plugins/rebase'),
     // require('treed/rx/plugins/done'),
   ]
   var storeOptions = {
