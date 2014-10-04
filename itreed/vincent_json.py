@@ -3,6 +3,7 @@
 from .formatter import VegaFormatter, formatter
 from vincent.core import GrammarClass
 from IPython.display import display
+import traceback
 
 def grammer_json(obj):
     if hasattr(obj, 'grammar'):
@@ -14,6 +15,13 @@ def grammer_json(obj):
     return obj
 
 def display_grammar(grammar):
+    '''
+    try:
+        raise Exception()
+    except:
+        print "Awe"
+        traceback.print_stack()
+    '''
     obj = grammer_json(grammar)
     display({'json/vega': obj}, raw=True)
 
