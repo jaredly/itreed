@@ -93,7 +93,7 @@ var Browse = React.createClass({
 //        window.store = store
 //        window.actions = config.view.actions
 
-      this.props.onLoad(store, plugins)
+      this.props.onLoad(file, store, plugins)
     })
   },
 

@@ -12,6 +12,7 @@ var App = React.createClass({
 
   getInitialState: function () {
     return {
+      file: null,
       store: null,
       plugins: null,
       panes: 1,
@@ -34,10 +35,19 @@ var App = React.createClass({
     </div>
   },
 
-  _onLoad: function (store, plugins) {
+  _onLoad: function (file, store, plugins) {
     this.setState({
+      file,
       store,
       plugins
+    })
+  },
+
+  _onClose: function () {
+    this.setState({
+      file: null,
+      store: null,
+      plugins: null
     })
   },
 
@@ -49,6 +59,8 @@ var App = React.createClass({
     }
     return <div className='App'>
       <Header
+        onClose={this._onClose}
+        file={this.state.file}
         store={this.state.store}
       />
       {this.makePanes()}
