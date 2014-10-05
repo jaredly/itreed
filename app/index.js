@@ -26,6 +26,11 @@ var App = React.createClass({
     window.addEventListener('popstate', this._popState)
   },
 
+  componentDidUpdate: function () {
+    if (!this.state.store) return
+    this.state.store.changed(this.state.store.events.activeViewChanged())
+  },
+
   _popState: function () {
     var id = history.get()
     this.setState({

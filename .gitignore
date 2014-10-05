@@ -8,3 +8,5 @@
 /www/vendor/d3.js
 /www/vendor/vega.js
 *.pyc
+/www/treed.js
+/www/vendor.js
