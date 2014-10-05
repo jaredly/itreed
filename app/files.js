@@ -1,8 +1,25 @@
 
 var IxPL = require('treed/rx/pl/ixdb')
-var QueuePL = require('treed/rx/pl/queuedb')
+  , QueuePL = require('treed/rx/pl/queuedb')
+  , treed = require('treed/rx')
 
 var uuid = require('../lib/uuid')
+
+var kernelConfig = {
+  null: null,
+  'ipython': {
+    type: 'ipython',
+    language: 'python'
+  },
+  'gorilla': {
+    type: 'gorilla',
+    language: 'clojure'
+  },
+  'ijulia': {
+    type: 'ipython',
+    language: 'julia'
+  }
+}
 
 module.exports = {
   // returns a listing of files, looks like
@@ -16,6 +33,60 @@ module.exports = {
 
   // returns a loaded PL
   get: getFile,
+
+  // initialize files
+  init: init,
+
+  // load a file from id to done
+  // load: load,
+}
+
+/*
+function load(id, done) {
+  list(files => {
+    var found = files.some(file => {
+      if (file.id !== id) return false
+      getFile(file, pl => {
+        init(file, pl, (store, plugins) => {
+          done(null, file, store, plugins)
+        })
+      })
+      return true
+    })
+    if (!found) {
+      return done(true)
+    }
+  })
+}
+*/
+
+function init(file, pl, done) {
+  var config = kernelConfig[file.repl]
+  var plugins = [
+    require('treed/rx/plugins/undo'),
+    require('treed/rx/plugins/collapse'),
+    require('treed/rx/plugins/clipboard'),
+    require('treed/rx/plugins/types'),
+
+    require('treed/rx/plugins/rebase'),
+  ]
+  if (config) {
+    // repl
+    plugins.unshift(require('../lib/plugin')(config.type, config.language))
+  }
+
+  var storeOptions = {
+    data: {content: file.title, children: [{content: 'Add a child'}]},
+    pl: pl,
+  }
+
+  treed.initStore(plugins, storeOptions, (store) => {
+//        var config = treed.viewConfig(store, plugins, null)
+//        window.store = store
+//        window.actions = config.view.actions
+
+    done(store, plugins)
+  })
 }
 
 function listFiles(done) {
@@ -37,13 +108,13 @@ function saveFiles(files, done) {
   done()
 }
 
-function getFile(file, isNew, done) {
+function getFile(id, isNew, done) {
   if (arguments.length === 2) {
     done = isNew
     isNew = false
   }
-  var pl = new QueuePL(new IxPL({prefix: 'nm:file:' + file.id}))
-  done(file, pl)
+  var pl = new QueuePL(new IxPL({prefix: 'nm:file:' + id}))
+  done(pl)
 }
 
 /**
@@ -57,6 +128,6 @@ function newFile(title, repl, done) {
   }
   listFiles(files =>
     saveFiles(files.concat([file]), () =>
-      getFile(file, true, done)))
+      getFile(file.id, true, pl => done(file, pl))))
 }
 

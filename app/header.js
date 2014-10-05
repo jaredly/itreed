@@ -8,6 +8,7 @@ var Header = React.createClass({
     file: PT.object.isRequired,
     store: PT.object.isRequired,
     onClose: PT.func.isRequired,
+    setPanes: PT.func.isRequired,
   },
 
   render: function () {
@@ -20,6 +21,9 @@ var Header = React.createClass({
       </span>
       <span className='Header_name'>Notablemind:repl</span>
       <Dupload store={this.props.store}/>
+      <button onClick={this.props.setPanes.bind(null, 1)}>[]</button>
+      <button onClick={this.props.setPanes.bind(null, 2)}>[|]</button>
+      <button onClick={this.props.setPanes.bind(null, 3)}>[||]</button>
     </div>
   }
 })

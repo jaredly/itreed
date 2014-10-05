@@ -7,16 +7,33 @@ var React = require('treed/node_modules/react')
 var localFiles = require('./files')
   , Header = require('./header')
   , Browse = require('./browse')
+  , history = require('./history')
 
 var App = React.createClass({
 
   getInitialState: function () {
     return {
+      loadId: history.get(),
       file: null,
       store: null,
       plugins: null,
       panes: 1,
     }
+  },
+
+  componentDidMount: function () {
+    // TODO: need to abstract out the logic from browse.js
+    window.addEventListener('popstate', this._popState)
+  },
+
+  _popState: function () {
+    var id = history.get()
+    this.setState({
+      loadId: id,
+      file: null,
+      store: null,
+      plugins: null,
+    })
   },
 
   makePanes: function () {
@@ -30,13 +47,19 @@ var App = React.createClass({
       panes.push(View(config.props))
     }
     // TODO: this.state.store.setViewPositions(ids or something)
-    return <div className='App-panes'>
+    return <div className='App_panes'>
       {panes}
     </div>
   },
 
+  _setPanes: function (num) {
+    this.setState({panes: num})
+  },
+
   _onLoad: function (file, store, plugins) {
+    history.set(file.id)
     this.setState({
+      loadId: null,
       file,
       store,
       plugins
@@ -45,6 +68,7 @@ var App = React.createClass({
 
   _onClose: function () {
     this.setState({
+      loadId: null,
       file: null,
       store: null,
       plugins: null
@@ -54,11 +78,12 @@ var App = React.createClass({
   render: function () {
     if (!this.state.store) {
       return <div className='App App-browse'>
-        <Browse onLoad={this._onLoad} files={localFiles}/>
+        <Browse onLoad={this._onLoad} loadId={this.state.loadId} files={localFiles}/>
       </div>
     }
     return <div className='App'>
       <Header
+        setPanes={this._setPanes}
         onClose={this._onClose}
         file={this.state.file}
         store={this.state.store}

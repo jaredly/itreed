@@ -23,7 +23,9 @@ var NewFile = React.createClass({
   _setRepl: function (key) {
     this.setState({repl: key})
   },
-  _onSubmit: function () {
+  _onSubmit: function (e) {
+    e.preventDefault()
+    e.stopPropagation()
     this.props.onSubmit(this.state.title, repls[this.state.repl])
   },
 
@@ -42,7 +44,7 @@ var NewFile = React.createClass({
   },
 
   render: function () {
-    return <form className="NewFile">
+    return <form className="NewFile" onSubmit={this._onSubmit}>
       <input type="text" value={this.state.title}
         onChange={this._onChange} />
       Repl

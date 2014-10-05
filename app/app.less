@@ -13,19 +13,35 @@
   src: local('Monda Bold'), local('Monda-Bold'), url(vendor/Monda-Bold.ttf);
 }
 
-.app-dual {
-  display: flex;
+.App {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  display: flex;
   flex-direction: column;
 }
 
-.app_dual {
+.App_panes {
   flex: 1;
   display: flex;
+  padding: 0 40px;
+
+  > .list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 50px;
+
+    &:first-child {
+      padding-left: 10px;
+    }
+
+    &:last-child {
+      padding-right: 10px;
+    }
+  }
 }
 
 .app_left,
