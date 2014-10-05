@@ -1,6 +1,10 @@
 
 ARGS=-t [ reactify --es6 --everything --visitors jstransform/visitors/es6-destructuring-visitors ]
 
+MODS=' treed/node_modules/react treed/node_modules/react/addons codemirror katex majax marked moment async ansi-to-html eventemitter3 highlight.js'
+
+TREEDS=' treed/rx treed/rx/views/tree treed/rx/pl/ixdb treed/rx/pl/queuedb'
+
 all: js css
 
 pages:
@@ -8,11 +12,20 @@ pages:
 	lessc -x run.less pages/demo/build.css
 	browserify ${ARGS} run.js | uglifyjs --screw-ie8 > pages/demo/build.js
 
+vendor:
+	browserify `echo ${MODS} | sed -e 's/ / -r /g'` -o www/vendor.js
+
+treed:
+	browserify -d `echo ${TREEDS} | sed -e 's/ / -r /g'` -o www/treed.js
+
 js:
+	browserify `echo ${MODS}${TREEDS} | sed -e 's/ / -x /g'` ${ARGS} -d run.js -o www/build.js
+
+slow:
 	browserify ${ARGS} -d run.js -o www/build.js
 
 watch:
-	watchify -v ${ARGS} -d run.js -o www/build.js
+	watchify -x treed/rx `echo ${MODS} | sed -e 's/ / -x /g'` -v ${ARGS} -d run.js -o www/build.js
 
 css:
 	lessc run.less www/build.css

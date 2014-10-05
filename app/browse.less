@@ -1,0 +1,84 @@
+
+.Browse {
+  max-width: 500px;
+  margin: 100px auto;
+  box-shadow: 0 0 5px #888;
+  padding: 30px;
+  width: 400px;
+  font-family: sans-serif;
+}
+
+.Browse_head {
+  text-align: center;
+  margin-top: 0;
+}
+
+.Browse_files {
+  padding: 0;
+  margin: 20px 0;
+  list-style: none;
+}
+
+.Browse_files > li {
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #eee;
+  }
+}
+
+.Browse_repl {
+  float: right;
+
+  &-null {
+    display: none;
+  }
+
+  &-ipython {
+    &:before {
+      content: 'ipython';
+    }
+  }
+
+  &-gorilla {
+    &:before {
+      content: 'gorilla';
+    }
+  }
+
+}
+
+.NewFile_repls {
+  padding: 0;
+  margin: 10px 0;
+  list-style: none;
+}
+
+.NewFile_repl {
+  padding: 5px 10px;
+  border: 1px solid transparent;
+
+  &-selected {
+    border-color: #aaa;
+  }
+
+  &:hover {
+    background-color: #eee;
+  }
+}
+
+.NewFile_title {
+  font-size: 16px;
+  padding: 5px 10px;
+  margin: 10px 0px;
+  border: 1px solid #ccc;
+}
+
+.NewFile_submit {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+}
+

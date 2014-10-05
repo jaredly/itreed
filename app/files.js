@@ -28,6 +28,9 @@ module.exports = {
   //  "repl": null | 'ipython' | 'gorilla' | ?? }
   list: listFiles,
 
+  // update a file
+  update: updateFile,
+
   // create a new file, returns a loaded PL
   create: newFile,
 
@@ -60,6 +63,21 @@ function load(id, done) {
 }
 */
 
+function updateFile(id, data, done) {
+  listFiles(files => {
+    var f
+    saveFiles(
+      files.map(file => {
+        if (file.id !== id) return file
+        f = file
+        for (var name in data) {
+          file[name] = data[name]
+        }
+        return file
+      }), () => done(f))
+  })
+}
+
 function init(file, pl, done) {
   var config = kernelConfig[file.repl]
   var plugins = [
@@ -80,12 +98,15 @@ function init(file, pl, done) {
     pl: pl,
   }
 
-  treed.initStore(plugins, storeOptions, (store) => {
+  treed.initStore(plugins, storeOptions, (err, store) => {
+    if (err) {
+      return done(err)
+    }
 //        var config = treed.viewConfig(store, plugins, null)
 //        window.store = store
 //        window.actions = config.view.actions
 
-    done(store, plugins)
+    done(null, store, plugins)
   })
 }
 
@@ -105,7 +126,7 @@ function listFiles(done) {
 
 function saveFiles(files, done) {
   localStorage['nm:files:list'] = JSON.stringify(files)
-  done()
+  done && done()
 }
 
 function getFile(id, isNew, done) {

@@ -15,7 +15,22 @@ var Browse = React.createClass({
   getInitialState: function () {
     return {
       loading: true,
+      error: null,
       files: null,
+    }
+  },
+
+  componentDidUpdate: function (prevProps) {
+    if (!prevProps.loadId && this.props.loadId) {
+      this.state.files.some(file => {
+        if (file.id !== this.props.loadId) return false
+        this.setState({
+          error: null,
+          loading: true
+        })
+        this.loadFile(file, true)
+        return true
+      })
     }
   },
 
@@ -27,6 +42,7 @@ var Browse = React.createClass({
         var found = files.some(file => {
           if (file.id !== this.props.loadId) return false
           this.setState({
+            error: null,
             files: files,
             loading: true
           })
@@ -45,20 +61,30 @@ var Browse = React.createClass({
     if (!autoload) {
       history.set(file.id)
     }
-    this.setState({loading: true})
+    this.setState({error: null, loading: true})
 
     this.props.files.get(file.id, pl =>
-      this.props.files.init(file, pl, (store, plugins) =>
+      this.props.files.init(file, pl, (err, store, plugins) => {
+        if (err) {
+          return this._onError(err)
+        }
         this.props.onLoad(file, store, plugins)
-      )
+      })
     )
   },
 
+  _onError: function (err) {
+    this.setState({loading: false, error: err})
+  },
+
   _onNewFile: function (title, repl) {
-    this.setState({loading: true})
+    this.setState({error: null, loading: true})
 
     this.props.files.create(title, repl, (file, pl) =>
-      this.props.files.init(file, pl, (store, plugins) => {
+      this.props.files.init(file, pl, (err, store, plugins) => {
+        if (err) {
+          return this._onError(err)
+        }
         this.props.onLoad(file, store, plugins)
       })
     )
@@ -71,6 +97,8 @@ var Browse = React.createClass({
       </div>
     }
     return <div className='Browse'>
+      <h3 className='Browse_head'>Open a Document</h3>
+      {this.state.error && 'Error loading file!'}
       <ul className='Browse_files'>
         {this.state.files.map(file =>
           <li key={file.id} onClick={this.loadFile.bind(null, file, false)}>

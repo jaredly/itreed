@@ -3,7 +3,7 @@ var React = require('treed/node_modules/react/addons')
   , cx = React.addons.classSet
 
 var repls = {
-  'None': null,
+  'No repl': null,
   'Python': 'ipython',
   'Clojure': 'gorilla',
   'Julia': 'ijulia',
@@ -14,7 +14,7 @@ var NewFile = React.createClass({
   getInitialState: function () {
     return {
       title: 'Untitled',
-      repl: null,
+      repl: 'No repl',
     }
   },
   _onChange: function (e) {
@@ -45,11 +45,10 @@ var NewFile = React.createClass({
 
   render: function () {
     return <form className="NewFile" onSubmit={this._onSubmit}>
-      <input type="text" value={this.state.title}
+      <input className='NewFile_title' type="text" value={this.state.title}
         onChange={this._onChange} />
-      Repl
       {this.repls()}
-      <button onClick={this._onSubmit}>Submit</button>
+      <button className='NewFile_submit' onClick={this._onSubmit}>Create Document</button>
     </form>
   },
 })

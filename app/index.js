@@ -57,6 +57,7 @@ var App = React.createClass({
   },
 
   _onLoad: function (file, store, plugins) {
+    window.store = store
     history.set(file.id)
     this.setState({
       loadId: null,
@@ -67,12 +68,17 @@ var App = React.createClass({
   },
 
   _onClose: function () {
+    history.set('')
     this.setState({
       loadId: null,
       file: null,
       store: null,
       plugins: null
     })
+  },
+
+  _changeTitle: function (title) {
+    localFiles.update(this.state.file.id, {title: title}, file => this.setState({file: file}))
   },
 
   render: function () {
@@ -84,6 +90,7 @@ var App = React.createClass({
     return <div className='App'>
       <Header
         setPanes={this._setPanes}
+        changeTitle={this._changeTitle}
         onClose={this._onClose}
         file={this.state.file}
         store={this.state.store}

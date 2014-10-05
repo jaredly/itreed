@@ -9,6 +9,7 @@ var files = require('./app/files')
 
 var App = require('./app')
 
+window.run_require = require
 window.React = React
 
 window.onload = function () {

@@ -9,6 +9,7 @@ function getLocationId() {
 }
 
 function setLocationId(id) {
+  if (getLocationId() === id) return
   window.history.pushState(null, null, '?' + id)
 }
 
