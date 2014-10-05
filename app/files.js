@@ -82,6 +82,7 @@ function init(file, pl, done) {
   var config = kernelConfig[file.repl]
   var plugins = [
     require('treed/rx/plugins/undo'),
+    require('treed/rx/plugins/todo'),
     require('treed/rx/plugins/collapse'),
     require('treed/rx/plugins/clipboard'),
     require('treed/rx/plugins/types'),
