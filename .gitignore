@@ -10,3 +10,4 @@
 *.pyc
 /www/treed.js
 /www/vendor.js
+*.swo
