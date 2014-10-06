@@ -25,7 +25,7 @@ slow:
 	browserify ${ARGS} -d run.js -o www/build.js
 
 watch:
-	watchify -x treed/rx `echo ${MODS} | sed -e 's/ / -x /g'` -v ${ARGS} -d run.js -o www/build.js
+	watchify `echo ${MODS} | sed -e 's/ / -x /g'` -v ${ARGS} -d run.js -o www/build.js
 
 css:
 	lessc run.less www/build.css

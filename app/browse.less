@@ -8,6 +8,7 @@
   font-family: sans-serif;
 }
 
+.NewFile_head,
 .Browse_head {
   text-align: center;
   margin-top: 0;
@@ -19,7 +20,7 @@
   list-style: none;
 }
 
-.Browse_files > li {
+.Browse_file {
   padding: 5px 10px;
   cursor: pointer;
   font-size: 16px;
@@ -27,6 +28,13 @@
   &:hover {
     background-color: #eee;
   }
+}
+
+.Browse_nofiles {
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #999;
 }
 
 .Browse_repl {
@@ -50,6 +58,10 @@
 
 }
 
+.NewFile_head {
+  margin: 0;
+}
+
 .NewFile_repls {
   padding: 0;
   margin: 10px 0;
@@ -59,6 +71,8 @@
 .NewFile_repl {
   padding: 5px 10px;
   border: 1px solid transparent;
+  display: inline-block;
+  cursor: pointer;
 
   &-selected {
     border-color: #aaa;
@@ -72,7 +86,7 @@
 .NewFile_title {
   font-size: 16px;
   padding: 5px 10px;
-  margin: 10px 0px;
+  margin: 10px 0 0;
   border: 1px solid #ccc;
 }
 
@@ -80,5 +94,8 @@
   background-color: white;
   border: 1px solid #ccc;
   padding: 5px 10px;
+  font-size: 16px;
+  margin-left: 5px;
+  cursor: pointer;
 }
 

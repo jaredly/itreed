@@ -101,10 +101,16 @@ var Browse = React.createClass({
       {this.state.error && 'Error loading file!'}
       <ul className='Browse_files'>
         {this.state.files.map(file =>
-          <li key={file.id} onClick={this.loadFile.bind(null, file, false)}>
+          <li className='Browse_file'
+              key={file.id}
+              onClick={this.loadFile.bind(null, file, false)}>
             <span className='Browse_title'>{file.title}</span>
             <span className={'Browse_repl Browse_repl-' + file.repl}/>
           </li>)}
+        {!this.state.files.length &&
+          <li key="empty" className='Browse_nofiles'>
+            No documents saved in this browser.
+          </li>}
       </ul>
       <NewFile onSubmit={this._onNewFile} />
     </div>

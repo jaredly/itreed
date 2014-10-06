@@ -45,10 +45,11 @@ var NewFile = React.createClass({
 
   render: function () {
     return <form className="NewFile" onSubmit={this._onSubmit}>
+      <h3 className="NewFile_head">New Document</h3>
       <input className='NewFile_title' type="text" value={this.state.title}
         onChange={this._onChange} />
-      {this.repls()}
       <button className='NewFile_submit' onClick={this._onSubmit}>Create Document</button>
+      {this.repls()}
     </form>
   },
 })
