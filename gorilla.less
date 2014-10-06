@@ -70,14 +70,20 @@
   background-color: #ddd;
 
   &:after {
-    content: '';
+    content: " ";
+    width: 5px;
+    height: 100%;
+    background-color: white;
+    position: absolute;
+    left: 100%;
+    top: 0px;
   }
 
   height: auto;
   width: 10px;
   margin-right: 5px;
 
-  .list_item-parent > .list_item_head:hover & {
+  .list_item-parent:not(.list_item-root) > .list_item_head:hover & {
     opacity: 1;
   }
 
