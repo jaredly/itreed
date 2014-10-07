@@ -55,13 +55,17 @@
 }
 
 .list_item_head {
-  margin-bottom: 5px;
+  padding-bottom: 5px;
   position: relative;
   cursor: pointer;
 
-  &:hover {
+  &:hover > .list_item_body {
     background-color: #eee;
   }
+}
+
+.m_Collapser {
+  bottom: 5px;
 }
 
 .list_item_body {
@@ -247,7 +251,7 @@
 .m_Collapser {
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: 5px;
   left: -15px;
 }
 
