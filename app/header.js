@@ -47,7 +47,12 @@ var Header = React.createClass({
 
   render: function () {
     return <div className='Header'>
-      <span className='Header_name'>Notablemind</span>
+      <span className='Header_name'>
+        <a href="http://notablemind.github.io">Notablemind</a>
+        <a href="http://github.com/notablemind/notablemind">
+          GH
+        </a>
+      </span>
       <button className='Header_home' onClick={this.props.onClose}>
         Home
       </button>

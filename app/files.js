@@ -44,25 +44,6 @@ module.exports = {
   // load: load,
 }
 
-/*
-function load(id, done) {
-  list(files => {
-    var found = files.some(file => {
-      if (file.id !== id) return false
-      getFile(file, pl => {
-        init(file, pl, (store, plugins) => {
-          done(null, file, store, plugins)
-        })
-      })
-      return true
-    })
-    if (!found) {
-      return done(true)
-    }
-  })
-}
-*/
-
 function updateFile(id, data, done) {
   listFiles(files => {
     var f
