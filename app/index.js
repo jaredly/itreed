@@ -7,13 +7,19 @@ var localFiles = require('./files')
   , Header = require('./header')
   , Browse = require('./browse')
   , history = require('./history')
-
-var ViewTypes = {
-  tree: require('treed/rx/views/tree'),
-  paper: require('treed/rx/views/paper'),
-}
+  , TypeSwitcher = require('./type-switcher')
 
 var App = React.createClass({
+
+  getDefaultProps: function () {
+    return {
+      defaultType: 'tree',
+      types: {
+        tree: require('treed/rx/views/tree'),
+        paper: require('treed/rx/views/paper'),
+      }
+    }
+  },
 
   getInitialState: function () {
     return {
@@ -30,7 +36,7 @@ var App = React.createClass({
     var configs = prev.slice()
     for (var i=prev.length; i<num; i++) {
       configs.push({
-        type: 'tree',
+        type: this.props.defaultType,
         config: treed.viewConfig(store, plugins, null)
       })
     }
@@ -57,9 +63,22 @@ var App = React.createClass({
     })
   },
 
+  _changePaneType: function (i, type) {
+    var panes = this.state.panes.slice()
+    panes[i].type = type
+    this.setState({panes: panes})
+  },
+
   makePanes: function () {
-    var panes = this.state.panes.map(pane =>
-      ViewTypes[pane.type](pane.config.props))
+    var panes = this.state.panes.map((pane, i) =>
+      <div className='App_pane'>
+        {/* todo add filename here once we go multi-file */}
+        <TypeSwitcher
+          types={this.props.types}
+          type={pane.type}
+          onChange={this._changePaneType.bind(null, i)}/>
+        {this.props.types[pane.type](pane.config.props)}
+      </div>)
     var ids = []
     // TODO: this.state.store.setViewPositions(ids or something)
     return <div className='App_panes'>
