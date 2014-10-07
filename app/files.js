@@ -86,6 +86,7 @@ function init(file, pl, done) {
     require('treed/rx/plugins/collapse'),
     require('treed/rx/plugins/clipboard'),
     require('treed/rx/plugins/types'),
+    require('treed/rx/plugins/headers'),
 
     require('treed/rx/plugins/rebase'),
   ]
