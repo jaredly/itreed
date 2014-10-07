@@ -1,6 +1,5 @@
 
 var React = require('treed/node_modules/react')
-  , View = require('treed/rx/views/tree')
   , treed = require('treed/rx')
 
 // just uses localStorage to index files, and indexeddb to store them
@@ -8,6 +7,11 @@ var localFiles = require('./files')
   , Header = require('./header')
   , Browse = require('./browse')
   , history = require('./history')
+
+var ViewTypes = {
+  tree: require('treed/rx/views/tree'),
+  paper: require('treed/rx/views/paper'),
+}
 
 var App = React.createClass({
 
@@ -17,8 +21,20 @@ var App = React.createClass({
       file: null,
       store: null,
       plugins: null,
-      panes: 1,
+      panes: [],
     }
+  },
+
+  makePaneConfig: function (store, plugins, num, prev) {
+    if (prev.length > num) return prev.slice(0, num)
+    var configs = prev.slice()
+    for (var i=prev.length; i<num; i++) {
+      configs.push({
+        type: 'tree',
+        config: treed.viewConfig(store, plugins, null)
+      })
+    }
+    return configs
   },
 
   componentDidMount: function () {
@@ -42,15 +58,9 @@ var App = React.createClass({
   },
 
   makePanes: function () {
-    var panes = []
-      , ids = []
-      , config
-    this.state.store.clearViews()
-    for (var i=0; i<this.state.panes; i++) {
-      config = treed.viewConfig(this.state.store, this.state.plugins, null)
-      ids.push(config.view.id)
-      panes.push(View(config.props))
-    }
+    var panes = this.state.panes.map(pane =>
+      ViewTypes[pane.type](pane.config.props))
+    var ids = []
     // TODO: this.state.store.setViewPositions(ids or something)
     return <div className='App_panes'>
       {panes}
@@ -58,17 +68,19 @@ var App = React.createClass({
   },
 
   _setPanes: function (num) {
-    this.setState({panes: num})
+    this.setState({panes: this.makePaneConfig(this.state.store, this.state.plugins, num, this.state.panes)})
   },
 
   _onLoad: function (file, store, plugins) {
     window.store = store
     history.set(file.id)
+    store.clearViews()
     this.setState({
       loadId: null,
       file,
       store,
-      plugins
+      plugins,
+      panes: this.makePaneConfig(store, plugins, 1, []),
     })
   },
 
