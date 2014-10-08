@@ -70,15 +70,26 @@ var App = React.createClass({
   },
 
   makePanes: function () {
-    var panes = this.state.panes.map((pane, i) =>
-      <div className='App_pane'>
+    var plugins = []
+    var panes = this.state.panes.map((pane, i) => {
+      var statusbar = []
+      pane.config.props.plugins.map(plugin => {
+        if (!plugin.statusbar) return
+        statusbar.push(plugin.statusbar(pane.config.props.store))
+      })
+      return <div className='App_pane'>
         {/* todo add filename here once we go multi-file */}
-        <TypeSwitcher
-          types={this.props.types}
-          type={pane.type}
-          onChange={this._changePaneType.bind(null, i)}/>
-        {this.props.types[pane.type](pane.config.props)}
-      </div>)
+        <div className='App_pane_top'>
+          {statusbar}
+          <TypeSwitcher
+            types={this.props.types}
+            type={pane.type}
+            onChange={this._changePaneType.bind(null, i)}/>
+        </div>
+        <div className='App_pane_scroll'>
+          {this.props.types[pane.type](pane.config.props)}
+        </div>
+      </div>})
     var ids = []
     // TODO: this.state.store.setViewPositions(ids or something)
     return <div className='App_panes'>

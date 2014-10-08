@@ -33,24 +33,39 @@
   justify-content: center;
 }
 
-.App_pane {
+.App_pane_top {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: rgb(240, 240, 255);
+  padding: 0 15px;
+}
+
+.App_pane_scroll {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0 50px;
+  padding: 0 50px 150px;
+}
+
+.App_pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   max-width: 1000px;
 
-  &:first-child {
+  &:first-child .App_pane_scroll {
     padding-left: 50px;
   }
 
-  &:last-child {
+  &:last-child .App_pane_scroll {
     padding-right: 50px;
   }
 }
 
 @import "./dupload.less";
 @import "./header.less";
+@import "./type-switcher.less";
 
 .treed_body_rendered {
   font-family: 'Monda';

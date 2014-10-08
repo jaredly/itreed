@@ -29,8 +29,10 @@ var TypeSwitcher = React.createClass({
       </div>
       {this.state.open &&
         <ul className='TypeSwitcher_dropdown'>
-          {keys.map(key =>
-            key !== current && <li key={key} onClick={this._onSelect.bind(null, key)}>
+          {keys.map(key => key !== current &&
+            <li className={'TypeSwitcher_item TypeSwitcher_item-' + key}
+                onClick={this._onSelect.bind(null, key)}
+                key={key}>
               {key}
             </li>)}
         </ul>}
