@@ -48,8 +48,8 @@ var Header = React.createClass({
   render: function () {
     return <div className='Header'>
       <span className='Header_name'>
-        <a href="http://notablemind.github.io">Notablemind</a>
-        <a href="http://github.com/notablemind/notablemind">
+        <a target="_blank" href="http://notablemind.github.io">Notablemind</a>
+        <a target="_blank" href="http://github.com/notablemind/notablemind">
           GH
         </a>
       </span>
