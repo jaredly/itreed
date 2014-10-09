@@ -12,7 +12,7 @@ pages:
 	lessc -x run.less pages/demo/build.css
 	browserify ${ARGS} run.js | uglifyjs --screw-ie8 > pages/demo/build.js
 
-vendor:
+vendorlib:
 	browserify `echo ${MODS} | sed -e 's/ / -r /g'` -o www/vendor.js
 
 treed:
@@ -47,5 +47,5 @@ www/vendor/d3.js:
 www/vendor/vega.js:
 	wget http://trifacta.github.io/vega/vega.js -O www/vendor/vega.js
 
-.PHONY: css watch js all start-ipython pages vendor
+.PHONY: css watch js all start-ipython pages vendor vendorlib
 
