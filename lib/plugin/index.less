@@ -52,8 +52,8 @@
   }
 
   &-disconnected {
-    color: #555;
-    background-color: #eee;
+    color: orange;
+    // background-color: #eee;
     border-color: rgb(131, 131, 131);
   }
 
@@ -84,6 +84,10 @@
       font-weight: bold;
       margin-left: 10px;
 
+      &:after {
+        content: '⬤';
+      }
+
       &-error {
         color: red;
       }
@@ -97,7 +101,7 @@
   }
 
   &_changer {
-    padding: 5px;
+    padding: 0 5px;
 
     input {
       padding: 5px;
@@ -169,6 +173,42 @@
     &:hover {
       opacity: .2;
     }
+  }
+}
+
+.KernelPicker {
+  position: relative;
+}
+
+.KernelPicker_label {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.KernelPicker_close {
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 5px;
+}
+
+.KernelPicker_list {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  z-index: 100;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-shadow: 0px 1px 3px #aaa;
+}
+
+.KernelPicker_item {
+  padding: 8px 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
   }
 }
 
