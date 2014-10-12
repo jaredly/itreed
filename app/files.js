@@ -67,13 +67,14 @@ function init(file, pl, done) {
     require('treed/rx/plugins/collapse'),
     require('treed/rx/plugins/clipboard'),
     require('treed/rx/plugins/types'),
-    require('treed/rx/plugins/headers'),
 
     require('treed/rx/plugins/rebase'),
   ]
   if (config) {
     // repl
     plugins.unshift(require('../lib/plugin')(config.type, config.language))
+  } else {
+    plugins.unshift(require('treed/rx/plugins/ijs'))
   }
 
   var storeOptions = {
