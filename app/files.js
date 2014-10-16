@@ -2,24 +2,9 @@
 var IxPL = require('treed/rx/pl/ixdb')
   , QueuePL = require('treed/rx/pl/queuedb')
   , treed = require('treed/rx')
+  , kernelConfig = require('./kernels')
 
 var uuid = require('../lib/uuid')
-
-var kernelConfig = {
-  null: null,
-  'ipython': {
-    type: 'ipython',
-    language: 'python'
-  },
-  'gorilla': {
-    type: 'gorilla',
-    language: 'clojure'
-  },
-  'ijulia': {
-    type: 'ipython',
-    language: 'julia'
-  }
-}
 
 module.exports = {
   // returns a listing of files, looks like
@@ -72,9 +57,7 @@ function init(file, pl, done) {
   ]
   if (config) {
     // repl
-    plugins.unshift(require('../lib/plugin')(config.type, config.language))
-  } else {
-    plugins.unshift(require('treed/rx/plugins/ijs'))
+    plugins.unshift(require('../lib/plugin')(config))
   }
 
   var storeOptions = {
@@ -86,9 +69,9 @@ function init(file, pl, done) {
     if (err) {
       return done(err)
     }
-//        var config = treed.viewConfig(store, plugins, null)
-//        window.store = store
-//        window.actions = config.view.actions
+//  var config = treed.viewConfig(store, plugins, null)
+//  window.store = store
+//  window.actions = config.view.actions
 
     done(null, store, plugins)
   })

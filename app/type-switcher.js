@@ -3,6 +3,10 @@ var React = require('treed/node_modules/react')
   , treed = require('treed/rx')
 
 var TypeSwitcher = React.createClass({
+  propTypes: {
+    types: React.PropTypes.array,
+  },
+
   getInitialState: function () {
     return {
       open: false,

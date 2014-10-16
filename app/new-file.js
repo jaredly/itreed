@@ -1,14 +1,17 @@
 
 var React = require('treed/node_modules/react/addons')
   , cx = React.addons.classSet
+  , kernels = require('./kernels')
 
+/*
 var repls = {
   'No repl': null,
   'Python': 'ipython',
   'Clojure': 'gorilla',
   'Julia': 'ijulia',
-  'Javascript': 'javascript',
+  'Javascript': 'ijs',
 }
+*/
 
 var NewFile = React.createClass({
   getInitialState: function () {
@@ -26,19 +29,19 @@ var NewFile = React.createClass({
   _onSubmit: function (e) {
     e.preventDefault()
     e.stopPropagation()
-    this.props.onSubmit(this.state.title, repls[this.state.repl])
+    this.props.onSubmit(this.state.title, this.state.repl)
   },
 
   repls: function () {
     return <ul className='NewFile_repls'>
-      {Object.keys(repls).map(key =>
+      {Object.keys(kernels).map(key =>
         <li
             onClick={this._setRepl.bind(null, key)}
             className={cx({
               'NewFile_repl': true,
               'NewFile_repl-selected': key === this.state.repl,
             })}>
-          {key}
+          {kernels[key].title}
         </li>)}
     </ul>
   },
