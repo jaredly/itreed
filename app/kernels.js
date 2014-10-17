@@ -1,7 +1,7 @@
 
 var Gorilla = require('../lib/Gorilla')
   , IPython = require('../lib/kernel')
-  , IJS = require('../lib/jskernel')
+  , IJS = require('../lib/kernels/js')
 
 module.exports = {
   null: {
