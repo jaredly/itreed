@@ -30,7 +30,9 @@
     "marked": "~0.3.2",
     "highlight.js": "~8.2.0",
     "katex": "git+https://github.com/jaredly/KateX.git",
-    "codemirror": "~4.5.0"
+    "codemirror": "~4.5.0",
+    "esprima": "~1.2.2",
+    "escodegen": "~1.4.1"
   },
   "devDependencies": {
     "jstransform": "~6.2.0",
