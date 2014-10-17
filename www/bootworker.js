@@ -27,7 +27,7 @@ var HANDLERS = {
   'go': function (payload) {
     var fn, err
     try {
-      global.eval('fn = ' + payload.what)
+      eval('fn = ' + payload.what)
     } catch (e) {
       console.log('er!', e)
       console.log(e)
