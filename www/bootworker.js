@@ -17,7 +17,7 @@ var HANDLERS = {
   'eval': function (payload) {
     var res, err
     try {
-      res = eval(payload.text)
+      res = global.eval(payload.text)
     } catch (e) {
       err = cloneE(e)
     }
@@ -27,7 +27,7 @@ var HANDLERS = {
   'go': function (payload) {
     var fn, err
     try {
-      eval('fn = ' + payload.what)
+      global.eval('fn = ' + payload.what)
     } catch (e) {
       console.log('er!', e)
       console.log(e)
