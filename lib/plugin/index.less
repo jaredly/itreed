@@ -9,6 +9,20 @@
 
 @import (reference) "../spinner.less";
 
+.m_IPython_js_frame {
+  visibility: hidden;
+  border: 1px solid #ccc;
+  width: 200px;
+  height: 100px;
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+
+  &.show {
+    vsilibility: visible;
+  }
+}
+
 .m_IPython {
   /*
   border: 1px solid rgb(219, 219, 219);

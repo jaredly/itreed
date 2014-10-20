@@ -16,6 +16,8 @@ module.exports = {
   // update a file
   update: updateFile,
 
+  remove: removeFile,
+
   // create a new file, returns a loaded PL
   create: newFile,
 
@@ -117,5 +119,9 @@ function newFile(title, repl, done) {
   listFiles(files =>
     saveFiles(files.concat([file]), () =>
       getFile(file.id, true, pl => done(file, pl))))
+}
+
+function removeFile(id, done) {
+  listFiles(files => saveFiles(files.filter(x => x.id !== id), done))
 }
 

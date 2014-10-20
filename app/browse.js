@@ -2,8 +2,10 @@
 var React = require('treed/node_modules/react')
   , NewFile = require('./new-file')
   , treed = require('treed/rx')
+  , cx = React.addons.classSet
   , PT = React.PropTypes
   , history = require('./history')
+  , kernels = require('./kernels')
 
 var Browse = React.createClass({
   propTypes: {
@@ -14,6 +16,7 @@ var Browse = React.createClass({
 
   getInitialState: function () {
     return {
+      configuring: false,
       loading: true,
       error: null,
       files: null,
@@ -34,8 +37,7 @@ var Browse = React.createClass({
     }
   },
 
-  componentDidMount: function () {
-    if (this.state.file) return
+  loadFiles: function () {
     this.props.files.list(files => {
       // var id = history.get()
       if (this.props.loadId) {
@@ -55,6 +57,11 @@ var Browse = React.createClass({
       }
       this.setState({files, loading: false})
     })
+  },
+
+  componentDidMount: function () {
+    if (this.state.file) return
+    this.loadFiles()
   },
 
   loadFile: function (file, autoload) {
@@ -90,6 +97,59 @@ var Browse = React.createClass({
     )
   },
 
+  _onEditFile: function (file, e) {
+    e.preventDefault()
+    this.setState({configuring: file.id})
+  },
+
+  fileItem: function (file) {
+    return <li className='Browse_file'
+        key={file.id}>
+      <div onContextMenu={this._onEditFile.bind(null, file)}
+          onClick={this.loadFile.bind(null, file, false)}
+          className='Browse_file_listing'>
+        <span className='Browse_title'>{file.title}</span>
+        <span className={'Browse_repl Browse_repl-' + file.repl}/>
+      </div>
+      {file.id === this.state.configuring &&
+        this.renderConfig(file)}
+    </li>
+  },
+
+  _setRepl: function (file, repl) {
+    this.props.files.update(file.id, {repl: repl === 'null' ? null: repl}, () => {
+      this.loadFiles()
+    })
+  },
+
+  _onRemoveFile: function (file) {
+    this.props.files.remove(file.id, this.loadFiles)
+  },
+
+  _onDoneConfig: function () {
+    this.setState({configuring: false})
+  },
+
+  // TODO: WORK HERE -- get this all awesome. Also remove file
+  renderConfig: function (file) {
+    // TODO: enable individual plugins. that would be cool.
+    return <div className='Browse_config'>
+      <ul className='Browse_config_repls'>
+        {Object.keys(kernels).map(key =>
+          <li
+              onClick={this._setRepl.bind(null, file, key)}
+              className={cx({
+                'Browse_config_repl': true,
+                'Browse_config_repl-selected': key === file.repl + '',
+              })}>
+            {kernels[key].title}
+          </li>)}
+      </ul>
+      <button className='Browse_config_remove' onClick={this._onRemoveFile.bind(null, file)}>Remove File</button>
+      <button className='Browse_config_done' onClick={this._onDoneConfig.bind(null, file)}>Done Config</button>
+    </div>;
+  },
+
   render: function () {
     if (this.state.loading) {
       return <div className='Browse Browse-loading'>
@@ -100,13 +160,7 @@ var Browse = React.createClass({
       <h3 className='Browse_head'>Open a Document</h3>
       {this.state.error && 'Error loading file!'}
       <ul className='Browse_files'>
-        {this.state.files.map(file =>
-          <li className='Browse_file'
-              key={file.id}
-              onClick={this.loadFile.bind(null, file, false)}>
-            <span className='Browse_title'>{file.title}</span>
-            <span className={'Browse_repl Browse_repl-' + file.repl}/>
-          </li>)}
+        {this.state.files.map(this.fileItem)}
         {!this.state.files.length &&
           <li key="empty" className='Browse_nofiles'>
             No documents saved in this browser.

@@ -3,16 +3,6 @@ var React = require('treed/node_modules/react/addons')
   , cx = React.addons.classSet
   , kernels = require('./kernels')
 
-/*
-var repls = {
-  'No repl': null,
-  'Python': 'ipython',
-  'Clojure': 'gorilla',
-  'Julia': 'ijulia',
-  'Javascript': 'ijs',
-}
-*/
-
 var NewFile = React.createClass({
   getInitialState: function () {
     return {
