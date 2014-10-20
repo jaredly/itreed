@@ -54,6 +54,9 @@ var App = React.createClass({
   },
 
   _popState: function () {
+    if (this.state.store) {
+      this.state.store.teardown()
+    }
     var id = history.get()
     this.setState({
       loadId: id,
@@ -116,6 +119,9 @@ var App = React.createClass({
 
   _onClose: function () {
     history.set('')
+    if (this.state.store) {
+      this.state.store.teardown()
+    }
     this.setState({
       loadId: null,
       file: null,
