@@ -26,6 +26,8 @@ var HANDLERS = {
 
   'go': function (payload) {
     var fn, err
+
+    // syntaxes
     try {
       eval('fn = ' + payload.what)
     } catch (e) {
@@ -34,13 +36,25 @@ var HANDLERS = {
       console.log(payload)
       return send('go', {id: payload.id, error: cloneE(e)})
     }
+
+    var args = payload.args
+    payload.fns.forEach(function (i) {
+      args[i] = function () {
+        try {
+          send('go', {
+            args: [].slice.call(arguments),
+            id: payload.id,
+            fn: i,
+          })
+        } catch (e) {
+          console.log('failed to send', e, [].slice.call(arguments))
+          send('go', {id: payload.id, error: cloneE(e)})
+        }
+      }
+    })
+
     try {
-      fn(function () {
-        send('go', {
-          id: payload.id,
-          args: [null].concat([].slice.call(arguments))
-        })
-      })
+      fn.apply(null, args)
     } catch (e) {
       console.log('er!', e)
       console.log(e)
