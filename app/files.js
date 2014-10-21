@@ -57,7 +57,7 @@ function init(file, pl, done) {
 
     require('treed/rx/plugins/rebase'),
   ]
-  if (config) {
+  if (config && config.kernel) {
     // repl
     plugins.unshift(require('../lib/plugin')(config))
   }
