@@ -8,6 +8,7 @@ var LiveWatcher = React.createClass({
     id: PT.string,
   },
 
+  /*
   componentDidMount: function () {
     var k = window.store._globals.kernel
     k.on(this.props.id + ':live_update', this.update)
@@ -21,6 +22,7 @@ var LiveWatcher = React.createClass({
     var k = window.store._globals.kernel
     k.off(this.props.id + ':live_update', this.update)
     k.on(nextProps.id + ':live_update', this.update)
+    this.setState({value: nextProps.value})
   },
 
   getInitialState: function () {
@@ -32,9 +34,12 @@ var LiveWatcher = React.createClass({
   update: function (message) {
     this.setState({value: message.content})
   },
+ */
+
   render: function () {
     return <div className='LiveWatcher'>
-      {format.display(this.state.value, {live_id: this.props.id})}
+      {format.display(this.props.value,
+                      {live_id: this.props.id})}
     </div>
   },
 })
