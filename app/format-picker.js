@@ -4,6 +4,7 @@ var React = require('treed/node_modules/react')
 
 var FormatPicker = React.createClass({
   propTypes: {
+    formats: PT.array.isRequired,
     format: PT.string.isRequired,
     onChange: PT.func.isRequired,
   },
