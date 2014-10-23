@@ -1,5 +1,6 @@
 
-var _cache = {}
+var React = require('treed/node_modules/react')
+  , _cache = {}
   , i = 2
 
 module.exports = {

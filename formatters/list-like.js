@@ -1,11 +1,11 @@
 
-var React = require('./treed/node_modules/react')
+var React = require('treed/node_modules/react')
 
 module.exports = {
   mime: 'json/list-like',
 
   display: function (value, meta) {
-    return ListLikeViewer({data: value}),
+    return ListLikeViewer({data: value})
   },
 }
 

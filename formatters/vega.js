@@ -1,14 +1,15 @@
 
-var React = require('./treed/node_modules/react')
+var React = require('treed/node_modules/react')
 
 module.exports = {
   mime: 'json/vega',
 
   display: function (value, meta) {
-    return <VegaViewer data={value}/>,
+    return <VegaViewer data={value}/>
   },
 
   format: function (value) {
+    // TODO something here?
   }
 }
 
