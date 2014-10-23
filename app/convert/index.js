@@ -1,6 +1,7 @@
 
-var parseGorilla = require('./parse-gorilla')
-var ipython = require('./parse-ipython')
+var parseGorilla = require('./gorilla')
+var ipython = require('./ipython')
+var python = require('./python')
 
 module.exports = {
   nm: {
@@ -27,6 +28,12 @@ module.exports = {
     strFromTrees: ipython.toStr,
     treeFromStr: ipython.fromStr,
   },
+  python: {
+    ext: 'py',
+    mime: 'text/python',
+    strFromTrees: python.toStr,
+    treeFromStr: python.fromStr,
+  },
   gorilla: {
     ext: 'clj',
     mime: 'text/clojure',
@@ -37,11 +44,13 @@ module.exports = {
     ['nm', 'Notablemind (.nm)'],
     ['ipython', 'IPython (.ipynb)'],
     ['gorilla', 'Gorilla (.clj)'],
+    ['python', 'Python (.py)'],
     // ['md', 'Markdown (.md)'],
     // latex: 'Latex (.tx)',
   ],
   exts: {
     'nm': 'nm',
+    'py': 'python',
     'ipynb': 'ipython',
     'clj': 'gorilla',
   },
