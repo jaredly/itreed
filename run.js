@@ -17,6 +17,7 @@ var format = require('./lib/plugin/format')
 
 var formatters = [
   require('./formatters/live'),
+  require('./formatters/live-button'),
   require('./formatters/react'),
   require('./formatters/vega'),
   // require('./formatters/image'),

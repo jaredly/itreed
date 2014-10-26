@@ -13,38 +13,44 @@ sock = ip.display_pub.pub_socket
 
 _live_cbs = {}
 
-def send_update(id, value):
-  formatted, _ = ip.display_formatter.format(value)
-  ip.kernel.session.send(sock, 'live_update', formatted, {'msg_id': id})
+def send_update(id, value, raw=False):
+  if not raw:
+    value, _ = ip.display_formatter.format(value)
+  ip.kernel.session.send(sock, 'live_update', value, {
+    'msg_id': id,
+    'unique': uuid.uuid4().hex,
+  })
 
 def onupdate(_a, _b, data):
   content = data['content']
-  id = content['id']
+  id = data['parent_header']['msg_id']
   args = content['args']
   if id in _live_cbs:
-    _live_cbs[id](args)
+    _live_cbs[id](*args)
   else:
     print 'FAILed to find an update listener'
 
 ip.kernel.shell_handlers['live_update'] = onupdate
 
-class Live:
+class Live(object):
 
-    def __init__(self, initial, onup=None):
+    def __init__(self, initial, onup=None, raw=False):
         self.id = uuid.uuid4().hex
 
         self.value = initial
+        self.raw = raw
 
         if onup:
-            _live_cbs[id] = partial(onup, self.update)
+            _live_cbs[self.id] = partial(onup, self.update)
 
-    def update(self, value):
+    def update(self, value, raw=False):
         self.value = value
-        send_update(self.id, value)
+        send_update(self.id, value, raw)
 
     def _repr_live_(self):
+        value = self.value if self.raw else ip.display_formatter.format(self.value)[0]
         return {'id': self.id,
-                'value': ip.display_formatter.format(self.value)[0]}
+                'value': value}
 
 
 

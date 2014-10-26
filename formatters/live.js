@@ -38,7 +38,7 @@ var LiveWatcher = React.createClass({
 
   render: function () {
     return <div className='LiveWatcher'>
-      {format.display(this.props.value,
+      {format.display(this.props.value, this.props.store,
                       {live_id: this.props.id})}
     </div>
   },
@@ -64,9 +64,9 @@ function live_up(id, value) {
 module.exports = {
   mime: 'json/live',
 
-  display: function (value) {
+  display: function (value, store) {
     var id = value.id
-    return LiveWatcher({id: value.id, value: value.value})
+    return LiveWatcher({id: value.id, store: store, value: value.value})
   },
 }
 
