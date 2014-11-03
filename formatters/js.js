@@ -1,24 +1,25 @@
 
-var uuid = require('../../uuid')
-  , React = require('treed/node_modules/react')
+var React = require('treed/node_modules/react')
   , isComplex = require('./is-complex')
   , getAllProperties = require('./get-all-properties')
 
 var _objs = {}
+  , i = 100
 
 module.exports = {
-  register: function (obj) {
-    var id = uuid()
-    _objs[id] = obj
-    return id
+  mime: 'js/obj',
+
+  format: function (obj) {
+    if (isComplex(value, [], window)) {
+      var id = i++;
+      _objs[id] = obj
+      return id
+    }
   },
-  render: function (id) {
+
+  display: function (id) {
     if (!_objs[id]) return false
     return <ObjViewer value={_objs[id]}/>
-  },
-  renderReact: function (id) {
-    if (!_objs[id]) return <em>Evaluate in the current kernel to view React element</em>
-    return _objs[id];
   },
 }
 
@@ -93,4 +94,5 @@ function small(val) {
   }
   return '...'
 }
+
 

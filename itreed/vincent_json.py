@@ -21,9 +21,10 @@ def display_grammar(grammar):
     except:
         print "Awe"
         traceback.print_stack()
-    '''
+        '''
     obj = grammer_json(grammar)
-    display({'json/vega': obj}, raw=True)
+    return obj
+    # display({'json/vega': obj}, raw=True)
 
 formatter.for_type(GrammarClass, display_grammar)
 

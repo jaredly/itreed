@@ -14,8 +14,9 @@ class VegaFormatter(BaseFormatter):
     The return value of this formatter should be valid Vega JSON.
     """
     format_type = Unicode('json/vega')
+    _return_type = (dict,)
 
-    print_method = ObjectName('_repr_vega_')
+    # print_method = ObjectName('_repr_vega_')
 
 FormatterABC.register(VegaFormatter)
 
