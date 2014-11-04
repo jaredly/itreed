@@ -32,13 +32,21 @@ var App = React.createClass({
   },
 
   makePaneConfig: function (store, plugins, num, prev) {
-    if (prev.length > num) return prev.slice(0, num)
+    if (prev.length >= num) return prev.slice(0, num)
     var configs = prev.slice()
     for (var i=prev.length; i<num; i++) {
       configs.push({
         type: this.props.defaultType,
         config: treed.viewConfig(store, plugins, null)
       })
+    }
+    for (var i=0; i<configs.length; i++) {
+      if (i > 0) {
+        configs[i - 1].config.view.view.windowRight = configs[i].config.view.id
+      }
+      if (i < configs.length - 1) {
+        configs[i + 1].config.view.view.windowLeft = configs[i].config.view.id
+      }
     }
     return configs
   },
