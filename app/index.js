@@ -142,6 +142,32 @@ var App = React.createClass({
     localFiles.update(this.state.file.id, {title: title}, file => this.setState({file: file}))
   },
 
+  _setSource: function (type, options, text) {
+    SOURCES[type].saveAs(text, options, (time) => {
+      localFiles.update(this.state.file.id, {
+        source: {
+          type: type,
+          options: options,
+          saved: time,
+        }
+      }, file => {
+        this.setState({file: file})
+      })
+    })
+  },
+
+  _onSave: function (text) {
+    var source = this.state.file.source
+    SOURCES[source.type].save(text, source.options, (time) => {
+      source.saved = time
+      localFiles.update(this.state.file.id, {
+        source: source
+      }, file => {
+        this.setState({file: file})
+      })
+    })
+  },
+
   render: function () {
     if (!this.state.store) {
       return <div className='App App-browse'>
@@ -152,6 +178,8 @@ var App = React.createClass({
       <Header
         setPanes={this._setPanes}
         changeTitle={this._changeTitle}
+        onSave={this._onSave}
+        setSource={this._setSource}
         onClose={this._onClose}
         file={this.state.file}
         store={this.state.store}

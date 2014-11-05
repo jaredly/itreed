@@ -72,9 +72,6 @@ function init(file, pl, done) {
     if (err) {
       return done(err)
     }
-//  var config = treed.viewConfig(store, plugins, null)
-//  window.store = store
-//  window.actions = config.view.actions
 
     done(null, store, plugins)
   })

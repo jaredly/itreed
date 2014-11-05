@@ -1,0 +1,36 @@
+{
+  "name": "Notablemind",
+  "description": "All your mind, all your notes",
+  "version": "0.5",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "permissions": [
+    "unlimitedStorage",
+    "audioCapture",
+    "clipboardRead",
+    "clipboardWrite",
+    "contextMenus",
+    "desktopCapture",
+    "fileSystem",
+    "nativeMessagin",
+    "notifications",
+    "videoCapture",
+    "webview"
+  ],
+  "sandbox": {
+    "pages": ["www/index.html"]
+  },
+  "webview": {
+    "partitions": [
+      {
+        "name": "mainframe",
+        "accessible_resources": ["www/*"]
+      }
+    ]
+  },
+  "icons": { }
+}
