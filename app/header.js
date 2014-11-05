@@ -83,6 +83,12 @@ var Header = React.createClass({
         onClick={this.props.setPanes.bind(null, 3)}>
         <span className='icon-3pane'/>
       </button>
+      {/*
+      <SourceSelector
+        file={this.props.file}
+        onSave={this.props.onSave}
+        setSource={this.props.setSource} />
+        */}
     </div>
   }
 })
