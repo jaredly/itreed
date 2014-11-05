@@ -10,7 +10,7 @@ module.exports = {
   mime: 'js/obj',
 
   format: function (obj) {
-    if (isComplex(value, [], window)) {
+    if (isComplex(obj, [], window)) {
       var id = i++;
       _objs[id] = obj
       return id

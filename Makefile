@@ -47,5 +47,8 @@ www/vendor/d3.js:
 www/vendor/vega.js:
 	wget http://trifacta.github.io/vega/vega.js -O www/vendor/vega.js
 
+launch-chrome:
+	google-chrome --load-and-launch-app=`pwd`/chromeapp
+
 .PHONY: css watch js all start-ipython pages vendor vendorlib
 
