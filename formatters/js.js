@@ -2,16 +2,16 @@
 var React = require('treed/node_modules/react')
   , isComplex = require('./is-complex')
   , getAllProperties = require('./get-all-properties')
+  , uuid = require('../lib/uuid')
 
 var _objs = {}
-  , i = 100
 
 module.exports = {
   mime: 'js/obj',
 
   format: function (obj) {
     if (isComplex(obj, [], window)) {
-      var id = i++;
+      var id = uuid()
       _objs[id] = obj
       return id
     }
@@ -89,10 +89,10 @@ function small(val) {
   if ('string' === typeof val) {
     return JSON.stringify(val.slice(0, 20) + (val.length > 20 ? '...' : ''))
   }
-  if ('object' === typeof val) {
+  if ('object' === typeof val && val.constructor) {
     return val.constructor.name
   }
-  return '...'
+  return 'unknown type'
 }
 
 

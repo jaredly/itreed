@@ -109,6 +109,7 @@ var Viewer = React.createClass({
       title: 'Loaded',
     }
     files.init(file, new MemPL(), data, (err, store, plugins) => {
+      window.store = store
       this.setState({
         preload: {
           file: file,

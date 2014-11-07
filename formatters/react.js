@@ -1,7 +1,7 @@
 
 var React = require('treed/node_modules/react')
+  , uuid = require('../lib/uuid')
   , _cache = {}
-  , i = 2
 
 module.exports = {
   mime: 'js/react',
@@ -15,7 +15,7 @@ module.exports = {
 
   format: function (value) {
     if (React.isValidComponent(value)) {
-      var id = i++;
+      var id = uuid()
       _cache[id] = value
       return id
     }
