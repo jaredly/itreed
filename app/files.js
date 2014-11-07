@@ -46,7 +46,11 @@ function updateFile(id, data, done) {
   })
 }
 
-function init(file, pl, done) {
+function init(file, pl, defaultData, done) {
+  if (arguments.length === 3) {
+    done = defaultData
+    defaultData = {content: file.title, children: [{content: 'Add a child'}]}
+  }
   var config = kernelConfig[file.repl]
   var plugins = [
     require('treed/rx/plugins/undo'),
@@ -64,7 +68,7 @@ function init(file, pl, done) {
   }
 
   var storeOptions = {
-    data: {content: file.title, children: [{content: 'Add a child'}]},
+    data: defaultData,
     pl: pl,
   }
 

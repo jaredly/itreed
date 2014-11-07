@@ -14,6 +14,8 @@ var App = React.createClass({
   getDefaultProps: function () {
     return {
       defaultType: 'tree',
+      noHome: false,
+      loaded: false,
       types: {
         tree: require('treed/rx/views/tree'),
         paper: require('treed/rx/views/paper'),
@@ -22,6 +24,14 @@ var App = React.createClass({
   },
 
   getInitialState: function () {
+    if (this.props.preload) {
+      return {
+        file: this.props.preload.file,
+        store: this.props.preload.store,
+        plugins: this.props.preload.plugins,
+        panes: this.makePaneConfig(this.props.preload.store, this.props.preload.plugins, 1, []),
+      }
+    }
     return {
       loadId: history.get(),
       file: null,
@@ -180,7 +190,7 @@ var App = React.createClass({
         changeTitle={this._changeTitle}
         onSave={this._onSave}
         setSource={this._setSource}
-        onClose={this._onClose}
+        onClose={!this.props.noHome && this._onClose}
         file={this.state.file}
         store={this.state.store}
       />

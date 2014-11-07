@@ -18,6 +18,12 @@ vendorlib:
 treed:
 	browserify -d `echo ${TREEDS} | sed -e 's/ / -r /g'` -o www/treed.js
 
+view-js:
+	browserify `echo ${MODS} | sed -e 's/ / -x /g'` ${ARGS} -d view.js -o www/viewer/build.js
+
+watch-view:
+	watchify `echo ${MODS} | sed -e 's/ / -x /g'` -v ${ARGS} -d view.js -o www/viewer/build.js
+
 js:
 	browserify `echo ${MODS} | sed -e 's/ / -x /g'` ${ARGS} -d run.js -o www/build.js
 
