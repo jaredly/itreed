@@ -13,7 +13,7 @@ module.exports = {
     return <em>Evaluate to see React Component</em>;
   },
 
-  check: function (value) {
+  format: function (value) {
     if (React.isValidComponent(value)) {
       var id = i++;
       _cache[id] = value
