@@ -20,6 +20,7 @@ var formatters = [
   require('./formatters/live-button'),
   require('./formatters/react'),
   require('./formatters/vega'),
+  require('./formatters/dom'),
   // require('./formatters/image'),
   require('./formatters/list-like'),
   require('./formatters/js'),
