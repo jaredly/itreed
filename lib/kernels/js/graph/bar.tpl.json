@@ -1,0 +1,139 @@
+{
+  "legends": [],
+  "scales": [
+    {
+      "range": "width",
+      "type": "ordinal",
+      "domain": {
+        "field": "data.idx",
+        "data": "table"
+      },
+      "zero": false,
+      "name": "x"
+    },
+    {
+      "range": "height",
+      "nice": true,
+      "domain": {
+        "field": "sum",
+        "data": "stats"
+      },
+      "name": "y"
+    },
+    {
+      "range": "category20",
+      "type": "ordinal",
+      "domain": {
+        "field": "data.col",
+        "data": "table"
+      },
+      "name": "color"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "type": "x",
+      "title": "Awex"
+    },
+    {
+      "scale": "y",
+      "type": "y",
+      "title": "Awey"
+    }
+  ],
+  "height": 200,
+  "padding": "auto",
+  "width": 300,
+  "marks": [
+    {
+      "from": {
+        "data": "table",
+        "transform": [
+          {
+            "keys": [
+              "data.col"
+            ],
+            "type": "facet"
+          },
+          {
+            "height": "data.val",
+            "type": "stack",
+            "point": "data.idx"
+          }
+        ]
+      },
+      "type": "group",
+      "marks": [
+        {
+          "type": "rect",
+          "properties": {
+            "enter": {
+              "y": {
+                "field": "y",
+                "scale": "y"
+              },
+              "width": {
+                "band": true,
+                "scale": "x",
+                "offset": -1
+              },
+              "y2": {
+                "field": "y2",
+                "scale": "y"
+              },
+              "fill": {
+                "field": "data.col",
+                "scale": "color"
+              },
+              "x": {
+                "field": "data.idx",
+                "scale": "x"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "values": [
+        {
+          "idx": 0,
+          "col": "data",
+          "val": 0
+        },
+        {
+          "idx": 1,
+          "col": "data",
+          "val": 1
+        },
+        {
+          "idx": 2,
+          "col": "data",
+          "val": 2
+        }
+      ],
+      "name": "table"
+    },
+    {
+      "source": "table",
+      "transform": [
+        {
+          "keys": [
+            "data.idx"
+          ],
+          "type": "facet"
+        },
+        {
+          "type": "stats",
+          "value": "data.val"
+        }
+      ],
+      "name": "stats"
+    }
+  ]
+}
+
+
