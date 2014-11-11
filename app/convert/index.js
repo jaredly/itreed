@@ -16,6 +16,9 @@ module.exports = {
       } catch (e) {
         return new Error("Unable to parse file. Are you sure it's the right format?")
       }
+      if (!Array.isArray(trees) && trees.content && trees.children) {
+        trees = [trees]
+      }
       if (!Array.isArray(trees) || !trees.length || !trees[0].content || !trees[0].children) {
         return new Error("This doesn't look like the right format.")
       }
