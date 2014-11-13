@@ -1,7 +1,7 @@
 
 ARGS=-t [ reactify --es6 --everything --visitors jstransform/visitors/es6-destructuring-visitors ]
 
-MODS=' codemirror majax marked moment async ansi-to-html eventemitter3 highlight.js codemirror/mode/javascript/javascript codemirror/mode/python/python codemirror/mode/clojure/clojure codemirror/mode/julia/julia codemirror/addon/edit/closebrackets codemirror/addon/edit/matchbrackets codemirror/addon/hint/show-hint'
+MODS=' codemirror majax marked moment async ansi-to-html eventemitter3 highlight.js codemirror/mode/javascript/javascript codemirror/mode/python/python codemirror/mode/clojure/clojure codemirror/mode/julia/julia codemirror/addon/edit/closebrackets codemirror/addon/edit/matchbrackets codemirror/addon/hint/javascript-hint codemirror/addon/hint/show-hint'
 
 TREEDS=' treed/rx treed/rx/views/tree treed/rx/pl/ixdb treed/rx/pl/queuedb'
 
