@@ -1,0 +1,28 @@
+[package]
+
+name = "nm-server"
+version = "0.0.1"
+authors = ["Jared Forsyth <jared@jaredforsyth.com>"]
+
+[[bin]]
+name = "server"
+
+[dependencies.iron]
+
+git = "https://github.com/iron/iron.git"
+
+[dependencies.router]
+
+git = "https://github.com/iron/router.git"
+
+[dependencies.static]
+
+git = "https://github.com/iron/static.git"
+
+[dependencies.bodyparser]
+
+git = "https://github.com/iron/body-parser.git"
+
+[dependencies.urlencoded]
+
+git = "https://github.com/iron/urlencoded.git"
