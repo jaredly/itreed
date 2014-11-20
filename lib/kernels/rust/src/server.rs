@@ -5,11 +5,14 @@ extern crate bodyparser;
 extern crate serialize;
 
 use std::rand;
+use std::io::fs;
 use std::io::net::ip::Ipv4Addr;
 use std::collections::HashMap;
 
 use iron::{status, Set, Iron, Request, Response, IronResult, Plugin};
-use iron::response::modifiers::{Body, Bodyable};
+use iron::response::modifiers::{Body, Bodyable, ContentType};
+use iron::modifier::Modifier;
+use iron::headers::content_type::MediaType;
 
 // middlewares
 use router::Router;
@@ -33,15 +36,25 @@ impl<T: Bodyable> JsonBody<T> for T {
 }
 
 fn show_json<'a, T: Encodable<Encoder<'a>, std::io::IoError>>(stat: status::Status, body: T) -> IronResult<Response>{
-    Ok(Response::new().set(Status(stat)).set(Body(json::encode(&body))))
+    Ok(Response::new()
+        .set(Status(stat))
+        .set(any_cors())
+        .set(Body(json::encode(&body)))
+        .set(ContentType(MediaType::new("text".to_string(), "json".to_string(), vec![]))))
 }
 
 fn res<T: Bodyable>(stat: status::Status, body: T) -> IronResult<Response> {
-    Ok(Response::new().set(Status(stat)).set(Body(body)))
+    Ok(Response::new()
+        .set(Status(stat))
+        .set(any_cors())
+        .set(Body(body)))
 }
 
 fn ok<T: Bodyable>(body: T) -> IronResult<Response> {
-    Ok(Response::new().set(Status(status::Ok)).set(Body(body)))
+    Ok(Response::new()
+        .set(Status(status::Ok))
+        .set(any_cors())
+        .set(Body(body)))
 }
 
 #[deriving(Clone)]
@@ -67,6 +80,19 @@ struct CompileFailed {
     error: String,
 }
 
+fn any_cors() -> Cors {
+    Cors("*".to_string())
+}
+
+struct Cors(pub String);
+
+impl Modifier<Response> for Cors {
+    fn modify(self, res: &mut Response) {
+        let Cors(origin) = self;
+        res.headers.access_control_allow_origin = Some(origin);
+    }
+}
+
 fn rand_name(length: uint) -> String {
     String::from_chars(range(0u, length).map(|_| rand::random::<char>()).collect::<Vec<_>>().as_slice())
 }
@@ -88,15 +114,25 @@ fn compileit(req: &mut Request) -> IronResult<Response> {
             error: err
         }),
     };
-    match run::run(&out, &body.env) {
+    let res = match run::run(&out, &body.env) {
         Ok(std) => show_json(status::Ok, std),
         Err(std) => show_json(status::ExpectationFailed, std),
-    }
+    };
+    fs::unlink(&out).unwrap();
+    res
+}
+
+fn corsme(req: &mut Request) -> IronResult<Response> {
+    Ok(Response::new()
+        .set(Status(status::Ok))
+        .set(any_cors())
+        .set(Body("Ok"))
 }
 
 fn setup_routes(router: &mut Router) {
     router.get("/", hello);
     router.post("/", compileit);
+    router.options("/", corsme);
 }
 
 fn main() {
