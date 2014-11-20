@@ -1,8 +1,7 @@
 
 use std::io::process::{Command, CreatePipe};
 
-fn run_subprocess(contents: &str, out: &Path) -> Result(str) {
-
+pub fn compile_subprocess(contents: String, out: &Path) -> Result<String, String> {
   // compile the file
   let mut p = Command::new("/usr/local/bin/rustc")
     .env("LD_LIBRARY_PATH", "/usr/local/lib")
@@ -20,6 +19,6 @@ fn run_subprocess(contents: &str, out: &Path) -> Result(str) {
   let err = (p.stderr.as_mut().unwrap() as &mut Reader).read_to_string().unwrap();
   match p.wait().unwrap().success() {
     true => Ok(out),
-    false => Error(err),
+    false => Err(err),
   }
 }
