@@ -2,6 +2,7 @@
 var Gorilla = require('../lib/kernels/gorilla')
   , IPython = require('../lib/kernels/ipython')
   , IJS = require('../lib/kernels/js')
+  , Rust = require('../lib/kernels/rust')
 
 module.exports = {
   null: {
@@ -35,5 +36,12 @@ module.exports = {
     title: 'Javascript',
     kernel: IJS,
   },
+  'rust-play': {
+    type: 'rust-play',
+    language: 'rust',
+    remote: true,
+    title: 'Rust (play)',
+    kernel: Rust,
+  }
 }
 

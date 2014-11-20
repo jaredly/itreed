@@ -188,7 +188,8 @@
   text-align: right;
   font-family: monospace;
   font-size: 12px;
-  opacity: .2;
+  opacity: 1;
+  transition: opacity .2s ease;
 
   background-color: rgba(181, 255, 181, 0.9);
   padding: 2px 5px;
@@ -198,14 +199,8 @@
     background-color: rgba(255, 150, 150, 0.9);
   }
 
-  .list_item-active > .list_item_head > .list_item_body > .m_IPython > &,
-  .m_IPython:hover > &,
-  .list_item_head:hover + .m_IPython > & {
-    opacity: 1;
-
-    &:hover {
-      opacity: .2;
-    }
+  .list_item-editing > .list_item_head > .list_item_body & {
+    opacity: 0;
   }
 
   &-loading {
