@@ -15,6 +15,8 @@ pub fn run(file: &Path, env: &Option<HashMap<String, String>>) -> Result<Std, St
   let filename = file.as_str().unwrap();
   let mut c = Command::new(filename);
   c.stdout(CreatePipe(false, true));
+
+  // env variables!
   match env {
     &Some(ref envmap) =>
       for (key, value) in envmap.iter() {
@@ -22,11 +24,8 @@ pub fn run(file: &Path, env: &Option<HashMap<String, String>>) -> Result<Std, St
       },
     &None => ()
   };
+
   let mut p = c.spawn().unwrap();
-
-  // p.stdin.as_mut().unwrap().write(contents.as_bytes()).unwrap();
-  // drop(p.stdin.take());
-
   let std = Std {
     out: (p.stdout.as_mut().unwrap() as &mut Reader).read_to_string().unwrap(),
     err: (p.stderr.as_mut().unwrap() as &mut Reader).read_to_string().unwrap(),

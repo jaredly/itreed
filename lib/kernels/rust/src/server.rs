@@ -4,6 +4,7 @@ extern crate router;
 extern crate bodyparser;
 extern crate serialize;
 
+use std::rand;
 use std::io::net::ip::Ipv4Addr;
 use std::collections::HashMap;
 
@@ -66,6 +67,10 @@ struct CompileFailed {
     error: String,
 }
 
+fn rand_name(length: uint) -> String {
+    String::from_chars(range(0u, length).map(|_| rand::random::<char>()).collect::<Vec<_>>().as_slice())
+}
+
 fn hello(_: &mut Request) -> IronResult<Response> {
     ok("Hello")
 }
@@ -75,7 +80,8 @@ fn compileit(req: &mut Request) -> IronResult<Response> {
         Some(body) => body,
         None => return res(status::BadRequest, "Invalid request format"),
     };
-    let out = Path::new("/tmp/semi");
+    let mut out = Path::new("/tmp/basic");
+    out.set_filename(rand_name(20));
     match compile::compile_subprocess(body.code, &out) {
         Ok(_) => (),
         Err(err) => return show_json(status::NotAcceptable, CompileFailed {
