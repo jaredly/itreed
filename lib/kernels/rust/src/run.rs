@@ -1,5 +1,6 @@
 
 use std::io::process::{Command, CreatePipe};
+use std::collections::HashMap;
 
 #[deriving(Clone)]
 #[deriving(Decodable, Encodable)]
@@ -9,12 +10,19 @@ struct Std {
     err: String,
 }
 
-pub fn run(file: &Path) -> Result<Std, Std> {
+pub fn run(file: &Path, env: &Option<HashMap<String, String>>) -> Result<Std, Std> {
   // compile the file
-  let mut p = Command::new(file.as_str().unwrap())
-    // .stdin(CreatePipe(true, false))
-    .stdout(CreatePipe(false, true))
-    .spawn().unwrap();
+  let filename = file.as_str().unwrap();
+  let mut c = Command::new(filename);
+  c.stdout(CreatePipe(false, true));
+  match env {
+    &Some(ref envmap) =>
+      for (key, value) in envmap.iter() {
+        c.env(key, value);
+      },
+    &None => ()
+  };
+  let mut p = c.spawn().unwrap();
 
   // p.stdin.as_mut().unwrap().write(contents.as_bytes()).unwrap();
   // drop(p.stdin.take());

@@ -5,6 +5,7 @@ extern crate bodyparser;
 extern crate serialize;
 
 use std::io::net::ip::Ipv4Addr;
+use std::collections::HashMap;
 
 use iron::{status, Set, Iron, Request, Response, IronResult, Plugin};
 use iron::response::modifiers::{Body, Bodyable};
@@ -47,6 +48,7 @@ fn ok<T: Bodyable>(body: T) -> IronResult<Response> {
 #[deriving(Show)]
 struct PleaseCompile {
     code: String,
+    env: Option<HashMap<String, String>>,
 }
 
 #[deriving(Clone)]
@@ -80,7 +82,7 @@ fn compileit(req: &mut Request) -> IronResult<Response> {
             error: err
         }),
     };
-    match run::run(&out) {
+    match run::run(&out, &body.env) {
         Ok(std) => show_json(status::Ok, std),
         Err(std) => show_json(status::ExpectationFailed, std),
     }
