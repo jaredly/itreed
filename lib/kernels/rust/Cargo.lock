@@ -1,6 +1,6 @@
 [root]
 name = "nm-server"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "bodyparser 0.1.0 (git+https://github.com/iron/body-parser.git)",
  "iron 0.0.1 (git+https://github.com/iron/iron.git)",
