@@ -3,6 +3,7 @@ var React = require('treed/node_modules/react')
   , PT = React.PropTypes
   , Downloader = require('./downloader')
   , Uploader = require('./uploader')
+  , Dropload = require('./dropload')
 
 var Dupload = React.createClass({
   propTypes: {
@@ -11,7 +12,6 @@ var Dupload = React.createClass({
 
   getInitialState: function () {
     return {
-      dropping: false,
       downloading: false,
       uploading: false,
       uploadFile: null,
@@ -46,51 +46,6 @@ var Dupload = React.createClass({
     this._onClose()
   },
 
-  // Draggage
-  componentDidMount: function () {
-    window.addEventListener('dragenter', this._onDragOver)
-    window.addEventListener('dragover', this._onDragOver)
-    window.addEventListener('dragleave', this._onDragEnd)
-    window.addEventListener('drop', this._onDrop)
-  },
-
-  componentWillUnmount: function () {
-    window.removeEventListener('dragenter', this._onDragOver)
-    window.removeEventListener('dragleave', this._onDragEnd)
-    window.removeEventListener('dragover', this._onDragOver)
-    window.removeEventListener('drop', this._onDrop)
-  },
-
-  _onDragOver: function (e) {
-    e.preventDefault()
-    this.setState({dropping: true})
-    return false
-  },
-
-  _onDragEnd: function (e) {
-    if (e.target.className.indexOf('Dupload_dropping') !== -1) {
-      this.setState({dropping: false})
-    }
-  },
-
-  _onDrop: function (e) {
-    e.preventDefault()
-    e.stopPropagation()
-    // TODO: tighten this up
-    var file = e.dataTransfer.files[0]
-    if (!file) {
-      file = e.dataTransfer.items[0]
-    }
-    this.setState({
-      uploadFile: file,
-      dropping: false,
-      uploading: true,
-      downloading: false,
-    })
-
-    return false
-  },
-
   render: function () {
     var modal = null
     if (this.state.downloading) {
@@ -109,11 +64,20 @@ var Dupload = React.createClass({
       })
     }
 
+    _onDrop: function (files) {
+      if (files.length) {
+        this.setState({
+          uploading: true,
+          uploadFile: files[0],
+        })
+      }
+    },
+
     return <div className='Dupload'>
       <span className='Dupload_download' onClick={this._onDownload}> <span/> </span>
       <span className='Dupload_upload' onClick={this._onUpload}> <span/> </span>
       {modal}
-      {this.state.dropping && <div className='Dupload_dropping'>Drop anywhere to import</div>}
+      <Dropload onDrop={this._onDrop} message="Drop anywhere to import"/>
     </div>
   },
 })

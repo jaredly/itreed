@@ -56,23 +56,14 @@ var Uploader = React.createClass({
   },
 
   _onSubmit: function () {
-    var reader = new FileReader()
+    var reader = readFile(this.state.file, (err, text) => {
+      if (err) {
+        return this.setState({
+          reader: null,
+          error: err.message,
+        })
+      }
 
-    reader.onerror = () => {
-      this.setState({
-        reader: null,
-        error: 'Failed to load file.'
-      })
-    }
-
-    reader.onabort = () => {
-      this.setState({
-        reader: null,
-        error: 'Upload cancelled'
-      })
-    }
-
-    reader.onload = (evt) => {
       var data = convert[this.state.format].treeFromStr(evt.target.result)
       if (data instanceof Error) {
         return this.setState({
@@ -87,9 +78,7 @@ var Uploader = React.createClass({
       })
 
       this.props.onUploaded(this.state.file.name, data)
-    }
-
-    reader.readAsText(this.state.file)
+    })
 
     this.setState({
       reader: reader,

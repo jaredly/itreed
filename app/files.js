@@ -46,6 +46,17 @@ function updateFile(id, data, done) {
   })
 }
 
+function populateFile(id, data, done) {
+  var pl = new QueuePL(new IxPL({prefix: 'nm:file:' + id}))
+  var db = new Db(pl, [])
+
+  db.init(data, function (err) {
+    if (err) return done(err)
+
+    done(null)
+  })
+}
+
 function init(file, pl, defaultData, done) {
   if (arguments.length === 3) {
     done = defaultData

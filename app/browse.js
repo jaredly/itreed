@@ -147,6 +147,7 @@ var Browse = React.createClass({
       </ul>
       <button className='Browse_config_remove' onClick={this._onRemoveFile.bind(null, file)}>Remove File</button>
       <button className='Browse_config_done' onClick={this._onDoneConfig.bind(null, file)}>Done Config</button>
+      {/* TODO: download button */}
     </div>;
   },
 
@@ -167,6 +168,7 @@ var Browse = React.createClass({
           </li>}
       </ul>
       <NewFile onSubmit={this._onNewFile} />
+      <Dropload onDrop={this._onImport} message="Drop anywhere to import"/>
     </div>
   }
 })
