@@ -46,6 +46,15 @@ var Dupload = React.createClass({
     this._onClose()
   },
 
+  _onDrop: function (files) {
+    if (files.length) {
+      this.setState({
+        uploading: true,
+        uploadFile: files[0],
+      })
+    }
+  },
+
   render: function () {
     var modal = null
     if (this.state.downloading) {
@@ -63,15 +72,6 @@ var Dupload = React.createClass({
         onClose: this._onClose,
       })
     }
-
-    _onDrop: function (files) {
-      if (files.length) {
-        this.setState({
-          uploading: true,
-          uploadFile: files[0],
-        })
-      }
-    },
 
     return <div className='Dupload'>
       <span className='Dupload_download' onClick={this._onDownload}> <span/> </span>

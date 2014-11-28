@@ -1,6 +1,8 @@
 
 var React = require('treed/node_modules/react')
   , NewFile = require('./new-file')
+  , Dropload = require('./dropload')
+  , readFile = require('./read-file')
   , treed = require('treed/rx')
   , cx = React.addons.classSet
   , PT = React.PropTypes
@@ -128,6 +130,33 @@ var Browse = React.createClass({
 
   _onDoneConfig: function () {
     this.setState({configuring: false})
+  },
+
+  _onImport: function (files) {
+    if (!files.length) return;
+    // TODO what about multiple files?
+    var reader = readFile(files[0], (err, text) => {
+      if (err) {
+        return this.setState({
+          importError: err.message,
+          importing: false,
+        })
+      }
+      this.setState({importError: null, importing: false})
+      this.props.files.importRaw(text, err => {
+        if (err) {
+          return this.setState({
+            importError: err.message,
+            importing: false,
+          })
+        }
+        this.loadFiles()
+      })
+    })
+    this.setState({
+      importing: reader,
+      importError: false,
+    })
   },
 
   // TODO: WORK HERE -- get this all awesome. Also remove file

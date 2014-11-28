@@ -3,6 +3,7 @@ var Gorilla = require('../lib/kernels/gorilla')
   , IPython = require('../lib/kernels/ipython')
   , IJS = require('../lib/kernels/js')
   , Rust = require('../lib/kernels/rust')
+  , Go = require('../lib/kernels/go')
 
 module.exports = {
   null: {
@@ -42,6 +43,13 @@ module.exports = {
     remote: true,
     title: 'Rust (play)',
     kernel: Rust,
+  },
+  'go': {
+    type: 'go',
+    language: 'go',
+    remote: true,
+    title: 'Go',
+    kernel: Go,
   }
 }
 

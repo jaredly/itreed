@@ -201,7 +201,7 @@ fn hello(_: &mut Request) -> IronResult<Response> {
     Ok(Response::new()
         .set(Status(status::Ok))
         .set(any_cors())
-        .set(Body("{\"running\": true, \"version\": \"0.1.0\"}"))
+        .set(Body("{\"status\": \"running\", \"version\": \"0.1.0\", \"lang\": \"rust\"}"))
         .set(ContentType(MediaType::new("text".to_string(), "json".to_string(), vec![]))))
 }
 

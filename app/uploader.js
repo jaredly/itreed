@@ -3,6 +3,7 @@ var React = require('treed/node_modules/react')
   , PT = React.PropTypes
   , Modal = require('./modal')
   , FormatPicker = require('./format-picker')
+  , readFile = require('./read-file')
   , convert = require('./convert')
 
 var Uploader = React.createClass({

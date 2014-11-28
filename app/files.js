@@ -1,8 +1,10 @@
+/* @flow */
 
 var IxPL = require('treed/rx/pl/ixdb')
   , QueuePL = require('treed/rx/pl/queuedb')
   , treed = require('treed/rx')
   , kernelConfig = require('./kernels')
+  , Db = require('treed/rx/db')
 
 var uuid = require('../lib/uuid')
 
@@ -27,11 +29,15 @@ module.exports = {
   // initialize files
   init: init,
 
+  // fill a new file with data.
+  populateFile: populateFile,
+  importRaw: importRaw,
+
   // load a file from id to done
   // load: load,
 }
 
-function updateFile(id, data, done) {
+function updateFile(id: string, data: any, done: (err: any) => void) {
   listFiles(files => {
     var f
     saveFiles(
@@ -46,8 +52,57 @@ function updateFile(id, data, done) {
   })
 }
 
-function populateFile(id, data, done) {
-  var pl = new QueuePL(new IxPL({prefix: 'nm:file:' + id}))
+type FileData = {
+  main: {content: string; children: Array<any>};
+  title: string;
+  repl: string | void
+}
+
+function convertToFile(data: FileData | Array<any>): ?FileData {
+  if (!Array.isArray(data)) {
+    if (data.main && data.title) {
+      return data
+    }
+    return
+  }
+  if (data.length === 1) {
+    return {
+      title: data[0].content,
+      main: data[0],
+      repl: 'none',
+    }
+  }
+  return {
+    title: 'Imported...',
+    main: {
+      content: 'Imported...',
+      children: data,
+    },
+    repl: 'none',
+  }
+}
+
+function importRaw(text, done) {
+  var data : any
+  try {
+    data = JSON.parse(text)
+  } catch (e) {
+    return done(new Error('Invalid format'))
+  }
+  importOne(data, done)
+}
+
+function importOne(data, done) {
+  var fileData = convertToFile(data)
+  if (!fileData) {
+    return done(new Error("Invalid file format"))
+  }
+  newFile(fileData.title, fileData.repl, (file, pl) => {
+    populateFile(pl, fileData.main, done)
+  })
+}
+
+function populateFile(pl, data, done) {
   var db = new Db(pl, [])
 
   db.init(data, function (err) {
