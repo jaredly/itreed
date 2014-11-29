@@ -37,8 +37,8 @@ module.exports = {
     title: 'Javascript',
     kernel: IJS,
   },
-  'rust-play': {
-    type: 'rust-play',
+  'rust': {
+    type: 'rust',
     language: 'rust',
     remote: true,
     title: 'Rust (play)',
