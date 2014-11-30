@@ -7,7 +7,7 @@ var Sourcerer = React.createClass({
   _imoportFrom: function (name) {
     sources[name].select((err, data, config) => {
       if (err) return console.warn('failed to source')
-      this.props.onSourced(data, {config: config, id: name})
+      this.props.onSourced(data, {config: config, type: name})
     })
   },
 

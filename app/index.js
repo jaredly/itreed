@@ -6,6 +6,8 @@ var React = require('treed/node_modules/react')
 var localFiles = require('./files')
   , Header = require('./header')
   , Browse = require('./browse')
+  , Saver = require('./saver')
+  , SOURCES = require('./sources')
   , history = require('./history')
   , TypeSwitcher = require('./type-switcher')
 
@@ -25,6 +27,7 @@ var App = React.createClass({
 
   getInitialState: function () {
     if (this.props.preload) {
+      this._listenToStore(this.props.preload.store)
       return {
         file: this.props.preload.file,
         store: this.props.preload.store,
@@ -39,6 +42,34 @@ var App = React.createClass({
       plugins: null,
       panes: [],
     }
+  },
+
+  _listenToStore: function (store) {
+    store.on(['changed'], this._onDirty)
+    store.on(['node:' + store.db.root], this._onRootChanged)
+  },
+
+  _onDirty: function () {
+    var source = this.state.file.source
+    source.modified = Date.now()
+    source.dirty = true
+    localFiles.update(this.state.file.id, {
+      source: source
+    }, file => this.setState({file: file}))
+  },
+
+  _onRootChanged: function () {
+    var db = this.state.store.db
+      , title = db.nodes[db.root].content
+    if (title.length > 100) {
+      title = title.slice(0, 98) + '..'
+    }
+    this._changeTitle(title)
+  },
+
+  _unlistenToStore: function (store) {
+    store.off(['changed'], this._onDirty)
+    store.off(['node:' + store.db.root], this._onRootChanged)
   },
 
   makePaneConfig: function (store, plugins, num, prev) {
@@ -74,6 +105,7 @@ var App = React.createClass({
   _popState: function () {
     if (this.state.store) {
       this.state.store.teardown()
+      this._unlistenToStore(this.state.store)
     }
     var id = history.get()
     this.setState({
@@ -126,6 +158,7 @@ var App = React.createClass({
     window.store = store
     history.set(file.id)
     store.clearViews()
+    this._listenToStore(store)
     this.setState({
       loadId: null,
       file,
@@ -139,6 +172,7 @@ var App = React.createClass({
     history.set('')
     if (this.state.store) {
       this.state.store.teardown()
+      this._unlistenToStore(this.state.store)
     }
     this.setState({
       loadId: null,
@@ -152,28 +186,44 @@ var App = React.createClass({
     localFiles.update(this.state.file.id, {title: title}, file => this.setState({file: file}))
   },
 
-  _setSource: function (type, options, text) {
-    SOURCES[type].saveAs(text, options, (time) => {
+  _clearSource: function (done) {
+    localFiles.update(this.state.file.id, {source: null}, done)
+  },
+
+  _setSource: function (type, done) {
+    var store = this.state.store
+      , text = JSON.stringify(store.db.exportTree(), null, 2)
+      , title = store.db.nodes[store.db.root].content
+    SOURCES[type].saveAs(title, text, (err, config, time) => {
+      if (err) return done(new Error('Failed to set source'))
       localFiles.update(this.state.file.id, {
         source: {
           type: type,
-          options: options,
+          config: config,
           saved: time,
+          dirty: false,
         }
       }, file => {
         this.setState({file: file})
+        done()
       })
     })
   },
 
-  _onSave: function (text) {
+  _onSave: function (done) {
     var source = this.state.file.source
-    SOURCES[source.type].save(text, source.options, (time) => {
+    var store = this.state.store
+      , text = JSON.stringify(store.db.exportTree(), null, 2)
+      , title = store.db.nodes[store.db.root].content
+    source.dirty = false // TODO is this in the right place?
+    SOURCES[source.type].save(title, text, source.config, (err, config, time) => {
+      if (err) return done(new Error('Failed to save'))
       source.saved = time
       localFiles.update(this.state.file.id, {
         source: source
       }, file => {
         this.setState({file: file})
+        done()
       })
     })
   },
@@ -188,11 +238,15 @@ var App = React.createClass({
       <Header
         setPanes={this._setPanes}
         changeTitle={this._changeTitle}
-        onSave={this._onSave}
-        setSource={this._setSource}
         onClose={!this.props.noHome && this._onClose}
         file={this.state.file}
         store={this.state.store}
+        saver={<Saver
+          onSave={this._onSave}
+          onSaveAs={this._setSource}
+          onClear={this._clearSource}
+          value={this.state.file.source}
+          />}
       />
       {this.makePanes()}
     </div>

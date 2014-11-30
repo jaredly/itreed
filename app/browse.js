@@ -117,7 +117,7 @@ var Browse = React.createClass({
         {file.repl &&
           <span className={'Browse_repl Browse_repl-' + file.repl}>{file.repl}</span>}
         {file.source &&
-          <span className={'Browse_source Browse_source-' + file.source.id}>{file.source.id}</span>}
+          <span className={'Browse_source Browse_source-' + file.source.type}>{file.source.type}</span>}
       </div>
       {file.id === this.state.configuring &&
         this.renderConfig(file)}

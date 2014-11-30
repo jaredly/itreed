@@ -10,14 +10,18 @@ type Config = {
 }
 
 type Cb = (err: any, result?: any) => void;
-type ConfigCb = (err: any, config?: Config) => void;
+type ConfigCb = (err: any, config?: Config, time?: number) => void;
 
 module.exports = {
   title: 'Github Gist',
 
   select: function (done: (err: ?Error, result?: any, config?: any) => void) {
     loadGistModal(loadGist, function (err, result, gist_id) {
-      done(err, result, {gist_id: gist_id})
+      var parts = gist_id.split('/')
+      if (parts.length === 1) {
+        parts.unshift(null)
+      }
+      done(err, result, {user: parts[0], gist_id: parts[1]})
     })
   },
 
@@ -35,7 +39,7 @@ module.exports = {
           clearAuth() // TODO maybe don't do this every time
           return done(err)
         }
-        done(null, {gist_id: result.id})
+        done(null, {gist_id: result.id}, Date.now())
       })
     })
   },
@@ -51,7 +55,7 @@ module.exports = {
           clearAuth() // TODO maybe don't do this every time
           return done(err)
         }
-        done(null, {gist_id: result.id})
+        done(null, {gist_id: result.id}, Date.now())
       })
     })
   },
@@ -67,7 +71,10 @@ var CONFIG = {
 }
 
 function loadGist(id, done) {
-  ajax.get('https://gist.githubusercontent.com/' + id + '/raw', done)
+  if (id.indexOf('/') !== -1) {
+    id = id.split('/').slice(-1)[0]
+  }
+  ajax.get('https://gist.githubusercontent.com/raw/' + id, done)
 }
 
 function clearAuth() {
@@ -99,7 +106,7 @@ function newGist(access_token, description, files, done) {
 
 // update a gist out of the current document :D
 function upGist(access_token, id, description, files, done) {
-  ajax.post('https://api.github.com/gists/' + id, {
+  ajax.patch('https://api.github.com/gists/' + id, {
     'Authorization': 'token ' + access_token,
   }, {
     description: description,

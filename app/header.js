@@ -7,6 +7,7 @@ var Header = React.createClass({
   propTypes: {
     file: PT.object.isRequired,
     store: PT.object.isRequired,
+    saver: PT.renderable,
     onClose: PT.func.isRequired,
     setPanes: PT.func.isRequired,
     changeTitle: PT.func.isRequired,
@@ -83,6 +84,7 @@ var Header = React.createClass({
         onClick={this.props.setPanes.bind(null, 3)}>
         <span className='icon-3pane'/>
       </button>
+      {this.props.saver}
       {/*
       <SourceSelector
         file={this.props.file}
