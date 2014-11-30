@@ -1,15 +1,127 @@
+/* @flow */
 
-var SaveAsModal = require('./save-as-modal')
+var saveAsModal = require('./save-as-modal')
+  , loadGistModal = require('./load-gist-modal')
+  , ajax = require('./ajax')
+  , oauth = require('./oauth')
+
+type Config = {
+  gist_id: string;
+}
+
+type Cb = (err: any, result?: any) => void;
+type ConfigCb = (err: any, config?: Config) => void;
 
 module.exports = {
-  save: save,
-  saveAs: saveAs,
+  title: 'Github Gist',
+
+  select: function (done: (err: ?Error, result?: any, config?: any) => void) {
+    loadGistModal(loadGist, function (err, result, gist_id) {
+      done(err, result, {gist_id: gist_id})
+    })
+  },
+
+  load: function (config: Config, done: Cb) {
+    loadGist(config.gist_id, done)
+  },
+
+  save: function (title: string, text: string, config: Config, done: ConfigCb) {
+    authorize((err, token) => {
+      if (err) return done(err)
+      var files = {}
+      files[title + '.nm'] = {content: text}
+      upGist(token, config.gist_id, title, files, (err, result) => {
+        if (err) {
+          clearAuth() // TODO maybe don't do this every time
+          return done(err)
+        }
+        done(null, {gist_id: result.id})
+      })
+    })
+  },
+
+  saveAs: function (title: string, text: string, done: ConfigCb) {
+    authorize((err, token) => {
+      // TODO clear auth token?
+      if (err) return done(err)
+      var files = {}
+      files[title + '.nm'] = {content: text}
+      newGist(token, title, files, (err, result) => {
+        if (err) {
+          clearAuth() // TODO maybe don't do this every time
+          return done(err)
+        }
+        done(null, {gist_id: result.id})
+      })
+    })
+  },
 }
 
-function saveAs(file, text, done) {
+var LS_KEY = 'nm_gh_token'
 
+var CONFIG = {
+  authorize: 'https://github.com/login/oauth/authorize',
+  proxy: 'https://auth-server.herokuapp.com/proxy',
+  redirect_uri: parent.location.origin + '/connect.html',
+  client_id: 'a15ba5cf761a832d0b25',
 }
 
-function save(options, text, done) {
+function loadGist(id, done) {
+  ajax.get('https://gist.githubusercontent.com/' + id + '/raw', done)
 }
 
+function clearAuth() {
+  delete window.localStorage[LS_KEY]
+}
+
+function authorize(done) {
+  if (window.localStorage[LS_KEY]) return done(null, window.localStorage[LS_KEY])
+  oauth(CONFIG, function (err, data) {
+    if (err) {
+      delete window.localStorage[LS_KEY]
+      return done(err, null)
+    }
+    window.localStorage[LS_KEY] = data.access_token
+    done(null, data.access_token)
+  })
+}
+
+// create a gist out of the current document :D
+function newGist(access_token, description, files, done) {
+  ajax.post('https://api.github.com/gists', {
+    'Authorization': 'token ' + access_token,
+  }, {
+    description: description,
+    public: true,
+    files: files
+  }, done)
+}
+
+// update a gist out of the current document :D
+function upGist(access_token, id, description, files, done) {
+  ajax.post('https://api.github.com/gists/' + id, {
+    'Authorization': 'token ' + access_token,
+  }, {
+    description: description,
+    public: true,
+    files: files
+  }, done)
+}
+
+// save the current document to a gist (OLD)
+function saveToGist(access_token, store, done) {
+  var files = {
+    'Document.nm': {
+      content: JSON.stringify(store.db.exportTree(), null, 2)
+    }
+  }
+  var description = store.db.nodes[store.db.root].content
+  if (!store._globals.gistId) {
+    newGist(access_token, description, files, function (result) {
+      store._globals.gistId = result.id
+      done && done()
+    })
+  } else {
+    upGist(access_token, store._globals.gistId, description, files, done)
+  }
+}

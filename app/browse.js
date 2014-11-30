@@ -2,6 +2,7 @@
 var React = require('treed/node_modules/react')
   , NewFile = require('./new-file')
   , Dropload = require('./dropload')
+  , Sourcerer = require('./sourcerer')
   , readFile = require('./read-file')
   , treed = require('treed/rx')
   , cx = React.addons.classSet
@@ -57,6 +58,8 @@ var Browse = React.createClass({
           return
         }
       }
+      // reverse
+      files = files.reduce((lst, next) => [next].concat(lst), [])
       this.setState({files, loading: false})
     })
   },
@@ -111,7 +114,10 @@ var Browse = React.createClass({
           onClick={this.loadFile.bind(null, file, false)}
           className='Browse_file_listing'>
         <span className='Browse_title'>{file.title}</span>
-        <span className={'Browse_repl Browse_repl-' + file.repl}/>
+        {file.repl &&
+          <span className={'Browse_repl Browse_repl-' + file.repl}>{file.repl}</span>}
+        {file.source &&
+          <span className={'Browse_source Browse_source-' + file.source.id}>{file.source.id}</span>}
       </div>
       {file.id === this.state.configuring &&
         this.renderConfig(file)}
@@ -159,6 +165,21 @@ var Browse = React.createClass({
     })
   },
 
+  _onSourced: function (data, source) {
+    if ('string' === typeof data) {
+      try {
+        data = JSON.parse(data)
+      } catch (e) {
+        return console.warn('failed to import file')
+      }
+    }
+    this.props.files.importRaw(data, (err, file) => {
+      this.props.files.update(file.id, {source: source}, (err) => {
+        this.loadFiles()
+      })
+    })
+  },
+
   // TODO: WORK HERE -- get this all awesome. Also remove file
   renderConfig: function (file) {
     // TODO: enable individual plugins. that would be cool.
@@ -197,6 +218,7 @@ var Browse = React.createClass({
           </li>}
       </ul>
       <NewFile onSubmit={this._onNewFile} />
+      <Sourcerer onSourced={this._onSourced} />
       <Dropload onDrop={this._onImport} message="Drop anywhere to import"/>
     </div>
   }

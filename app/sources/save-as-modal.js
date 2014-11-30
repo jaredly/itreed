@@ -1,28 +1,14 @@
 
-var React = require('treed/node_modules/react')
-  , PT = React.PropTypes
+var showModal = require('./show-modal')
 
-var SaveAsModal = React.createClass({
-  propTypes: {
-    onClose: PT.func.isRequired,
-  },
-  render: function () {
-    return <div className='SaveAsModal'>
-      <div className='SaveAsModal_top'>
-        
-      </div>
-    </div>
-  }
-})
-
-SaveAsModal.bootstrap = function (props) {
-  var node = document.createElement('div')
-  document.body.appendChild(node)
-  props.onClose = function () {
-    node.parentNode.removeChild(node)
-  }
-  React.render(SaveAsModal(props), node)
+module.exports = function (title, placeholder, done) {
+  showModal(title, (state, set, done) =>
+    <div>
+      <input placeholder={placeholder}
+        value={state.title}
+        onChange={set('title', true)}/>
+      <button onClick={done}>Save</button>
+    </div>,
+    (data, err) => done(err, data.title))
 }
-
-module.exports = SaveAsModal
 

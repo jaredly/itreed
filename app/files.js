@@ -1,4 +1,3 @@
-/* @flow */
 
 var IxPL = require('treed/rx/pl/ixdb')
   , QueuePL = require('treed/rx/pl/queuedb')
@@ -63,7 +62,7 @@ function convertToFile(data: FileData | Array<any>): ?FileData {
     if (data.main && data.title) {
       return data
     }
-    return
+    data = [data]
   }
   if (data.length === 1) {
     return {
@@ -82,12 +81,13 @@ function convertToFile(data: FileData | Array<any>): ?FileData {
   }
 }
 
-function importRaw(text, done) {
-  var data : any
-  try {
-    data = JSON.parse(text)
-  } catch (e) {
-    return done(new Error('Invalid format'))
+function importRaw(data, done) {
+  if ('string' === typeof data) {
+    try {
+      data = JSON.parse(text)
+    } catch (e) {
+      return done(new Error('Invalid format'))
+    }
   }
   importOne(data, done)
 }
@@ -97,8 +97,10 @@ function importOne(data, done) {
   if (!fileData) {
     return done(new Error("Invalid file format"))
   }
-  newFile(fileData.title, fileData.repl, (file, pl) => {
-    populateFile(pl, fileData.main, done)
+  newImport(fileData, (file, pl) => {
+    populateFile(pl, fileData.main, (err) => {
+      done(err, file)
+    })
   })
 }
 
@@ -183,6 +185,19 @@ function newFile(title, repl, done) {
     id: uuid(),
     title: title,
     repl: repl
+  }
+  listFiles(files =>
+    saveFiles(files.concat([file]), () =>
+      getFile(file.id, true, pl => done(file, pl))))
+}
+
+function newImport(fileData, done) {
+  var file = {
+    id: uuid(),
+  }
+  for (var name in fileData) {
+    if (name === 'main') continue;
+    file[name] = fileData[name]
   }
   listFiles(files =>
     saveFiles(files.concat([file]), () =>

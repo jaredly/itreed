@@ -1,13 +1,8 @@
 
 module.exports = {
-  gist: {
-    title: 'Github Gist',
-    saveAs: function (file, text, done) {
-    },
-    save: function (file, options, text, done) {
-    },
-  },
+  gist: require('./gist'),
 
+  /*
   github: {
     title: 'Github repo',
     saveAs: function (file, text, done) {
@@ -41,5 +36,6 @@ module.exports = {
     save: function (file, options, text, done) {
     },
   },
+  */
 }
 
