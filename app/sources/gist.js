@@ -33,7 +33,9 @@ module.exports = {
     authorize((err, token) => {
       if (err) return done(err)
       var files = {}
-      files[title + '.nm'] = {content: text}
+      // TODO fix things, keep track of filenames so that we can use the title
+      // as the filename. Might be nice.
+      files['Document.nm'] = {content: text}
       upGist(token, config.gist_id, title, files, (err, result) => {
         if (err) {
           clearAuth() // TODO maybe don't do this every time
@@ -49,7 +51,7 @@ module.exports = {
       // TODO clear auth token?
       if (err) return done(err)
       var files = {}
-      files[title + '.nm'] = {content: text}
+      files['Document.nm'] = {content: text}
       newGist(token, title, files, (err, result) => {
         if (err) {
           clearAuth() // TODO maybe don't do this every time
@@ -106,7 +108,7 @@ function newGist(access_token, description, files, done) {
 
 // update a gist out of the current document :D
 function upGist(access_token, id, description, files, done) {
-  ajax.patch('https://api.github.com/gists/' + id, {
+  ajax.post('https://api.github.com/gists/' + id, {
     'Authorization': 'token ' + access_token,
   }, {
     description: description,
