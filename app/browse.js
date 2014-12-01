@@ -80,7 +80,9 @@ var Browse = React.createClass({
         if (err) {
           return this._onError(err)
         }
-        this.props.onLoad(file, store, plugins)
+        this.props.files.update(file.id, {opened: Date.now()}, file => {
+          this.props.onLoad(file, store, plugins)
+        })
       })
     )
   },

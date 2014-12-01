@@ -36,7 +36,7 @@ module.exports = {
   // load: load,
 }
 
-function updateFile(id: string, data: any, done: (err: any) => void) {
+function updateFile(id: string, data: any, done: (file: any) => void) {
   listFiles(files => {
     var f
     saveFiles(
@@ -183,6 +183,8 @@ function getFile(id, isNew, done) {
 function newFile(title, repl, done) {
   var file = {
     id: uuid(),
+    created: Date.now(),
+    opened: Date.now(),
     title: title,
     repl: repl
   }
