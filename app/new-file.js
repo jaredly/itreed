@@ -40,7 +40,8 @@ var NewFile = React.createClass({
     this.props.onOpen(true)
   },
 
-  _onHide: function () {
+  _onHide: function (e) {
+    e.preventDefault()
     this.props.onOpen(false)
   },
 
@@ -49,7 +50,7 @@ var NewFile = React.createClass({
       return <div onClick={this._onShow} className='NewFile NewFile-closed'>Create</div>
     }
     return <form className="NewFile" onSubmit={this._onSubmit}>
-      <button className='NewFile_cancel' onClick={this._onHide}>Cancel</button>
+      <div className='NewFile_cancel' onClick={this._onHide}>Cancel</div>
       <h3 className="NewFile_head">New Document</h3>
       <input className='NewFile_title' type="text" value={this.state.title}
         onChange={this._onChange} />

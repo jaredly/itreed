@@ -1,9 +1,9 @@
 
 .Browse {
-  max-width: 500px;
+  max-width: 600px;
   margin: 0px auto;
   padding: 20px 0 30px;
-  width: 400px;
+  width: 600px;
   font-family: sans-serif;
   flex-direction: column;
   display: flex;
@@ -12,11 +12,20 @@
   &_news {
     display: flex;
     flex-direction: row;
+
+    div {
+      flex: 1;
+    }
+
+    &-open {
+      display: block;
+    }
   }
 }
 
 .Browse_title {
   margin: 0 0 10px;
+  text-align: center;
 }
 
 .NewFile_head,

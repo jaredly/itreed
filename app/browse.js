@@ -93,7 +93,7 @@ var Browse = React.createClass({
   },
 
   _onNewFile: function (title, repl) {
-    this.setState({error: null, loading: true})
+    this.setState({newing: null, error: null, loading: true})
 
     this.props.files.create(title, repl, (file, pl) =>
       this.props.files.init(file, pl, (err, store, plugins) => {
@@ -147,6 +147,7 @@ var Browse = React.createClass({
     var reader = readFile(files[0], (err, text) => {
       if (err) {
         return this.setState({
+          newing: null,
           importError: err.message,
           importing: false,
         })
@@ -155,6 +156,7 @@ var Browse = React.createClass({
       this.props.files.importRaw(text, err => {
         if (err) {
           return this.setState({
+            newing: null,
             importError: err.message,
             importing: false,
           })
@@ -163,6 +165,7 @@ var Browse = React.createClass({
       })
     })
     this.setState({
+      newing: null,
       importing: reader,
       importError: false,
     })
@@ -204,7 +207,7 @@ var Browse = React.createClass({
     </div>;
   },
 
-  _onNewFile: function (what, open) {
+  _onNewOpen: function (what, open) {
     this.setState({newing: open ? what : null})
   },
 
@@ -217,15 +220,15 @@ var Browse = React.createClass({
     return <div className='Browse'>
       <h1 className='Browse_title'>Notablemind</h1>
       {this.state.error && 'Error loading file!'}
-      <div className='Browse_news'>
+      <div className={'Browse_news' + (this.state.newing ? 'Browse_news-open' : '')}>
         {this.state.newing !== 'import' &&
           <NewFile onSubmit={this._onNewFile}
             open={this.state.newing == 'new'}
-            onOpen={this._onNew.bind(null, 'new')}/>}
+            onOpen={this._onNewOpen.bind(null, 'new')}/>}
         {this.state.newing !== 'new' &&
           <Importer onSourced={this._onSourced}
             open={this.state.newing == 'import'}
-            onOpen={this._onNew.bind(null, 'import')}/>}
+            onOpen={this._onNewOpen.bind(null, 'import')}/>}
       </div>
       <Dropload onDrop={this._onImport} message="Drop anywhere to import"/>
       {this.state.importError && 'Import Error: ' + this.state.importError}
