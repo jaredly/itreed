@@ -51,7 +51,8 @@ var App = React.createClass({
 
   _onDirty: function () {
     var source = this.state.file.source
-    source.modified = Date.now()
+    this.state.file.modified = Date.now()
+    if (!source) return
     source.dirty = true
     localFiles.update(this.state.file.id, {
       source: source

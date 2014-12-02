@@ -244,6 +244,7 @@ var Browse = React.createClass({
 
       <Tabular
         items={this.state.files}
+        onSelect={this.loadFile}
         headers={{
           'Name': file => file.title,
           'Repl': file => file.repl,

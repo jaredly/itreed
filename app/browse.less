@@ -1,4 +1,6 @@
 
+@import "tabular.less";
+
 .Browse {
   max-width: 600px;
   margin: 0px auto;
@@ -8,6 +10,10 @@
   flex-direction: column;
   display: flex;
   flex: 1;
+
+  .Tabular {
+    flex: 1;
+  }
 
   &_news {
     display: flex;
@@ -21,6 +27,15 @@
       display: block;
     }
   }
+}
+
+.Browse-loading {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: #555;
+  text-shadow: 0 0 15px #888;
+  margin: 200px auto;
 }
 
 .Browse_title {
