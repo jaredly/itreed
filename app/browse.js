@@ -11,6 +11,12 @@ var React = require('treed/node_modules/react')
   , history = require('./history')
   , kernels = require('./kernels')
 
+function strcmp(a, b) {
+  if (a === b) return 0
+  if (a > b) return 1
+  return -1
+}
+
 var Browse = React.createClass({
   propTypes: {
     loadId: PT.string,
@@ -61,7 +67,8 @@ var Browse = React.createClass({
         }
       }
       // reverse
-      files = files.reduce((lst, next) => [next].concat(lst), [])
+      files = files.sort((a, b) => strcmp(a.title, b.title))
+      // files = files.reduce((lst, next) => [next].concat(lst), [])
       this.setState({files, loading: false})
     })
   },
@@ -225,7 +232,6 @@ var Browse = React.createClass({
       </div>
     }
     return <div className='Browse'>
-      <h1 className='Browse_title'>Notablemind</h1>
       {this.state.error && 'Error loading file!'}
       <div className={
         'Browse_news' + (this.state.newing ? 'Browse_news-open' : '')
@@ -234,6 +240,8 @@ var Browse = React.createClass({
           <NewFile onSubmit={this._onNewFile}
             open={this.state.newing == 'new'}
             onOpen={this._onNewOpen.bind(null, 'new')}/>}
+        {!this.state.newing &&
+          <h1 className='Browse_title'>Notablemind</h1>}
         {this.state.newing !== 'new' &&
           <Importer onSourced={this._onSourced}
             open={this.state.newing == 'import'}
@@ -255,16 +263,6 @@ var Browse = React.createClass({
           Source: 100,
         }}
       />
-
-      {/*
-      <ul className='Browse_files'>
-        {this.state.files.map(this.fileItem)}
-        {!this.state.files.length &&
-          <li key="empty" className='Browse_nofiles'>
-            No documents saved in this browser.
-          </li>}
-      </ul>
-      */}
     </div>
   }
 })
