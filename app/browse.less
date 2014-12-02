@@ -1,11 +1,22 @@
 
 .Browse {
   max-width: 500px;
-  margin: 100px auto;
-  box-shadow: 0 0 5px #888;
-  padding: 30px;
+  margin: 0px auto;
+  padding: 20px 0 30px;
   width: 400px;
   font-family: sans-serif;
+  flex-direction: column;
+  display: flex;
+  flex: 1;
+
+  &_news {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.Browse_title {
+  margin: 0 0 10px;
 }
 
 .NewFile_head,
@@ -16,10 +27,10 @@
 
 .Browse_files {
   padding: 0;
-  margin: 20px 0;
+  margin: 20px 0 0;
   list-style: none;
-  max-height: 240px;
   overflow: auto;
+  flex: 1;
 }
 
 .Browse_file {
@@ -84,19 +95,13 @@
 
 }
 
-.NewFile_head {
-  margin: 0;
-}
-
-.Browse_config_repls,
-.NewFile_repls {
+.Browse_config_repls {
   padding: 0;
   margin: 10px 0;
   list-style: none;
 }
 
-.Browse_config_repl,
-.NewFile_repl {
+.Browse_config_repl {
   padding: 5px 10px;
   border: 1px solid transparent;
   display: inline-block;
@@ -109,22 +114,6 @@
   &:hover {
     background-color: #eee;
   }
-}
-
-.NewFile_title {
-  font-size: 16px;
-  padding: 5px 10px;
-  margin: 10px 0 0;
-  border: 1px solid #ccc;
-}
-
-.NewFile_submit {
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  font-size: 16px;
-  margin-left: 5px;
-  cursor: pointer;
 }
 
 .Modal {

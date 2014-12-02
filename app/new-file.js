@@ -36,8 +36,20 @@ var NewFile = React.createClass({
     </ul>
   },
 
+  _onShow: function () {
+    this.props.onOpen(true)
+  },
+
+  _onHide: function () {
+    this.props.onOpen(false)
+  },
+
   render: function () {
+    if (!this.props.open) {
+      return <div onClick={this._onShow} className='NewFile NewFile-closed'>Create</div>
+    }
     return <form className="NewFile" onSubmit={this._onSubmit}>
+      <button className='NewFile_cancel' onClick={this._onHide}>Cancel</button>
       <h3 className="NewFile_head">New Document</h3>
       <input className='NewFile_title' type="text" value={this.state.title}
         onChange={this._onChange} />

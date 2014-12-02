@@ -65,7 +65,7 @@ var Uploader = React.createClass({
         })
       }
 
-      var data = convert[this.state.format].treeFromStr(evt.target.result)
+      var data = convert[this.state.format].treeFromStr(text)
       if (data instanceof Error) {
         return this.setState({
           reader: null,

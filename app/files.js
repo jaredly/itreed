@@ -84,7 +84,7 @@ function convertToFile(data: FileData | Array<any>): ?FileData {
 function importRaw(data, done) {
   if ('string' === typeof data) {
     try {
-      data = JSON.parse(text)
+      data = JSON.parse(data)
     } catch (e) {
       return done(new Error('Invalid format'))
     }

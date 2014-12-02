@@ -1,0 +1,66 @@
+
+.NewFile {
+  position: relative;
+
+  &-closed {
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid white;
+    transition: border-color .2s ease;
+
+    &:hover {
+      border-color: #777;
+    }
+  }
+
+  &_cancel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #aaa;
+    transition: color .2s ease, border-color .2s ease;
+
+    &:hover {
+      border-color: black;
+      color: black;
+    }
+  }
+
+
+  &_title {
+    font-size: 16px;
+    padding: 5px 10px;
+    margin: 10px 0 0;
+    border: 1px solid #ccc;
+  }
+
+  &_submit {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    font-size: 16px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
+  &_head {
+    margin: 0;
+  }
+
+  &_repls {
+    &:extend(.Browse_config_repls);
+  }
+
+  &_repl {
+    &:extend(.Browse_config_repl all);
+  }
+}
+
+

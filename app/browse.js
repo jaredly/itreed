@@ -2,7 +2,7 @@
 var React = require('treed/node_modules/react')
   , NewFile = require('./new-file')
   , Dropload = require('./dropload')
-  , Sourcerer = require('./sourcerer')
+  , Importer = require('./importer')
   , readFile = require('./read-file')
   , treed = require('treed/rx')
   , cx = React.addons.classSet
@@ -23,6 +23,7 @@ var Browse = React.createClass({
       loading: true,
       error: null,
       files: null,
+      newing: null,
     }
   },
 
@@ -141,7 +142,7 @@ var Browse = React.createClass({
   },
 
   _onImport: function (files) {
-    if (!files.length) return;
+    if (!files.length) return console.warn('no files');
     // TODO what about multiple files?
     var reader = readFile(files[0], (err, text) => {
       if (err) {
@@ -203,6 +204,10 @@ var Browse = React.createClass({
     </div>;
   },
 
+  _onNewFile: function (what, open) {
+    this.setState({newing: open ? what : null})
+  },
+
   render: function () {
     if (this.state.loading) {
       return <div className='Browse Browse-loading'>
@@ -210,8 +215,20 @@ var Browse = React.createClass({
       </div>
     }
     return <div className='Browse'>
-      <h3 className='Browse_head'>Open a Document</h3>
+      <h1 className='Browse_title'>Notablemind</h1>
       {this.state.error && 'Error loading file!'}
+      <div className='Browse_news'>
+        {this.state.newing !== 'import' &&
+          <NewFile onSubmit={this._onNewFile}
+            open={this.state.newing == 'new'}
+            onOpen={this._onNew.bind(null, 'new')}/>}
+        {this.state.newing !== 'new' &&
+          <Importer onSourced={this._onSourced}
+            open={this.state.newing == 'import'}
+            onOpen={this._onNew.bind(null, 'import')}/>}
+      </div>
+      <Dropload onDrop={this._onImport} message="Drop anywhere to import"/>
+      {this.state.importError && 'Import Error: ' + this.state.importError}
       <ul className='Browse_files'>
         {this.state.files.map(this.fileItem)}
         {!this.state.files.length &&
@@ -219,9 +236,6 @@ var Browse = React.createClass({
             No documents saved in this browser.
           </li>}
       </ul>
-      <NewFile onSubmit={this._onNewFile} />
-      <Sourcerer onSourced={this._onSourced} />
-      <Dropload onDrop={this._onImport} message="Drop anywhere to import"/>
     </div>
   }
 })

@@ -17,6 +17,7 @@ module.exports = {
 
   select: function (done: (err: ?Error, result?: any, config?: any) => void) {
     loadGistModal(loadGist, function (err, result, gist_id) {
+      if (err) return
       var parts = gist_id.split('/')
       if (parts.length === 1) {
         parts.unshift(null)
