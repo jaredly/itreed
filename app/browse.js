@@ -3,6 +3,7 @@ var React = require('treed/node_modules/react')
   , NewFile = require('./new-file')
   , Dropload = require('./dropload')
   , Importer = require('./importer')
+  , Tabular = require('./tabular')
   , readFile = require('./read-file')
   , treed = require('treed/rx')
   , cx = React.addons.classSet
@@ -112,15 +113,19 @@ var Browse = React.createClass({
 
   fileItem: function (file) {
     return <li className='Browse_file'
-        key={file.id}>
+               key={file.id}>
       <div onContextMenu={this._onEditFile.bind(null, file)}
-          onClick={this.loadFile.bind(null, file, false)}
-          className='Browse_file_listing'>
+           onClick={this.loadFile.bind(null, file, false)}
+           className='Browse_file_listing'>
         <span className='Browse_title'>{file.title}</span>
         {file.repl &&
-          <span className={'Browse_repl Browse_repl-' + file.repl}>{file.repl}</span>}
+          <span className={'Browse_repl Browse_repl-' + file.repl}>
+            {file.repl}
+          </span>}
         {file.source &&
-          <span className={'Browse_source Browse_source-' + file.source.type}>{file.source.type}</span>}
+          <span className={'Browse_source Browse_source-' + file.source.type}>
+            {file.source.type}
+          </span>}
       </div>
       {file.id === this.state.configuring &&
         this.renderConfig(file)}
@@ -201,8 +206,10 @@ var Browse = React.createClass({
             {kernels[key].title}
           </li>)}
       </ul>
-      <button className='Browse_config_remove' onClick={this._onRemoveFile.bind(null, file)}>Remove File</button>
-      <button className='Browse_config_done' onClick={this._onDoneConfig.bind(null, file)}>Done Config</button>
+      <button className='Browse_config_remove'
+        onClick={this._onRemoveFile.bind(null, file)}>Remove File</button>
+      <button className='Browse_config_done'
+        onClick={this._onDoneConfig.bind(null, file)}>Done Config</button>
       {/* TODO: download button */}
     </div>;
   },
@@ -220,7 +227,9 @@ var Browse = React.createClass({
     return <div className='Browse'>
       <h1 className='Browse_title'>Notablemind</h1>
       {this.state.error && 'Error loading file!'}
-      <div className={'Browse_news' + (this.state.newing ? 'Browse_news-open' : '')}>
+      <div className={
+        'Browse_news' + (this.state.newing ? 'Browse_news-open' : '')
+      }>
         {this.state.newing !== 'import' &&
           <NewFile onSubmit={this._onNewFile}
             open={this.state.newing == 'new'}
@@ -232,6 +241,21 @@ var Browse = React.createClass({
       </div>
       <Dropload onDrop={this._onImport} message="Drop anywhere to import"/>
       {this.state.importError && 'Import Error: ' + this.state.importError}
+
+      <Tabular
+        items={this.state.files}
+        headers={{
+          'Name': file => file.title,
+          'Repl': file => file.repl,
+          'Source': file => file.source ? file.source.type : null,
+        }}
+        headerWidths={{
+          Repl: 100,
+          Source: 100,
+        }}
+      />
+
+      {/*
       <ul className='Browse_files'>
         {this.state.files.map(this.fileItem)}
         {!this.state.files.length &&
@@ -239,6 +263,7 @@ var Browse = React.createClass({
             No documents saved in this browser.
           </li>}
       </ul>
+      */}
     </div>
   }
 })
