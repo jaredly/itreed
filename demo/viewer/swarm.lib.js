@@ -135,7 +135,7 @@ module.exports = Syncable.extend(Host, {
     },
 
     get: function (spec, callback) {
-        if (spec && spec.constructor === Function && spec.prototype._type) {
+        if (spec && 'function' === typeof spec && spec.prototype._type) {
             spec = '/' + spec.prototype._type;
         }
         spec = new Spec(spec);
@@ -194,7 +194,7 @@ module.exports = Syncable.extend(Host, {
                 return this.addSource(spec, lstn);
             }
 
-            if (filter.constructor === Function && filter.id) {
+            if ('function' === typeof filter && filter.id) {
                 filter = new Spec(filter.id, '/');
             } else if (filter.constructor === String) {
                 filter = new Spec(filter, '.');
@@ -450,7 +450,7 @@ function LevelStorage (id, options, callback) {
     this.db = options.db;
     this._id = id;
     this.filename = null;
-    if (this.db.constructor===Function) {
+    if ('function' === typeof this.db) {
         this.db = this.db(options.path||id);
     }
     this.logtails = {};
@@ -1667,7 +1667,7 @@ ProxyListener.prototype.deliver = function (spec,value,src) {
     var that = this.owner || src;
     for(var i=0; i<this.callbacks.length; i++) {
         var cb = this.callbacks[i];
-        if (cb.constructor===Function) {
+        if ('function' === typeof cb.constructor) {
             cb.call(that,spec,value,src);
         } else {
             cb.deliver(spec,value,src);
@@ -2640,7 +2640,7 @@ Storage.prototype.emit = function (spec,value) {
     if (ln && ln.constructor===Array) {
         for(var i=0; ln && i<ln.length; i++) {
             var l = ln[i];
-            if (l && l.constructor===Function) {
+            if (l && 'function' === typeof l) {
                 l(spec,value,this);
             } else if (l && l.deliver) {
                 l.deliver(spec,value,this);
@@ -2648,7 +2648,7 @@ Storage.prototype.emit = function (spec,value) {
         }
     } else if (ln && ln.deliver) {
         ln.deliver(spec,value,this);
-    } else if (ln && ln.constructor===Function) {
+    } else if (ln && 'function' === typeof ln) {
         ln(spec,value,this);
     }
 };
@@ -2710,8 +2710,8 @@ module.exports = Syncable;
 Syncable.types = {};
 Syncable.isOpSink = function (obj) {
     if (!obj) { return false; }
-    if (obj.constructor === Function) { return true; }
-    if (obj.deliver && obj.deliver.constructor === Function) { return true; }
+    if ('function' === typeof obj) { return true; }
+    if (obj.deliver && 'function' === typeof obj.deliver) { return true; }
     return false;
 };
 Syncable.reMethodName = /^[a-z][a-z0-9]*([A-Z][a-z0-9]*)*$/;
@@ -2734,7 +2734,7 @@ function fnname(fn) {
  */
 Syncable.extend = function (fn, own) {
     var parent = this, fnid;
-    if (fn.constructor !== Function) {
+    if ('function' !== typeof fn) {
         var id = fn.toString();
         fn = function SomeSyncable() {
             return parent.apply(this, arguments);
@@ -2803,7 +2803,7 @@ Syncable.extend = function (fn, own) {
         for (name in own) {
             if (Syncable.reMethodName.test(name)) {
                 var memberType = own[name].constructor;
-                if (memberType === Function) { // non-op method
+                if ('function' === typeof memberType) { // non-op method
                     // these must change state ONLY by invoking ops
                     this[name] = own[name];
                 } else if (memberType===String || memberType===Number) {
@@ -2889,7 +2889,7 @@ Syncable.extend = function (fn, own) {
         if (val && val.type) {
             return val;
         }
-        if (val && val.constructor === Function) {
+        if (val && 'function' === typeof val) {
             return {type: val, value: undefined};
         }
         return {type:null, value: val};
@@ -3287,7 +3287,7 @@ Syncable.extend(Syncable, {  // :P
                 return; // defer this call till uplinks are ready
             }
             // make all listeners uniform objects
-            if (repl.constructor === Function) {
+            if ('function' === typeof repl) {
                 repl = {
                     sink: repl,
                     that: this,
@@ -3563,7 +3563,7 @@ Syncable.extend(Syncable, {  // :P
     once: function (filter, cb) {
         this.on(filter, function onceWrap(spec, val, src) {
             // "this" is the object (Syncable)
-            if (cb.constructor === Function) {
+            if ('function' === typeof cb) {
                 cb.call(this, spec, val, src);
             } else {
                 cb.deliver(spec, val, src);
