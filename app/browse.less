@@ -1,15 +1,37 @@
 
 @import "tabular.less";
 
+.Browse_new_btn {
+  padding: 10px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid white;
+  transition: border-color .2s ease, color .2s ease;
+
+  flex: 1;
+  margin-bottom: 10px;
+  margin: 0 20px 5px;
+  color: #aaa;
+  border-color: #eee;
+
+  &:hover {
+    border-color: #777;
+    color: black;
+  }
+}
+
 .Browse {
   max-width: 600px;
-  margin: 0px auto;
+  margin: 25px auto 50px;
   padding: 20px 0 30px;
   width: 600px;
   font-family: sans-serif;
   flex-direction: column;
   display: flex;
   flex: 1;
+  box-shadow: 0px 0 20px #999;
 
   .Tabular {
     flex: 1;
@@ -20,7 +42,6 @@
     flex-direction: row;
 
     div {
-      flex: 1;
     }
 
     &-open {
@@ -39,8 +60,9 @@
 }
 
 .Browse_title {
-  margin: 0 15px 10px;
+  margin: 2px 45px 0;
   text-align: center;
+  color: #545B91;
 }
 
 .NewFile_head,
