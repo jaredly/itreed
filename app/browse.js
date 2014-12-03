@@ -66,9 +66,8 @@ var Browse = React.createClass({
           return
         }
       }
-      // reverse
+      // sort by title
       files = files.sort((a, b) => strcmp(a.title, b.title))
-      // files = files.reduce((lst, next) => [next].concat(lst), [])
       this.setState({files, loading: false})
     })
   },

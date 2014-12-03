@@ -22,6 +22,23 @@
   }
 }
 
+.Browse_new_cancel {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: #aaa;
+  transition: color .2s ease, border-color .2s ease;
+
+  &:hover {
+    border-color: black;
+    color: black;
+  }
+}
+
 .Browse {
   max-width: 600px;
   margin: 25px auto 50px;
@@ -52,11 +69,12 @@
 
 .Browse-loading {
   text-align: center;
-  font-size: 30px;
+  font-size: 50px;
   font-weight: bold;
-  color: #555;
+  color: white;
   text-shadow: 0 0 15px #888;
   margin: 200px auto;
+  box-shadow: none;
 }
 
 .Browse_title {

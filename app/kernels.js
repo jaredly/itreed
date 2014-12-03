@@ -41,7 +41,7 @@ module.exports = {
     type: 'rust',
     language: 'rust',
     remote: true,
-    title: 'Rust (play)',
+    title: 'Rust',
     kernel: Rust,
   },
   'go': {

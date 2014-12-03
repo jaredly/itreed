@@ -1,26 +1,15 @@
 
 .NewFile {
   position: relative;
+  padding: 0 20px;
 
   &-closed {
     &:extend(.Browse_new_btn all);
+    padding: 10px;
   }
 
   &_cancel {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 5px 10px;
-    cursor: pointer;
-    color: #aaa;
-    transition: color .2s ease, border-color .2s ease;
-
-    &:hover {
-      border-color: black;
-      color: black;
-    }
+    &:extend(.Browse_new_cancel all);
   }
 
 
@@ -29,6 +18,11 @@
     padding: 5px 10px;
     border: 1px solid #ccc;
     width: 300px;
+  }
+
+  &_ReplTitle {
+    font-weight: bold;
+    padding: 10px 10px 10px 0;
   }
 
   &_submit {
@@ -47,6 +41,7 @@
 
   &_repls {
     &:extend(.Browse_config_repls);
+    display: inline-block;
   }
 
   &_repl {

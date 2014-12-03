@@ -7,7 +7,7 @@ var NewFile = React.createClass({
   getInitialState: function () {
     return {
       title: 'Untitled',
-      repl: 'No repl',
+      repl: 'null',
     }
   },
   _onChange: function (e) {
@@ -45,16 +45,27 @@ var NewFile = React.createClass({
     this.props.onOpen(false)
   },
 
+  componentDidUpdate: function () {
+    if (!this.props.open) return
+    var node = this.refs.input.getDOMNode()
+    node.focus()
+    node.selectionStart = 0
+    node.selectionEnd = node.value.length
+  },
+
   render: function () {
     if (!this.props.open) {
       return <div onClick={this._onShow} className='NewFile NewFile-closed'>Create</div>
     }
     return <form className="NewFile" onSubmit={this._onSubmit}>
       <div className='NewFile_cancel' onClick={this._onHide}>Cancel</div>
+      <div>
       <h3 className="NewFile_head">New Document</h3>
-      <input className='NewFile_title' type="text" value={this.state.title}
+      <input ref="input" className='NewFile_title' type="text" value={this.state.title}
         onChange={this._onChange} />
       <button className='NewFile_submit' onClick={this._onSubmit}>Create Document</button>
+      </div>
+      <span className='NewFile_ReplTitle'>Repl</span>
       {this.repls()}
     </form>
   },
