@@ -45,8 +45,8 @@ var NewFile = React.createClass({
     this.props.onOpen(false)
   },
 
-  componentDidUpdate: function () {
-    if (!this.props.open) return
+  componentDidUpdate: function (prevProps) {
+    if (!this.props.open || prevProps.open) return
     var node = this.refs.input.getDOMNode()
     node.focus()
     node.selectionStart = 0

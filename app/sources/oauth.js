@@ -1,5 +1,5 @@
 
-window.exports = authenticate
+module.exports = authenticate
 
 function authenticate(CONFIG, done) {
   var rand = uuid()
