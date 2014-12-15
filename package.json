@@ -24,6 +24,7 @@
     "react": "~0.12.1",
     "majax": "git+https://github.com/jaredly/majaX.js",
     "async": "~0.9.0",
+    "treed": "git+https://github.com/jaredly/treed",
     "eventemitter3": "~0.1.5",
     "ansi-to-html": "~0.2.0",
     "moment": "~2.8.3",
