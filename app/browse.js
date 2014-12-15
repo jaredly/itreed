@@ -10,6 +10,7 @@ var React = require('treed/node_modules/react')
   , PT = React.PropTypes
   , history = require('./history')
   , kernels = require('./kernels')
+  , async = require('async')
 
 function strcmp(a, b) {
   if (a === b) return 0
@@ -152,6 +153,20 @@ var Browse = React.createClass({
     this.setState({configuring: false})
   },
 
+  _onExport: function () {
+    this.setState({dumping: true})
+    this.props.files.list(files => {
+      var tasks = files.map(file =>
+        this.props.files.dump.bind(null, file))
+      async.parallel(tasks, (err, results) => {
+        var blob = new Blob([JSON.stringify(results, null, 2)], {type: 'application/json'})
+        this.setState({
+          dumpURL: URL.createObjectURL(blob)
+        })
+      })
+    })
+  },
+
   _onImport: function (files) {
     if (!files.length) return console.warn('no files');
     // TODO what about multiple files?
@@ -262,6 +277,11 @@ var Browse = React.createClass({
           Source: 100,
         }}
       />
+      {this.state.dumping ?
+        (this.state.dumpURL ?
+          <a download="notablemind-dump.json" href={this.state.dumpURL}>Click to download</a> :
+          <span>Processing...</span>) :
+        <a style={{cursor:'pointer',color: 'blue'}} onClick={this._onExport}>Dump</a>}
     </div>
   }
 })
