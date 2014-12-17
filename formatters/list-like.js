@@ -1,5 +1,6 @@
 
 var React = require('treed/node_modules/react')
+  , makeGorilla = require('./gorilla')
 
 module.exports = {
   mime: 'json/list-like',

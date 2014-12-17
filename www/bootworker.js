@@ -65,6 +65,10 @@ var HANDLERS = {
 
 onmessage = function (evt) {
   var data = evt.data
+  if (!HANDLERS[data.name]) {
+    console.log('Unknown action', data)
+    return
+  }
   HANDLERS[data.name](data.data)
 }
 

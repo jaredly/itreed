@@ -1,4 +1,6 @@
 
+module.exports = makeGorilla
+
 function makeGorilla(data, nextid) {
   var rich = {}
   nextid = nextid || 0
