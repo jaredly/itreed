@@ -19,6 +19,7 @@ var App = React.createClass({
       noHome: false,
       loaded: false,
       types: {
+        pdf: require('treed/rx/views/pdf'),
         tree: require('treed/rx/views/tree'),
         paper: require('treed/rx/views/paper'),
       }

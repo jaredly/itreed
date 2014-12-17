@@ -119,6 +119,7 @@
   padding: 10px;
   border: 1px solid #ccc;
   margin-top: 5px;
+  display: inline-block;
 
   &_plain {
     font-family: 'monospace';
@@ -300,3 +301,76 @@
   left: -15px;
 }
 
+/** PDF STUFF **/
+
+.pdf_item .m_IPython_time {
+  display: none;
+}
+
+.pdf_item .list_item-ipython-stale > .list_item_head > .list_item_body {
+  background-color: white;
+}
+
+.pdf_item .list_item_children {
+  margin: 0;
+  padding: 0;
+  border-left: 0;
+}
+
+.pdf_item .m_IPython-hiding {
+  height: auto;
+}
+
+.pdf_item .list_item-ipython-collapsed > .list_item_head > .list_item_body {
+  border-bottom: 1px solid #ccc;
+  max-height: none;
+}
+
+.pdf_export {
+
+  .list_item-parent {
+
+    > .list_item_head .treed_body_rendered {
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .list_item-parent {
+
+      > .list_item_head .treed_body_rendered {
+        font-size: 26px;
+
+        &:before {
+          content: '>';
+          float: left;
+          padding-right: 10px;
+        }
+      }
+
+      .list_item-parent {
+        > .list_item_head .treed_body_rendered {
+          font-size: 22px;
+
+          &:before {
+            content: '>>';
+          }
+        }
+
+
+        .list_item-parent {
+          > .list_item_head .treed_body_rendered {
+            font-size: 18px;
+
+            &:before {
+              content: '>>>';
+            }
+          }
+
+          .list_item-parent > .list_item_head .treed_body_rendered:before {
+            content: '>>>>';
+          }
+        }
+      }
+    }
+  }
+}

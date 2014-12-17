@@ -32,8 +32,24 @@ module.exports = {
   populateFile: populateFile,
   importRaw: importRaw,
 
+  dump: dump,
+
   // load a file from id to done
   // load: load,
+}
+
+function dump(file, done) {
+  getFile(file.id, pl => {
+    init(file, pl, (err, store, plugins) => {
+      if (err) return done(err)
+      var data = {}
+      for (var name in file) {
+        data[name] = file[name]
+      }
+      data.main = store.db.exportTree()
+      done(null, data)
+    })
+  })
 }
 
 function updateFile(id: string, data: any, done: (file: any) => void) {
