@@ -133,7 +133,7 @@ function populateFile(pl, data, done) {
 function init(file, pl, defaultData, done) {
   if (arguments.length === 3) {
     done = defaultData
-    defaultData = {content: file.title, children: [{content: 'Add a child'}]}
+    defaultData = {content: file.title, children: []}
   }
   var config = kernelConfig[file.repl]
   var plugins = [
