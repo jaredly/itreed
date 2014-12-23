@@ -33,7 +33,7 @@ var App = React.createClass({
         file: this.props.preload.file,
         store: this.props.preload.store,
         plugins: this.props.preload.plugins,
-        panes: this.makePaneConfig(this.props.preload.store, this.props.preload.plugins, 1, []),
+        panes: this.makePaneConfig(this.props.preload.store, this.props.preload.plugins, 1, this.props.preload.file.panings, []),
       }
     }
     return {
@@ -48,6 +48,11 @@ var App = React.createClass({
   _listenToStore: function (store) {
     store.on(['changed'], this._onDirty)
     store.on(['node:' + store.db.root], this._onRootChanged)
+  },
+
+  _unlistenToStore: function (store) {
+    store.off(['changed'], this._onDirty)
+    store.off(['node:' + store.db.root], this._onRootChanged)
   },
 
   _onDirty: function () {
@@ -69,12 +74,17 @@ var App = React.createClass({
     this._changeTitle(title)
   },
 
-  _unlistenToStore: function (store) {
-    store.off(['changed'], this._onDirty)
-    store.off(['node:' + store.db.root], this._onRootChanged)
+  componentDidMount: function () {
+    // TODO: need to abstract out the logic from browse.js
+    window.addEventListener('popstate', this._popState)
   },
 
-  makePaneConfig: function (store, plugins, num, prev) {
+  componentDidUpdate: function () {
+    if (!this.state.store) return
+    this.state.store.changed(this.state.store.events.activeViewChanged())
+  },
+
+  makePaneConfig: function (store, plugins, num, panings, prev) {
     if (prev.length >= num) return prev.slice(0, num)
     var configs = prev.slice()
     for (var i=prev.length; i<num; i++) {
@@ -82,7 +92,11 @@ var App = React.createClass({
         type: this.props.defaultType,
         config: treed.viewConfig(store, plugins, null)
       })
-      configs[i].on(configs[i].events.rootChanged(), this._onRebased)
+      configs[i].config.view.on(configs[i].config.view.events.rootChanged(), this._onRebased)
+      if (panings && panings.length > i) {
+        configs[i].config.view.view.root = panings[i]
+        configs[i].config.view.view.active = panings[i]
+      }
     }
     for (var i=0; i<configs.length; i++) {
       if (i > 0) {
@@ -93,16 +107,6 @@ var App = React.createClass({
       }
     }
     return configs
-  },
-
-  componentDidMount: function () {
-    // TODO: need to abstract out the logic from browse.js
-    window.addEventListener('popstate', this._popState)
-  },
-
-  componentDidUpdate: function () {
-    if (!this.state.store) return
-    this.state.store.changed(this.state.store.events.activeViewChanged())
   },
 
   _popState: function () {
@@ -155,17 +159,23 @@ var App = React.createClass({
   },
 
   _setPanes: function (num) {
-    var initialRoots = this.state.initialRoots
-    for (var i=initialRoots.length; i<num; i++) {
-      initialRoots.push(this.state.store.db.root)
+    var panings = this.state.file.panings ? this.state.file.panings.slice(0, num) : []
+    for (var i=panings.length; i<num; i++) {
+      panings.push(this.state.store.db.root)
     }
-    this.setState({
-      initialRoots: initialRoots,
-      panes: this.makePaneConfig(this.state.store, this.state.plugins, num, this.state.panes)})
+    localFiles.update(this.state.file.id, {panings: panings}, file => {
+      this.setState({
+        file: file,
+        panes: this.makePaneConfig(this.state.store, this.state.plugins, num, panings, this.state.panes),
+      })
+    })
   },
 
   _onRebased: function () {
-
+    var panings = Object.keys(this.state.store.views).map(vid => this.state.store.views[vid].root)
+    localFiles.update(this.state.file.id, {panings: panings}, file => {
+      this.setState({file: file})
+    })
   },
 
   _onLoad: function (file, store, plugins) {
@@ -178,7 +188,7 @@ var App = React.createClass({
       file,
       store,
       plugins,
-      panes: this.makePaneConfig(store, plugins, 1, []),
+      panes: this.makePaneConfig(store, plugins, file.panings ? file.panings.length : 1, file.panings || [], []),
     })
   },
 
