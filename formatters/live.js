@@ -38,7 +38,7 @@ var LiveWatcher = React.createClass({
 
   render: function () {
     return <div className='LiveWatcher'>
-      {format.display(this.props.value, this.props.store,
+      {format.display(null, this.props.value, this.props.store,
                       {live_id: this.props.id})}
     </div>
   },
