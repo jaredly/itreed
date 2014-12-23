@@ -82,6 +82,7 @@ var App = React.createClass({
         type: this.props.defaultType,
         config: treed.viewConfig(store, plugins, null)
       })
+      configs[i].on(configs[i].events.rootChanged(), this._onRebased)
     }
     for (var i=0; i<configs.length; i++) {
       if (i > 0) {
@@ -132,6 +133,7 @@ var App = React.createClass({
         if (!plugin.statusbar) return
         statusbar.push(plugin.statusbar(pane.config.props.store))
       })
+      pane.config.props.skipMix = ['top']
       return <div className='App_pane'>
         {/* todo add filename here once we go multi-file */}
         <div className='App_pane_top'>
@@ -153,7 +155,17 @@ var App = React.createClass({
   },
 
   _setPanes: function (num) {
-    this.setState({panes: this.makePaneConfig(this.state.store, this.state.plugins, num, this.state.panes)})
+    var initialRoots = this.state.initialRoots
+    for (var i=initialRoots.length; i<num; i++) {
+      initialRoots.push(this.state.store.db.root)
+    }
+    this.setState({
+      initialRoots: initialRoots,
+      panes: this.makePaneConfig(this.state.store, this.state.plugins, num, this.state.panes)})
+  },
+
+  _onRebased: function () {
+
   },
 
   _onLoad: function (file, store, plugins) {
@@ -240,6 +252,7 @@ var App = React.createClass({
       <Header
         setPanes={this._setPanes}
         changeTitle={this._changeTitle}
+        plugins={this.state.plugins}
         onClose={!this.props.noHome && this._onClose}
         file={this.state.file}
         store={this.state.store}

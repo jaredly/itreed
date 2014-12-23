@@ -1,11 +1,11 @@
 /* @flow */
 
-type Cb = <T>(err: ?Error, result?: T) => void;
+                                               
 
 module.exports = {
   post: send.bind(null, 'POST'),
   patch: send.bind(null, 'PATCH'),
-  get: function get<T>(url: string, headers: any, done: (err: ?Error, result?: T) => void) {
+  get: function get   (url        , headers     , done                                   ) {
     if (arguments.length === 2) {
       done = headers
       headers = {}
@@ -14,7 +14,7 @@ module.exports = {
   },
 }
 
-function send<T>(method: string, url: string, headers: any, data: any, done: (err: ?Error, result?: T) => void) {
+function send   (method        , url        , headers     , data     , done                                   ) {
   var x = new XMLHttpRequest()
   x.open(method, url)
   for (var name in headers) {
@@ -42,5 +42,3 @@ function send<T>(method: string, url: string, headers: any, data: any, done: (er
     x.send()
   }
 }
-
-

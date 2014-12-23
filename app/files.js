@@ -1,4 +1,3 @@
-
 var IxPL = require('treed/rx/pl/ixdb')
   , QueuePL = require('treed/rx/pl/queuedb')
   , treed = require('treed/rx')
@@ -52,7 +51,7 @@ function dump(file, done) {
   })
 }
 
-function updateFile(id: string, data: any, done: (file: any) => void) {
+function updateFile(id, data, done) {
   listFiles(files => {
     var f
     saveFiles(
@@ -67,13 +66,7 @@ function updateFile(id: string, data: any, done: (file: any) => void) {
   })
 }
 
-type FileData = {
-  main: {content: string; children: Array<any>};
-  title: string;
-  repl: string | void
-}
-
-function convertToFile(data: FileData | Array<any>): ?FileData {
+function convertToFile(data) {
   if (!Array.isArray(data)) {
     if (data.main && data.title) {
       return data
@@ -226,4 +219,3 @@ function newImport(fileData, done) {
 function removeFile(id, done) {
   listFiles(files => saveFiles(files.filter(x => x.id !== id), done))
 }
-

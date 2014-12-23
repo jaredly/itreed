@@ -5,18 +5,17 @@ var React = require('treed/node_modules/react')
 
 module.exports = showModal
 
-type Cb = (err: ?Error, ...a: any) => void;
+                                           
 
-function showModal<T>(title: string, body: any, done: Cb) {
+function showModal   (title        , body     , done    ) {
   var node = document.createElement('div')
   document.body.appendChild(node)
-  var onClose = function (err: ?Error) {
+  var onClose = function (err        ) {
     node.parentNode.removeChild(node)
     done.apply(null, arguments)
   }
-  React.render(<Modal
-    onClose={onClose}
-    title={title}
-    body={body} />, node)
+  React.render(React.createElement(Modal, {
+    onClose: onClose, 
+    title: title, 
+    body: body}), node)
 }
-

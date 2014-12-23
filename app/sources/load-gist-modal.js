@@ -2,12 +2,12 @@
 
 var showModal = require('./show-modal')
 
-type Cb = (err: any, result?: any) => void;
+                                           
 
-module.exports = function (tryImport: (id: string, done: (err: any, result?: any) => void) => void, done: Cb) {
+module.exports = function (tryImport                                                              , done    ) {
   showModal('Import a Gist', function (state, set, done) {
     if (state.loading) {
-      return <div>Loading...</div>
+      return React.createElement("div", null, "Loading...")
     }
 
     var importit = () => {
@@ -18,14 +18,13 @@ module.exports = function (tryImport: (id: string, done: (err: any, result?: any
       })
     }
 
-    return <div>
-      {state.error && 'Error loading gist...'}
-      Enter the username and gist id to import:
-      <input placeholder='username/gistid'
-        value={state.gist_id}
-        onChange={set('gist_id', true)}/>
-      <button onClick={importit}>Import</button>
-    </div>
+    return React.createElement("div", null, 
+      state.error && 'Error loading gist...', 
+      "Enter the username and gist id to import:", 
+      React.createElement("input", {placeholder: "username/gistid", 
+        value: state.gist_id, 
+        onChange: set('gist_id', true)}), 
+      React.createElement("button", {onClick: importit}, "Import")
+    )
   }, done)
 }
-

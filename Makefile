@@ -1,5 +1,5 @@
 
-ARGS=-t [ reactify --strip-types --es6 --everything --visitors jstransform/visitors/es6-destructuring-visitors ]
+ARGS=-t [ reactify --es6 --everything --visitors jstransform/visitors/es6-destructuring-visitors ]
 
 MODS=' codemirror majax marked moment async ansi-to-html eventemitter3 highlight.js codemirror/mode/javascript/javascript codemirror/mode/python/python codemirror/mode/clojure/clojure codemirror/mode/julia/julia codemirror/mode/rust/rust codemirror/addon/edit/closebrackets codemirror/addon/edit/matchbrackets codemirror/addon/hint/javascript-hint codemirror/addon/hint/show-hint'
 

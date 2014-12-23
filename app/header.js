@@ -20,6 +20,7 @@ var Header = React.createClass({
   },
 
   render: function () {
+    var headStore = this.props.store.headerView()
     return <div className='Header'>
       <span className='Header_name'>
         <a target="_blank" href="http://notablemind.github.io">Notablemind</a>
@@ -50,6 +51,9 @@ var Header = React.createClass({
         <span className='icon-3pane'/>
       </button>
       {this.props.saver}
+      {this.props.plugins.map(plugin =>
+        plugin.view && plugin.view.global && plugin.view.global(headStore)
+      )}
       {/*
       <SourceSelector
         file={this.props.file}
