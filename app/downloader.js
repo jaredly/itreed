@@ -16,7 +16,7 @@ var Downloader = React.createClass({
     return {
       name: 'Notablemind-repl-session',
       whole_notebook: false,
-      format: 'nm',
+      format: 'notablemind',
     }
   },
 
