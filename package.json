@@ -1,6 +1,6 @@
 {
   "name": "itreed",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "An alternate interface to ipython",
   "main": "index.js",
   "scripts": {
