@@ -276,6 +276,7 @@ var Browse = React.createClass({
       {this.state.importError && 'Import Error: ' + this.state.importError}
 
       <Tabular
+        keys={this.props.keys}
         items={this.state.files}
         onSelect={this.loadFile}
         onMenu={this._onMenu}

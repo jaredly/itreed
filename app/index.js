@@ -11,6 +11,7 @@ var localFiles = require('./files')
   , history = require('./history')
   , TypeSwitcher = require('./type-switcher')
   , KeyManager = require('treed/rx/key-manager')
+  , keys = require('treed/lib/keys')
 
 var App = React.createClass({
 
@@ -28,6 +29,7 @@ var App = React.createClass({
   },
 
   getInitialState: function () {
+    this.homeKeys = keys({})
     /* disabling preloading, because I don't like it. also don't want to deal
      * with keys here.
     if (this.props.preload) {
@@ -61,7 +63,7 @@ var App = React.createClass({
   },
 
   _keyDown: function (e) {
-    if (!this.state.store) return // TODO make shortcuts for the home screen
+    if (!this.state.store) return this.homeKeys(e)// TODO make shortcuts for the home screen
     return this.state.keys.keyDown(e)
   },
 
@@ -273,7 +275,11 @@ var App = React.createClass({
   render: function () {
     if (!this.state.store) {
       return <div className='App App-browse'>
-        <Browse onLoad={this._onLoad} loadId={this.state.loadId} files={localFiles}/>
+        <Browse
+          keys={this.homeKeys}
+          onLoad={this._onLoad}
+          loadId={this.state.loadId}
+          files={localFiles}/>
       </div>
     }
     return <div className='App'>

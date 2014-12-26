@@ -1,5 +1,6 @@
 
 var React = require('treed/node_modules/react/addons')
+  , ensureInView = require('treed/rx/util/ensure-in-view')
   , cx = React.addons.classSet
   , PT = React.PropTypes
 
@@ -8,14 +9,45 @@ var Tabular = React.createClass({
     items: PT.array,
     headers: PT.object,
     onSelect: PT.func,
-  },
-
-  componentDidUpdate: function () {
-    this.resizeHead()
+    keys: PT.object,
   },
 
   componentDidMount: function () {
     this.resizeHead()
+    if (this.props.keys) {
+      this.props.keys.add({
+        'j, down': this.goDown,
+        'k, up': this.goUp,
+        'return, i': this.keySelect,
+      })
+    }
+  },
+
+  componentDidUpdate: function () {
+    this.resizeHead()
+    ensureInView(this.refs.selected.getDOMNode())
+  },
+
+  getInitialState: function () {
+    return {
+      selected: 0
+    }
+  },
+
+  keySelect: function () {
+    this.props.onSelect(this.props.items[this.state.selected])
+  },
+
+  goUp: function () {
+    if (this.state.selected > 0) {
+      this.setState({selected: this.state.selected - 1})
+    }
+  },
+
+  goDown: function () {
+    if (this.state.selected < this.props.items.length - 2) {
+      this.setState({selected: this.state.selected + 1})
+    }
   },
 
   resizeHead: function () {
@@ -53,7 +85,10 @@ var Tabular = React.createClass({
           </thead>
           <tbody>
             {
-              this.props.items.map(item => <tr
+              this.props.items.map((item, i) => <tr
+                  key={i}
+                  ref={i === this.state.selected ? 'selected' : undefined}
+                  className={i === this.state.selected ? 'selected' : ''}
                   onContextMenu={this.props.onMenu.bind(null, item)}
                   onClick={this.props.onSelect.bind(null, item)}>
                 {heads.map(name => <td>{this.props.headers[name](item)}</td>)}
