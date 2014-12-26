@@ -197,6 +197,9 @@ var App = React.createClass({
     this._listenToStore(store)
     var keys = new KeyManager()
     keys.attach(store)
+    keys.addKeys({
+      'g q': this._onClose
+    })
     this.setState({
       loadId: null,
       file,
