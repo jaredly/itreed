@@ -10,6 +10,7 @@ var localFiles = require('./files')
   , SOURCES = require('./sources')
   , history = require('./history')
   , TypeSwitcher = require('./type-switcher')
+  , KeyManager = require('treed/rx/key-manager')
 
 var App = React.createClass({
 
@@ -27,15 +28,18 @@ var App = React.createClass({
   },
 
   getInitialState: function () {
+    /* disabling preloading, because I don't like it. also don't want to deal
+     * with keys here.
     if (this.props.preload) {
       this._listenToStore(this.props.preload.store)
       return {
         file: this.props.preload.file,
         store: this.props.preload.store,
         plugins: this.props.preload.plugins,
-        panes: this.makePaneConfig(this.props.preload.store, this.props.preload.plugins, 1, this.props.preload.file.panings, []),
+        panes: this.m.akePaneConfig(this.props.preload.store, this.props.preload.plugins, 1, this.props.preload.file.panings, []),
       }
     }
+    */
     return {
       loadId: history.get(),
       file: null,
@@ -43,6 +47,22 @@ var App = React.createClass({
       plugins: null,
       panes: [],
     }
+  },
+
+  componentDidMount: function () {
+    // TODO: need to abstract out the logic from browse.js
+    window.addEventListener('popstate', this._popState)
+    window.addEventListener('keydown', this._keyDown)
+  },
+
+  componentDidUpdate: function () {
+    if (!this.state.store) return
+    this.state.store.changed(this.state.store.events.activeViewChanged())
+  },
+
+  _keyDown: function (e) {
+    if (!this.state.store) return // TODO make shortcuts for the home screen
+    return this.state.keys.keyDown(e)
   },
 
   _listenToStore: function (store) {
@@ -74,29 +94,21 @@ var App = React.createClass({
     this._changeTitle(title)
   },
 
-  componentDidMount: function () {
-    // TODO: need to abstract out the logic from browse.js
-    window.addEventListener('popstate', this._popState)
-  },
-
-  componentDidUpdate: function () {
-    if (!this.state.store) return
-    this.state.store.changed(this.state.store.events.activeViewChanged())
-  },
-
-  makePaneConfig: function (store, plugins, num, panings, prev) {
+  makePaneConfig: function (store, keys, plugins, num, panings, prev) {
     if (prev.length >= num) return prev.slice(0, num)
     var configs = prev.slice()
     for (var i=prev.length; i<num; i++) {
+      var pane = treed.viewConfig(store, plugins, null)
       configs.push({
         type: this.props.defaultType,
-        config: treed.viewConfig(store, plugins, null)
+        config: pane,
       })
-      configs[i].config.view.on(configs[i].config.view.events.rootChanged(), this._onRebased)
+      pane.view.on(pane.view.events.rootChanged(), this._onRebased)
       if (panings && panings.length > i) {
-        configs[i].config.view.view.root = panings[i]
-        configs[i].config.view.view.active = panings[i]
+        pane.view.view.root = panings[i]
+        pane.view.view.active = panings[i]
       }
+      keys.addView(pane.view.id, pane.keys)
     }
     for (var i=0; i<configs.length; i++) {
       if (i > 0) {
@@ -166,7 +178,7 @@ var App = React.createClass({
     localFiles.update(this.state.file.id, {panings: panings}, file => {
       this.setState({
         file: file,
-        panes: this.makePaneConfig(this.state.store, this.state.plugins, num, panings, this.state.panes),
+        panes: this.makePaneConfig(this.state.store, this.state.keys, this.state.plugins, num, panings, this.state.panes),
       })
     })
   },
@@ -183,12 +195,15 @@ var App = React.createClass({
     history.set(file.id)
     store.clearViews()
     this._listenToStore(store)
+    var keys = new KeyManager()
+    keys.attach(store)
     this.setState({
       loadId: null,
       file,
       store,
+      keys,
       plugins,
-      panes: this.makePaneConfig(store, plugins, file.panings ? file.panings.length : 1, file.panings || [], []),
+      panes: this.makePaneConfig(store, keys, plugins, file.panings ? file.panings.length : 1, file.panings || [], []),
     })
   },
 
