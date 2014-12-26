@@ -53,7 +53,9 @@ var Tabular = React.createClass({
           </thead>
           <tbody>
             {
-              this.props.items.map(item => <tr onClick={this.props.onSelect.bind(null, item)}>
+              this.props.items.map(item => <tr
+                  onContextMenu={this.props.onMenu.bind(null, item)}
+                  onClick={this.props.onSelect.bind(null, item)}>
                 {heads.map(name => <td>{this.props.headers[name](item)}</td>)}
               </tr>)
             }

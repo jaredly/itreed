@@ -4,6 +4,7 @@ var React = require('treed/node_modules/react')
   , Dropload = require('./dropload')
   , Importer = require('./importer')
   , Tabular = require('./tabular')
+  , Dumper = require('./dumper')
   , readFile = require('./read-file')
   , treed = require('treed/rx')
   , cx = React.addons.classSet
@@ -76,6 +77,11 @@ var Browse = React.createClass({
   componentDidMount: function () {
     if (this.state.file) return
     this.loadFiles()
+    window.addEventListener('mousedown', this._windowMouseDown)
+  },
+
+  componentWillUnmount: function () {
+    window.removeEventListener('mousedown', this._windowMouseDown)
   },
 
   loadFile: function (file, autoload) {
@@ -96,6 +102,10 @@ var Browse = React.createClass({
     )
   },
 
+  _windowMouseDown: function() {
+    if (this.state.menu) this.setState({menu: null})
+  },
+
   _onError: function (err) {
     this.setState({loading: false, error: err})
   },
@@ -113,30 +123,9 @@ var Browse = React.createClass({
     )
   },
 
-  _onEditFile: function (file, e) {
+  _onMenu: function (file, e) {
     e.preventDefault()
-    this.setState({configuring: file.id})
-  },
-
-  fileItem: function (file) {
-    return <li className='Browse_file'
-               key={file.id}>
-      <div onContextMenu={this._onEditFile.bind(null, file)}
-           onClick={this.loadFile.bind(null, file, false)}
-           className='Browse_file_listing'>
-        <span className='Browse_title'>{file.title}</span>
-        {file.repl &&
-          <span className={'Browse_repl Browse_repl-' + file.repl}>
-            {file.repl}
-          </span>}
-        {file.source &&
-          <span className={'Browse_source Browse_source-' + file.source.type}>
-            {file.source.type}
-          </span>}
-      </div>
-      {file.id === this.state.configuring &&
-        this.renderConfig(file)}
-    </li>
+    this.setState({menu: {file: file, x: e.pageX, y: e.pageY}})
   },
 
   _setRepl: function (file, repl) {
@@ -145,26 +134,28 @@ var Browse = React.createClass({
     })
   },
 
+  _openNewTab: function () {
+    var id = this.state.menu.file.id
+    this.setState({menu: null})
+    window.open('?' + id)
+  },
+
+  _exportFile: function () {
+    // TODO: export file stuff
+  },
+
+  _deleteFile: function () {
+    var id = this.state.menu.file.id
+    this.setState({menu: null})
+    this.props.files.remove(id, this.loadFiles)
+  },
+
   _onRemoveFile: function (file) {
     this.props.files.remove(file.id, this.loadFiles)
   },
 
   _onDoneConfig: function () {
     this.setState({configuring: false})
-  },
-
-  _onExport: function () {
-    this.setState({dumping: true})
-    this.props.files.list(files => {
-      var tasks = files.map(file =>
-        this.props.files.dump.bind(null, file))
-      async.parallel(tasks, (err, results) => {
-        var blob = new Blob([JSON.stringify(results, null, 2)], {type: 'application/json'})
-        this.setState({
-          dumpURL: URL.createObjectURL(blob)
-        })
-      })
-    })
   },
 
   _onImport: function (files) {
@@ -239,6 +230,26 @@ var Browse = React.createClass({
     this.setState({newing: open ? what : null})
   },
 
+  _renderMenu: function () {
+    var items = [
+      {title: 'Open in new tab', action: this._openNewTab},
+      // {title: 'Export', action: this._exportFile},
+      {title: 'Delete', action: this._deleteFile},
+    ]
+    return <ul className='Browse_menu' style={{
+      top: this.state.menu.y,
+      left: this.state.menu.x,
+    }}>
+      {items.map((item, i) =>
+          <li
+              key={i}
+              onMouseDown={(e) => e.stopPropagation()}
+              onClick={item.action} className='Browse_menu_item'>
+            {item.title}
+          </li>)}
+    </ul>
+  },
+
   render: function () {
     if (this.state.loading) {
       return <div className='Browse Browse-loading'>
@@ -267,6 +278,7 @@ var Browse = React.createClass({
       <Tabular
         items={this.state.files}
         onSelect={this.loadFile}
+        onMenu={this._onMenu}
         headers={{
           'Name': file => file.title,
           'Repl': file => file.repl,
@@ -277,11 +289,8 @@ var Browse = React.createClass({
           Source: 100,
         }}
       />
-      {this.state.dumping ?
-        (this.state.dumpURL ?
-          <a download="notablemind-dump.json" href={this.state.dumpURL}>Click to download</a> :
-          <span>Processing...</span>) :
-        <a style={{cursor:'pointer',color: 'blue'}} onClick={this._onExport}>Dump</a>}
+      {/*<Dumper files={this.props.files}/>*/}
+      {this.state.menu && this._renderMenu()}
     </div>
   }
 })
