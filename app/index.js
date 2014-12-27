@@ -63,7 +63,12 @@ var App = React.createClass({
   },
 
   _keyDown: function (e) {
-    if (!this.state.store) return this.homeKeys(e)// TODO make shortcuts for the home screen
+    if (!this.state.store) {
+      if (['INPUT', 'TEXTAREA'].indexOf(e.target.nodeName) !== -1) {
+        return
+      }
+      return this.homeKeys(e)// TODO make shortcuts for the home screen
+    }
     return this.state.keys.keyDown(e)
   },
 
