@@ -69,6 +69,10 @@ var App = React.createClass({
       }
       return this.homeKeys(e)// TODO make shortcuts for the home screen
     }
+    if (this.state.store.views[this.state.store.activeView].mode !== 'insert' &&
+        ['INPUT', 'TEXTAREA'].indexOf(e.target.nodeName) !== -1) {
+      return
+    }
     return this.state.keys.keyDown(e)
   },
 
