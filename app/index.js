@@ -21,9 +21,10 @@ var App = React.createClass({
       noHome: false,
       loaded: false,
       types: {
-        pdf: require('treed/rx/views/pdf'),
+        // pdf: require('treed/rx/views/pdf'),
         tree: require('treed/rx/views/tree'),
         paper: require('treed/rx/views/paper'),
+        focus: require('treed/rx/views/focus'),
       }
     }
   },
@@ -161,7 +162,7 @@ var App = React.createClass({
         statusbar.push(plugin.statusbar(pane.config.props.store))
       })
       pane.config.props.skipMix = ['top']
-      return <div className='App_pane'>
+      return <div className={'App_pane App_pane-' + pane.type}>
         {/* todo add filename here once we go multi-file */}
         <div className='App_pane_top'>
           {statusbar}

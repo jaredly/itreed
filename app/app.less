@@ -66,6 +66,66 @@
   }
 }
 
+/** focus stuff. TODO move it? **/
+
+.App_pane-focus {
+  max-width: none;
+
+  .App_pane_scroll {
+    flex: 1;
+    display: flex;
+    overflow: visible;
+    padding: 10px;
+
+    .flex-panes {
+      width: 100%;
+      display: flex;
+    }
+
+    .flex-main {
+      flex: 1;
+      display: flex;
+    }
+
+    .flex-bar {
+      background-color: #888;
+      min-width: 10px;
+      min-height: 10px;
+      display: flex;
+      cursor: ns-resize;
+    }
+
+    .flex-switch {
+      display: block;
+      width: 10px;
+      height: 10px;
+      background-color: #333;
+      cursor: ew-resize;
+    }
+
+    .flex-panes-vert {
+      .flex-bar {
+        cursor: ew-resize;
+      }
+
+      .flex-switch {
+        cursor: ns-resize;
+      }
+    }
+
+    .focus {
+      display: flex;
+      flex: 1;
+    }
+
+    // maybe move this stuff
+    .focus_item_body {
+      overflow: auto;
+      flex: 1;
+    }
+  }
+}
+
 @import "./dupload.less";
 @import "./header.less";
 @import "./type-switcher.less";
