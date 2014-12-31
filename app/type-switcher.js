@@ -4,7 +4,7 @@ var React = require('treed/node_modules/react')
 
 var TypeSwitcher = React.createClass({
   propTypes: {
-    types: React.PropTypes.array,
+    types: React.PropTypes.object,
   },
 
   getInitialState: function () {

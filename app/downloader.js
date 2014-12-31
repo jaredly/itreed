@@ -5,32 +5,53 @@ var React = require('treed/node_modules/react/addons')
   , Modal = require('./modal')
   , FormatPicker = require('./format-picker')
   , convert = require('./convert')
+  , saveAs = require('../lib/save-as')
 
 var Downloader = React.createClass({
   propTypes: {
+    nodeContents: PT.func.isRequired,
     exportMany: PT.func.isRequired,
     onClose: PT.func.isRequired,
   },
 
   getInitialState: function () {
     return {
-      name: 'Notablemind-repl-session',
+      name: this._getDefaultName(false),
       whole_notebook: false,
       format: 'notablemind',
     }
   },
 
+  componentDidMount: function () {
+    var inp = this.refs.input.getDOMNode()
+    inp.focus()
+    inp.selectionStart = 0
+    inp.selectionEnd = inp.value.length
+  },
+
+  _getDefaultName: function (whole_notebook) {
+    var id = this.props.ids[0]
+    if (whole_notebook) {
+      id = this.props.root
+    }
+    return this.props.nodeContents(id).trim().replace(/[^\w-_.]/g, '-').slice(0, 100)
+  },
+
+  _onKeyDown: function (e) {
+    if (e.key !== 'Enter') return
+    this.onDownload()
+  },
+
   onDownload: function () {
     var ids = this.state.whole_notebook ? [this.props.root] : this.props.ids
       , format = this.state.format
-      , a = this.refs.link.getDOMNode()
       , trees = this.props.exportMany(ids)
       , data = convert[format].strFromTrees(trees)
       , mime = convert[format].mime
       , blob = new Blob([data], {type: mime})
       , url = URL.createObjectURL(blob)
-    a.href = url
-    a.download = this.fileName()
+    saveAs(url, this.fileName())
+    this.props.onClose()
   },
 
   fileName: function () {
@@ -46,7 +67,10 @@ var Downloader = React.createClass({
   },
 
   _setWhole: function (whole) {
-    this.setState({whole_notebook: whole})
+    this.setState({
+      whole_notebook: whole,
+      name: this._getDefaultName(whole),
+    })
   },
 
   render: function () {
@@ -66,8 +90,8 @@ var Downloader = React.createClass({
     }
     return <Modal onClose={this.props.onClose} title="Download" className="Modal-download">
       {whole ?
-        'Download the whole notebook' :
-        <span>Download
+        <span className='Download_what'>Download the whole notebook</span> :
+        <span className='Download_what'>Download
           <button onClick={this._setWhole.bind(null, false)} className={cx({
             'Download_which': true,
             'Download_which-selected': !this.state.whole_notebook,
@@ -79,13 +103,17 @@ var Downloader = React.createClass({
         </span>}
       <FormatPicker formats={convert.formats} format={this.state.format} onChange={this._onChangeFormat}/>
       File name:
-      <input className='Download_name' value={this.state.name} onChange={this._onChangeName}/>
+      <input
+          ref="input"
+          className='Download_name'
+          value={this.state.name}
+          onKeyDown={this._onKeyDown}
+          onChange={this._onChangeName}/>
       <span className='Download_ext'>.{convert[this.state.format].ext}</span>
       <br/>
-      <a className="Download_link" ref="link"
-          onClick={this.onDownload}>
+      <button className="Download_link" onClick={this.onDownload}>
         Download
-      </a>
+      </button>
     </Modal>
   }
 })

@@ -89,12 +89,12 @@ var Uploader = React.createClass({
 
   file: function () {
     if (this.state.file) {
-      return <div>
+      return <div className='Uploader_file'>
         <span>{this.state.file.name + ' ' + this.state.file.size + 'kb'}</span>
         <button className='Uploader_clear' onClick={this._onClearFile}>&times;</button>
       </div>
     }
-    return <input type="file" onChange={this._onChangeFile}/>
+    return <input className='Uploader_input' type="file" onChange={this._onChangeFile}/>
   },
 
   render: function () {

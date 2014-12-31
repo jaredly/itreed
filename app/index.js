@@ -30,19 +30,6 @@ var App = React.createClass({
   },
 
   getInitialState: function () {
-    this.homeKeys = keys({})
-    /* disabling preloading, because I don't like it. also don't want to deal
-     * with keys here.
-    if (this.props.preload) {
-      this._listenToStore(this.props.preload.store)
-      return {
-        file: this.props.preload.file,
-        store: this.props.preload.store,
-        plugins: this.props.preload.plugins,
-        panes: this.m.akePaneConfig(this.props.preload.store, this.props.preload.plugins, 1, this.props.preload.file.panings, []),
-      }
-    }
-    */
     return {
       loadId: history.get(),
       file: null,
@@ -50,6 +37,11 @@ var App = React.createClass({
       plugins: null,
       panes: [],
     }
+  },
+
+  componentWillMount: function () {
+    window.document.title = 'Notablemind:list'
+    this.homeKeys = keys({})
   },
 
   componentDidMount: function () {
@@ -68,7 +60,7 @@ var App = React.createClass({
       if (['INPUT', 'TEXTAREA'].indexOf(e.target.nodeName) !== -1) {
         return
       }
-      return this.homeKeys(e)// TODO make shortcuts for the home screen
+      return this.homeKeys(e)
     }
     if (this.state.store.views[this.state.store.activeView].mode !== 'insert' &&
         ['INPUT', 'TEXTAREA'].indexOf(e.target.nodeName) !== -1) {
@@ -102,6 +94,7 @@ var App = React.createClass({
       , title = db.nodes[db.root].content
     if (title.length > 100) {
       title = title.slice(0, 98) + '..'
+      window.document.title = title
     }
     this._changeTitle(title)
   },
@@ -207,6 +200,7 @@ var App = React.createClass({
     history.set(file.id)
     store.clearViews()
     this._listenToStore(store)
+    window.document.title = file.title
     var keys = new KeyManager()
     keys.attach(store)
     keys.addKeys({
@@ -224,6 +218,7 @@ var App = React.createClass({
 
   _onClose: function () {
     history.set('')
+    window.document.title = 'Notablemind:list'
     if (this.state.store) {
       this.state.store.teardown()
       this._unlistenToStore(this.state.store)

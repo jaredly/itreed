@@ -51,7 +51,7 @@ module.exports = {
     treeFromStr: parseGorilla.fromStr,
   },
   formats: [
-    ['nm', 'Notablemind (.nm)'],
+    ['notablemind', 'Notablemind (.nm)'],
     ['ipython', 'IPython (.ipynb)'],
     ['gorilla', 'Gorilla (.clj)'],
     ['python', 'Python (.py)'],

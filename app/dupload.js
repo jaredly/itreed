@@ -61,6 +61,7 @@ var Dupload = React.createClass({
       var store = this.props.store
       modal = Downloader({
         exportMany: store.db.exportMany.bind(this.props.store.db),
+        nodeContents: (id) => store.db.nodes[id].content,
         ids: store.views[store.activeView].selection || [store.views[store.activeView].active],
         root: store.db.root,
         onClose: this._onClose,

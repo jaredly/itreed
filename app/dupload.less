@@ -15,6 +15,15 @@
   }
 }
 
+.Uploader_file {
+  margin: 20px 0 10px;
+}
+
+.Uploader_input {
+  margin: 20px;
+  font-size: 16px;
+}
+
 .Uploader_clear,
 .Uploader_submit {
   border: 1px solid #999;
@@ -79,11 +88,15 @@
 
 // Downloader
 
+.Download_what {
+  margin: 20px 0;
+}
+
 .Download_name {
   width: 250px;
   padding: 5px 0 5px 5px;
   text-align: right;
-  margin: 0 5px 0 15px;
+  margin: 20px 5px 0 15px;
   font-size: 16px;
   font-weight: bold;
 }
@@ -130,13 +143,14 @@
 
 .FormatPicker {
   list-style: none;
-  margin: 0 0 20px;
+  margin: 0;
   padding: 0;
   text-align: center;
 
   &_item {
     padding: 10px;
     margin-right: 10px;
+    margin-top: 10px;
     border: 1px solid #ccc;
     display: inline-block;
     cursor: pointer;
@@ -171,7 +185,6 @@
 
     width: 600px;
     margin-left: -300px;
-    height: 400px;
     margin-top: -200px;
     z-index: 10000;
   }
@@ -205,24 +218,18 @@
 
 .Modal-upload {
   .Modal_popup {
-    height: auto;
     padding-bottom: 20px;
+
   }
 
   .Modal_body {
     text-align: center;
-    margin-top: 15px;
   }
 }
 
 .Modal-download {
-  .Modal_popup {
-    height: 250px;
-  }
-
   .Modal_body {
     text-align: center;
-    margin-top: 15px;
   }
 }
 

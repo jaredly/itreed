@@ -9,7 +9,7 @@ var Tabular = React.createClass({
     items: PT.array,
     headers: PT.object,
     onSelect: PT.func,
-    keys: PT.object,
+    keys: PT.func,
     extraKeys: PT.object,
   },
 
