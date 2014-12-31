@@ -279,6 +279,9 @@ var Browse = React.createClass({
         keys={this.props.keys}
         items={this.state.files}
         onSelect={this.loadFile}
+        extraKeys={{
+          'ctrl+return': (item) => window.open('?' + item.id)
+        }}
         onMenu={this._onMenu}
         headers={{
           'Name': file => file.title,

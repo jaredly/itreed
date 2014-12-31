@@ -10,6 +10,7 @@ var Tabular = React.createClass({
     headers: PT.object,
     onSelect: PT.func,
     keys: PT.object,
+    extraKeys: PT.object,
   },
 
   componentDidMount: function () {
@@ -20,18 +21,29 @@ var Tabular = React.createClass({
         'k, up': this.goUp,
         'return, i': this.keySelect,
       })
+      var k = {}
+      for (var name in this.props.extraKeys) {
+        k[name] = this._extraKeys.bind(null, this.props.extraKeys[name])
+      }
+      this.props.keys.add(k)
     }
   },
 
-  componentDidUpdate: function () {
+  componentDidUpdate: function (prevProps, prevState) {
     this.resizeHead()
-    ensureInView(this.refs.selected.getDOMNode())
+    if (this.state.selected !== prevState.selected) {
+      ensureInView(this.refs.selected.getDOMNode())
+    }
   },
 
   getInitialState: function () {
     return {
       selected: 0
     }
+  },
+
+  _extraKeys: function (fn) {
+    fn(this.props.items[this.state.selected])
   },
 
   keySelect: function () {
@@ -45,7 +57,7 @@ var Tabular = React.createClass({
   },
 
   goDown: function () {
-    if (this.state.selected < this.props.items.length - 2) {
+    if (this.state.selected < this.props.items.length - 1) {
       this.setState({selected: this.state.selected + 1})
     }
   },
@@ -59,6 +71,11 @@ var Tabular = React.createClass({
       var cs = window.getComputedStyle(th)
       ths[i].style.width = cs.width
     })
+  },
+
+  _onMenu: function (item, i, e) {
+    this.setState({selected: i})
+    this.props.onMenu(item, e)
   },
 
   render: function () {
@@ -89,7 +106,7 @@ var Tabular = React.createClass({
                   key={i}
                   ref={i === this.state.selected ? 'selected' : undefined}
                   className={i === this.state.selected ? 'selected' : ''}
-                  onContextMenu={this.props.onMenu.bind(null, item)}
+                  onContextMenu={this._onMenu.bind(null, item, i)}
                   onClick={this.props.onSelect.bind(null, item)}>
                 {heads.map(name => <td>{this.props.headers[name](item)}</td>)}
               </tr>)
