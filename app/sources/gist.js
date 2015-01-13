@@ -5,17 +5,14 @@ var saveAsModal = require('./save-as-modal')
   , ajax = require('./ajax')
   , oauth = require('./oauth')
 
-               
-                  
- 
-
-                                           
-                                                                   
-
 module.exports = {
   title: 'Github Gist',
 
-  select: function (done                                                   ) {
+  link: function (config) {
+    return 'https://gist.github.com/' + config.gist_id
+  },
+
+  select: function (done) {
     loadGistModal(loadGist, function (err, result, gist_id) {
       if (err) return
       var parts = gist_id.split('/')
@@ -26,11 +23,11 @@ module.exports = {
     })
   },
 
-  load: function (config        , done    ) {
+  load: function (config, done) {
     loadGist(config.gist_id, done)
   },
 
-  save: function (title        , text        , config        , done          ) {
+  save: function (title, text, config, done) {
     authorize((err, token) => {
       if (err) return done(err)
       var files = {}
@@ -47,7 +44,7 @@ module.exports = {
     })
   },
 
-  saveAs: function (title        , text        , done          ) {
+  saveAs: function (title, text, done) {
     authorize((err, token) => {
       // TODO clear auth token?
       if (err) return done(err)

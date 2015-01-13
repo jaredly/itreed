@@ -7,10 +7,9 @@ var React = require('treed/node_modules/react')
 
 var Saver = React.createClass({
   propTypes: {
-    onSave: PT.func.isRequired,
-    onSaveAs: PT.func.isRequired,
+    onSync: PT.func.isRequired,
+    onSetup: PT.func.isRequired,
     onClear: PT.func.isRequired,
-    // value: ?{type: , config: , saved: }
   },
   getInitialState: function () {
     return {
@@ -19,16 +18,18 @@ var Saver = React.createClass({
     }
   },
 
-  _onSaveAs: function (type) {
-    this.props.onSaveAs(type, (err) => {
+  _onSetup: function (type) {
+    this.setState({loading: true})
+    this.props.onSetup(type, (err) => {
       this.setState({
         error: err,
         loading: false,
       })
     })
   },
-  _onSave: function () {
-    this.props.onSave((err) => {
+  _onSync: function () {
+    this.setState({loading: true})
+    this.props.onSync((err) => {
       this.setState({
         error: err,
         loading: false,
@@ -42,27 +43,24 @@ var Saver = React.createClass({
 
   render: function () {
     if (this.state.loading) {
-      return <span>Loading...</span>
+      return <span>Syncing...</span>
     }
     if (!this.props.value) {
       return <DropDown
         blank="Setup sync"
         options={Object.keys(sources)}
-        onSelect={this._onSaveAs}/>
+        onSelect={this._onSetup}/>
     }
+
     var source = this.props.value
-    if (!this.props.value.dirty) {
-      return <span>
-        All changes saved to {source.type}.
-        <button onClick={this._showSettings}>Settings</button>
-        {this.state.error}
-      </span>
-    }
+    var link = sources[source.type].link ?
+      <a target="_blank" href={sources[source.type].link(source.config)}>{source.type}</a> : source.type;
+
     return <span>
-      <button onClick={this._onSave}>Save</button>
-      to {source.type}.
-      <button onClick={this._showSettings}>Settings</button>
+      <button onClick={this._onSync}>Sync</button> with {link}
+      {!this.props.value.dirty && 'All changes saved'}
       {this.state.error}
+      <button onClick={this._showSettings}>Settings</button>
     </span>
   },
 })

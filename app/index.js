@@ -12,6 +12,7 @@ var localFiles = require('./files')
   , TypeSwitcher = require('./type-switcher')
   , KeyManager = require('treed/rx/key-manager')
   , keys = require('treed/lib/keys')
+  , sync = require('./sync')
 
 var App = React.createClass({
 
@@ -249,7 +250,7 @@ var App = React.createClass({
         source: {
           type: type,
           config: config,
-          saved: time,
+          synced: time,
           dirty: false,
         }
       }, file => {
@@ -259,22 +260,41 @@ var App = React.createClass({
     })
   },
 
-  _onSave: function (done) {
+  _onSync: function (done) {
+
     var source = this.state.file.source
-    var store = this.state.store
-      , text = JSON.stringify(store.db.exportTree(), null, 2)
-      , title = store.db.nodes[store.db.root].content
-    source.dirty = false // TODO is this in the right place?
-    SOURCES[source.type].save(title, text, source.config, (err, config, time) => {
-      if (err) return done(new Error('Failed to save'))
-      source.saved = time
-      localFiles.update(this.state.file.id, {
-        source: source
-      }, file => {
-        this.setState({file: file})
-        done()
+      , local_modified = this.state.file.modified
+
+    var just_save = () => {
+      var store = this.state.store
+        , text = JSON.stringify(store.db.exportTree(), null, 2)
+        , title = store.db.nodes[store.db.root].content
+
+      sync.just_save(title, text, source, source => {
+        localFiles.update(this.state.file.id, {
+          source: source
+        }, file => {
+          this.setState({file: file})
+          done()
+        })
       })
+    }
+
+    var just_update = () => {
+    }
+
+    var ss = SOURCES[source.type]
+
+    ss.head(source.config, (last_modified, content) => {
+      if (source.synced >= last_modified) {
+        just_save()
+      } else if (!source.dirty && local_modified <= last_modified) {
+        just_update()
+      } else {
+        reconcile()
+      }
     })
+
   },
 
   render: function () {
@@ -296,8 +316,8 @@ var App = React.createClass({
         file={this.state.file}
         store={this.state.store}
         saver={<Saver
-          onSave={this._onSave}
-          onSaveAs={this._setSource}
+          onSync={this._onSync}
+          onSetup={this._setSource}
           onClear={this._clearSource}
           value={this.state.file.source}
           />}

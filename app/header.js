@@ -50,10 +50,10 @@ var Header = React.createClass({
         onClick={this.props.setPanes.bind(null, 3)}>
         <span className='icon-3pane'/>
       </button>
-      {this.props.saver}
       {this.props.plugins.map(plugin =>
         plugin.view && plugin.view.global && plugin.view.global(headStore)
       )}
+      {this.props.saver}
       {/*
       <SourceSelector
         file={this.props.file}
