@@ -78,6 +78,11 @@ var Browse = React.createClass({
     if (this.state.file) return
     this.loadFiles()
     window.addEventListener('mousedown', this._windowMouseDown)
+    if (this.props.keys) {
+      this.props.keys.add({
+        'n': () => this.setState({newing: 'new'}),
+      })
+    }
   },
 
   componentWillUnmount: function () {
@@ -280,7 +285,7 @@ var Browse = React.createClass({
         items={this.state.files}
         onSelect={this.loadFile}
         extraKeys={{
-          'ctrl+return': (item) => window.open('?' + item.id)
+          'ctrl+return': item => window.open('?' + item.id)
         }}
         onMenu={this._onMenu}
         headers={{

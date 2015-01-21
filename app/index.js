@@ -100,8 +100,15 @@ var App = React.createClass({
     this._changeTitle(title)
   },
 
+
   makePaneConfig: function (store, keys, plugins, num, panings, prev) {
-    if (prev.length >= num) return prev.slice(0, num)
+    if (prev.length >= num) {
+      for (var i=num; i<prev.length; i++) {
+        store.unregisterView(prev[i].config.view.id)
+      }
+      delete prev[num-1].config.view.view.windowRight
+      return prev.slice(0, num)
+    }
     var configs = prev.slice()
     for (var i=prev.length; i<num; i++) {
       var pane = treed.viewConfig(store, plugins, null)

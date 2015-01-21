@@ -8,7 +8,7 @@ module.exports = {
 
   display: function (value, meta) {
     if (_cache[value]) {
-      return _cache[value]
+      return <Sandbox comp={_cache[value]}/>
     }
     return <em>Evaluate to see React Component</em>;
   },
@@ -21,4 +21,31 @@ module.exports = {
     }
   },
 }
+
+var Sandbox = React.createClass({
+  getInitialState: function () {
+    return {error: null}
+  },
+  componentDidMount: function () {
+    this._renderSandbox()
+  },
+  componentDidUpdate: function (prevProps) {
+    if (prevProps.comp === this.props.comp) return
+    this._renderSandbox()
+  },
+  _renderSandbox: function () {
+    try {
+      React.render(this.props.comp, this.refs.sandbox.getDOMNode())
+    } catch (e) {
+      return this.setState({error: 'Failed to render component: ' + e.message + '\n' + e.stack})
+    }
+    this.setState({error: null})
+  },
+  render: function () {
+    return <div className='sandbox'>
+      <div ref="sandbox"/>
+      {this.state.error && <div className='sandbox_error'>{this.state.error}</div>}
+    </div>
+  }
+})
 
