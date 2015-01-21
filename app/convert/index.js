@@ -2,6 +2,7 @@
 var parseGorilla = require('./gorilla')
 var ipython = require('./ipython')
 var python = require('./python')
+var js = require('./javascript')
 var markdown = require('./markdown')
 
 module.exports = {
@@ -44,6 +45,12 @@ module.exports = {
     strFromTrees: python.toStr,
     treeFromStr: python.fromStr,
   },
+  javascript: {
+    ext: 'js',
+    mime: 'text/javascript',
+    strFromTrees: js.toStr,
+    treeFromStr: js.fromStr,
+  },
   gorilla: {
     ext: 'clj',
     mime: 'text/clojure',
@@ -55,6 +62,7 @@ module.exports = {
     ['ipython', 'IPython (.ipynb)'],
     ['gorilla', 'Gorilla (.clj)'],
     ['python', 'Python (.py)'],
+    ['javascript', 'Javascript (.js)'],
     ['markdown', 'Markdown (.md)'],
     // latex: 'Latex (.tx)',
   ],
@@ -64,6 +72,7 @@ module.exports = {
     'py': 'python',
     'ipynb': 'ipython',
     'clj': 'gorilla',
+    'js': 'javascript',
   },
   detect: function (filename) {
     var parts = filename.split('.')

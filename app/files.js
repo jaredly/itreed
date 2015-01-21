@@ -132,6 +132,7 @@ function init(file, pl, defaultData, done) {
   var plugins = [
     require('treed/rx/plugins/undo'),
     require('treed/rx/plugins/todo'),
+    require('treed/rx/plugins/image'),
     require('treed/rx/plugins/types'),
     require('treed/rx/plugins/collapse'),
     require('treed/rx/plugins/clipboard'),

@@ -128,7 +128,7 @@
 
   &_plain {
     font-family: 'monospace';
-    white-space: 'pre';
+    white-space: pre;
   }
 
   &-error {
@@ -229,11 +229,6 @@
   }
 }
 
-.list_item-selected > .list_item_head > .list_item_body {
-  background-color: #D5FFFC;
-  outline-color: cyan;
-}
-
 .list_item-ipython-waiting {
   > .list_item_head > .list_item_body {
     background-color: rgb(255, 246, 144);
@@ -243,6 +238,11 @@
 .list-active .list_item-editing > .list_item_head > .list_item_body {
   outline: 5px solid rgb(0, 184, 0);
   background-color: white;
+}
+
+.list-active .list_item-selected > .list_item_head > .list_item_body {
+  background-color: #D5FFFC;
+  outline-color: cyan;
 }
 
 // overriding default styles

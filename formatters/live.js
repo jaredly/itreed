@@ -44,23 +44,6 @@ var LiveWatcher = React.createClass({
   },
 })
 
-function live_up(id, value) {
-  var k = window.store._globals.kernel
-
-  k._send('shell', {
-    header: {
-      msg_id: 36,
-      msg_type: 'live_update',
-      session: k.session,
-      username: k.username
-    }, content: {
-      value: 23
-    },
-    metadata: {},
-    parent_header: {}
-  })
-}
-
 module.exports = {
   mime: 'json/live',
 
