@@ -1,5 +1,5 @@
 
-var React = require('treed/node_modules/react')
+var React = require('react')
   , isComplex = require('./is-complex')
   , getAllProperties = require('./get-all-properties')
   , uuid = require('../lib/uuid')

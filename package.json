@@ -38,5 +38,10 @@
   "devDependencies": {
     "jstransform": "~6.2.0",
     "reactify": "~0.17.0"
+  },
+  "browserify": {
+    "transform": [
+      ["reactify", {"es6": true, "everything": true, "visitors": ["jstransform/visitors/es6-destructuring-visitors"]}]
+    ]
   }
 }

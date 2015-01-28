@@ -1,5 +1,5 @@
 
-var React = require('treed/node_modules/react')
+var React = require('react')
 
 module.exports = {
   mime: 'json/vega',
