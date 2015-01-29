@@ -1,6 +1,6 @@
 {
   "name": "itreed",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "An alternate interface to ipython",
   "main": "index.js",
   "scripts": {
@@ -41,7 +41,16 @@
   },
   "browserify": {
     "transform": [
-      ["reactify", {"es6": true, "everything": true, "visitors": ["jstransform/visitors/es6-destructuring-visitors"]}]
+      [
+        "reactify",
+        {
+          "es6": true,
+          "everything": true,
+          "visitors": [
+            "jstransform/visitors/es6-destructuring-visitors"
+          ]
+        }
+      ]
     ]
   }
 }
