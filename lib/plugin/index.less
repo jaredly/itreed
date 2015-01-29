@@ -26,14 +26,6 @@
 }
 
 .m_IPython {
-  /*
-  border: 1px solid rgb(219, 219, 219);
-  border-radius: 5px;
-  padding: 5px 10px;
-  box-shadow: 1px 1px 4px rgb(218, 218, 218) inset;
-  position: relative;
-  min-height: 20px;
-  */
   position: relative;
   margin: 5px 0 10px 50px;
   min-height: 20px;
@@ -93,7 +85,7 @@
   }
 
   &_indicator {
-    padding: 10px;
+    padding: 5px 10px;
     cursor: pointer;
 
     &_interrupt {
@@ -148,6 +140,42 @@
       outline: 1px solid #ccc;
     }
   }
+}
+
+.m_IPython_outputs {
+  position: relative;
+}
+
+.m_IPython_popout-button {
+  position: absolute;
+  top: 8px;;
+  right: 5px;
+  opacity: 0;
+  // display: none;
+  transition: opacity .3s ease;
+  cursor: pointer;
+
+  .m_IPython_outputs:hover & {
+    // display: block;
+    opacity: 1;
+  }
+}
+
+.m_IPython_popout-body {
+  margin: 10px;
+  max-width: none;
+  padding: 0;
+}
+
+.m_IPython_popout-wrapper {
+  margin: 0;
+}
+
+.m_IPython_popped-message {
+  font-style: italic;
+  cursor: pointer;
+  padding: 10px 20px;
+  text-align: center;
 }
 
 .m_IPython_output {
@@ -218,39 +246,4 @@
   }
 }
 
-.KernelPicker {
-  position: relative;
-}
-
-.KernelPicker_label {
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.KernelPicker_close {
-  cursor: pointer;
-  display: inline-block;
-  padding: 5px 5px;
-}
-
-.KernelPicker_list {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background-color: white;
-  z-index: 100;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  box-shadow: 0px 1px 3px #aaa;
-}
-
-.KernelPicker_item {
-  padding: 8px 15px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-}
-
+@import "./kernel-picker.less";
