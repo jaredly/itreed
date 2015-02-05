@@ -1,4 +1,6 @@
 
+var React = require('react')
+
 var LiveButton = React.createClass({
   _onClick: function (e) {
     e.preventDefault()
