@@ -24,7 +24,7 @@ module.exports = {
 }
 
 function viewValue(value) {
-  if (isComplex(value, [])) return ObjViewer({value: value})
+  if (value && 'object' === typeof value) return ObjViewer({value: value})
   try {
     return JSON.stringify(value, null, 2) || value + ''
   } catch (e) { }
