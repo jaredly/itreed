@@ -34,6 +34,10 @@ function viewValue(value) {
   return 'Undisplayable'
 }
 
+function objName(val) {
+  return Array.isArray(val) ? 'Array' : (val.constructor ? val.constructor.name : 'Object')
+}
+
 var ObjViewer = React.createClass({
   getInitialState: function () {
     return {
@@ -47,7 +51,7 @@ var ObjViewer = React.createClass({
     var val = this.props.value
     return <div className='ObjViewer'>
       <div className='ObjViewer_head' onClick={this._onToggle}>
-        <span className='ObjViewer_name'>{Array.isArray(val) ? 'Array' : val.constructor.name}</span>
+        <span className='ObjViewer_name'>{objName(val)}</span>
         {!this.state.open && summary(val)}
       </div>
       {this.state.open &&
