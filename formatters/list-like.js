@@ -6,7 +6,7 @@ module.exports = {
   mime: 'json/list-like',
 
   display: function (value, meta) {
-    return ListLikeViewer({data: value})
+    return <ListLikeViewer data={value}/>
   },
 }
 

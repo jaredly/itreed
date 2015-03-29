@@ -57,14 +57,14 @@ class Live(object):
 from IPython.core.formatters import BaseFormatter, FormatterABC, Unicode, ObjectName
 
 class LiveFormatter(BaseFormatter):
-    """A Vega formatter.
+    """A LiveElement formatter.
 
     To define the callables that compute the Javascript representation of
     your objects, define a :meth:`_repr_live_` method or use the
     :meth:`for_type` or :meth:`for_type_by_name` methods to register functions
     that handle this.
 
-    The return value of this formatter should be valid Vega JSON.
+    The return value of this formatter should be a formatted JSON object
     """
     format_type = Unicode('json/live')
     _return_type = (dict,)

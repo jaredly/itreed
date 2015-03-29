@@ -23,6 +23,8 @@ def display_grammar(grammar):
         traceback.print_stack()
         '''
     obj = grammer_json(grammar)
+    if type(obj) is not dict:
+        return None
     return obj
     # display({'json/vega': obj}, raw=True)
 
