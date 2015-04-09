@@ -363,4 +363,3 @@ Kernel.prototype = extend(Object.create(EventEmitter.prototype), {
 })
 Kernel.prototype.constructor = Kernel
 
-
