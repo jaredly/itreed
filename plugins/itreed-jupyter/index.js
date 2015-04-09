@@ -3,8 +3,8 @@ var request = require('majax')
   , async = require('async')
   , EventEmitter = require('eventemitter3')
 
-  , uuid = require('../../uuid')
-  , extend = require('../../extend')
+  , uuid = require('../../lib/uuid')
+  , extend = require('../../lib/extend')
 
 module.exports = Kernel
 

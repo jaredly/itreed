@@ -1,7 +1,7 @@
 
 var getFrame = require('./get-frame')
   , exec = require('./exec')
-  , extend = require('../../extend')
+  , extend = require('../../lib/extend')
 
   , EventEmitter = require('eventemitter3')
   , CodeMirror = require('codemirror')

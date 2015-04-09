@@ -1,7 +1,7 @@
 
 var React = require('react')
   , PT = React.PropTypes
-  , format = require('../lib/plugin/format')
+  , format = require('../lib/format')
 
 var LiveWatcher = React.createClass({
   propTypes: {

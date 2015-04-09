@@ -1,7 +1,7 @@
 
 var safeString = require('./safe-string')
   , React = require('react')
-  , format = require('../../plugin/format')
+  , format = require('../../lib/format')
 
 module.exports = function (value, window, mime) {
   var out = format.format(value, window)

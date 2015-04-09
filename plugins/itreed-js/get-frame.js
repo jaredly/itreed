@@ -3,7 +3,7 @@
  */
 
 var _frames = {}
-  , uuid = require('../../uuid')
+  , uuid = require('../../lib/uuid')
 
 module.exports = getFrame;
 

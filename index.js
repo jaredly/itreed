@@ -1,5 +1,5 @@
 
-import plugin from './lib/plugin'
+import plugin from './lib'
 
 export default plugin
 

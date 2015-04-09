@@ -1,6 +1,6 @@
 
 var React = require('react')
-  , format = require('../lib/plugin/format')
+  , format = require('../lib/format')
 
 module.exports = {
   mime: 'json/table',
