@@ -1,5 +1,5 @@
-@import "../../formatters/js.less";
-@import "./playground.less";
+@import "../formatters/js.less";
+@import "./components/playground.less";
 
 @keyframes spin {
   to { transform: rotate(1turn); }
@@ -9,7 +9,7 @@
   to { transform: rotate(1turn); }
 }
 
-@import (reference) "../spinner.less";
+@import (reference) "./spinner.less";
 
 .ITreedCodeEditor {
   position: relative;
@@ -288,4 +288,6 @@
   }
 }
 
-@import "./kernel-picker.less";
+@import "./components/kernel-controller.less";
+@import "./components/kernel-indicator.less";
+@import "./components/kernel-picker.less";

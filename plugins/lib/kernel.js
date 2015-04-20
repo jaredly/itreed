@@ -3,8 +3,10 @@ import EventEmitter from 'eventemitter3'
 
 export default class Kernel extends EventEmitter {
   constructor(server, config, docid) {
+    super()
     this.server = server
-    this.config = config
+    this.config = config || {}
+    this.status = 'disconnected'
     this.docid = docid
   }
 

@@ -39,9 +39,14 @@
     "treed": "git+https://github.com/jaredly/treed"
   },
   "devDependencies": {
+    "babel-core": "^5.1.11",
+    "babel-loader": "^5.0.0",
+    "babel-runtime": "^5.1.11",
     "expect.js": "^0.3.1",
+    "json-loader": "^0.5.1",
     "jstransform": "~6.2.0",
     "reactify": "~0.17.0",
+    "webpack": "^1.8.5",
     "ws": "^0.7.1",
     "xhr2": "^0.1.2"
   },

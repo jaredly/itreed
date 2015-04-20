@@ -8,6 +8,7 @@ export default class Server {
    * responds with a list of available kernels
    */
   init(done) {
+    done()
   }
 }
 

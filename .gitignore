@@ -12,3 +12,5 @@
 /www/vendor.js
 *.swo
 test.ipynb
+test/vendor
+test/build

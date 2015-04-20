@@ -1,0 +1,29 @@
+
+.KernelIndicator_icon {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  background-color: magenta;
+  border-radius: 10px;
+  margin: 0px 5px;
+  position: relative;
+  top: 2px;
+
+  .KernelIndicator-errored  & {
+    background-color: red;
+  }
+
+  .KernelIndicator-running  & {
+    background-color: orange;
+  }
+
+  .KernelIndicator-done  &,
+  .KernelIndicator-connected  & {
+    background-color: green;
+  }
+
+  .KernelIndicator-disconnected  & {
+    background-color: grey;
+  }
+}
+

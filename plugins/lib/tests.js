@@ -2,6 +2,8 @@
 import expect from 'expect.js'
 
 export default function pluginTests({Server, Kernel, serverConfig, kernelConfig, testSpec, completes, evals}) {
+  completes = completes || []
+  testSpec = testSpec || () => {}
 
   describe('Server', () => {
 

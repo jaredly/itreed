@@ -1,4 +1,5 @@
 
+console.log('Testing all imports...')
 import plugin from '../'
 
 global.navigator = {}
@@ -7,7 +8,6 @@ global.window = {
 global.document = {
   createElement: () => ({setAttribute() {}})
 }
-
 
 const formatters = [
   require('../formatters/live'),
@@ -24,4 +24,5 @@ const formatters = [
 require('../plugins/itreed-js')
 
 plugin({})
+console.log('Tests Passed!')
 

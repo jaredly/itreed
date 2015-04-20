@@ -1,10 +1,9 @@
 
-var// esprima = require('esprima')
-  // , escodegen = require('escodegen')
-  jsx = require('./jsx')
-
-  // , uniquity = require('./uniquity')
+var jsx = require('./jsx')
   , makeOutput = require('./make-output')
+
+
+const NODE = typeof window === 'undefined'
 
 module.exports = execute
 
@@ -17,13 +16,13 @@ function outError(e) {
   }
 }
 
-function goAndDo(content, window, callbacks, local) {
-  window._wwEval(
-    local ? window.lworker : window.worker,
+function goAndDo(content, ctx, callbacks, local) {
+  ctx._wwEval(
+    local ? ctx.lworker : ctx.worker,
     callbacks.output,
     content,
     (result) => {
-      callbacks.output(makeOutput(result, window))
+      callbacks.output(makeOutput(result, ctx))
       callbacks.end()
     },
     () => {
@@ -32,35 +31,35 @@ function goAndDo(content, window, callbacks, local) {
   )
 }
 
-function injectCSS(content, window) {
+function injectCSS(content, ctx) {
   var div = document.createElement('div')
   div.innerHTML = '<style>' + content + '</style>'
   div.firstChild.className = 'injected-magic'
-  window.document.head.appendChild(div.firstChild)
+  ctx.document.head.appendChild(div.firstChild)
 }
 
-function execute(content, window, callbacks) {
-  var num = window._ih.length
-  window._ih.push(content)
+function execute(content, evt, ctx, callbacks) {
+  var num = ctx._ih.length
+  ctx._ih.push(content)
   callbacks.start()
 
   var firstLine = content.split('\n', 1)[0]
   if (firstLine.slice(0,2) === '%%') {
     var magic = firstLine.slice(2).trim().toLowerCase()
     if (magic === 'work' || magic === 'ww') {
-      return goAndDo(content.slice(firstLine.length + 1), window, callbacks)
+      return goAndDo(content.slice(firstLine.length + 1), ctx, callbacks)
     } else if (magic === 'lwork' || magic === 'lww') {
-      return goAndDo(content.slice(firstLine.length + 1), window, callbacks, true)
+      return goAndDo(content.slice(firstLine.length + 1), ctx, callbacks, true)
     } else if (magic === 'jsx') {
       // pass, ignore
       content = content.slice(firstLine.length + 1)
     } else if (magic === 'css') {
-      window.addInjectCSS(content.slice(firstLine.length + 1))
-      // injectCSS(content.slice(firstLine.length + 1), window)
+      ctx.addInjectCSS(content.slice(firstLine.length + 1))
+      // injectCSS(content.slice(firstLine.length + 1), ctx)
       callbacks.end()
       return
     } else if (magic === 'html') {
-      callbacks.output(makeOutput(content.slice(firstLine.length + 1), window, 'text/html'))
+      callbacks.output(makeOutput(content.slice(firstLine.length + 1), ctx, 'text/html'))
       callbacks.end()
       return
     } else {
@@ -87,7 +86,7 @@ function execute(content, window, callbacks) {
 
   /*
   try {
-    var body = preprocess(content, window, callbacks, num)
+    var body = preprocess(content, ctx, callbacks, num)
   } catch (e) {
     callbacks.output(outError(e))
     callbacks.end()
@@ -95,20 +94,25 @@ function execute(content, window, callbacks) {
   }
   */
 
-  window._output = callbacks.output.bind(callbacks)
-  window.display = (what, mime) => callbacks.output(makeOutput(what, window, mime)),
-  window.console = {
+  ctx._output = callbacks.output.bind(callbacks)
+  ctx.display = (what, mime) => callbacks.output(makeOutput(what, ctx, mime)),
+  ctx.console = {
     log: function () {
       callbacks.output({
         type: 'output',
         suppressable: false,
-        'json/log': [].map.call(arguments, arg => makeOutput(arg, window)),
+        'json/log': [].map.call(arguments, arg => makeOutput(arg, ctx)),
       })
     }
   }
 
+  let res
   try {
-    var res = window.eval(body)
+    if (NODE) {
+      res = vm.runInContext(body, ctx, {filename: 'itreed-kernel'})
+    } else {
+      res = ctx.eval(body)
+    }
   } catch (e) {
     callbacks.output(outError(e))
     callbacks.end()
@@ -117,47 +121,47 @@ function execute(content, window, callbacks) {
 
   // update the magic vars
   if (undefined !== res) {
-    window._oh[num] = res
-    window.___ = window.__
-    window.__ = window._
-    window._ = res
-    callbacks.output(makeOutput(res, window))
+    ctx._oh[num] = res
+    ctx.___ = ctx.__
+    ctx.__ = ctx._
+    ctx._ = res
+    callbacks.output(makeOutput(res, ctx))
   }
 
   callbacks.end()
 }
 
 /*
-function inject(tree, window, suffix, injecting) {
+function inject(tree, ctx, suffix, injecting) {
   var replace = {}
   for (var name in injecting) {
     replace[name] = name + suffix
   }
   var needed = uniquity(tree, replace)
   needed.forEach(name => {
-    window[replace[name]] = injecting[name]
+    ctx[replace[name]] = injecting[name]
   })
 }
 
-function preprocess(content, window, callbacks, num) {
+function preprocess(content, ctx, callbacks, num) {
   var tree = esprima.parse(content)
 
-  inject(tree, window, '$' + num, {
-    lwork: window._work.bind(null, window.lworker, callbacks.output),
-    lwwEval: window._wwEval.bind(null, window.lworker, callbacks.output),
+  inject(tree, ctx, '$' + num, {
+    lwork: ctx._work.bind(null, ctx.lworker, callbacks.output),
+    lwwEval: ctx._wwEval.bind(null, ctx.lworker, callbacks.output),
 
-    work: window._work.bind(null, window.worker, callbacks.output),
-    wwEval: window._wwEval.bind(null, window.worker, callbacks.output),
+    work: ctx._work.bind(null, ctx.worker, callbacks.output),
+    wwEval: ctx._wwEval.bind(null, ctx.worker, callbacks.output),
 
-    loadJS: window._loadJS.bind(null, window, callbacks.output),
-    loadParentJS: window._loadJS.bind(null, window.parent, callbacks.output),
-    loadCSS: window._loadCSS.bind(null, window, callbacks.output),
-    loadParentCSS: window._loadCSS.bind(null, window.parent, callbacks.output),
+    loadJS: ctx._loadJS.bind(null, ctx, callbacks.output),
+    loadParentJS: ctx._loadJS.bind(null, ctx.parent, callbacks.output),
+    loadCSS: ctx._loadCSS.bind(null, ctx, callbacks.output),
+    loadParentCSS: ctx._loadCSS.bind(null, ctx.parent, callbacks.output),
 
-    display$: (what, mime) => callbacks.output(makeOutput(what, window, mime)),
+    display$: (what, mime) => callbacks.output(makeOutput(what, ctx, mime)),
     console$: {
       log: function () {
-        callbacks.output(makeOutput([].slice.call(arguments), window))
+        callbacks.output(makeOutput([].slice.call(arguments), ctx))
       }
     }
   })

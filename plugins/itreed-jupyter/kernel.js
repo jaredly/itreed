@@ -3,14 +3,14 @@ import uuid from '../../lib/uuid'
 import Kernel from '../lib/kernel'
 
 export default class JupyterKernel extends Kernel {
-  constructor(server, config, docid) {
-    super(server, config, docid)
-  }
 
   init(done) {
+    this.status = 'connecting'
+    this.emit('status')
     this.server.getKernel(this.docid, this.config.profile, (err, kernel) => {
       if (err) return done(err)
       this.kernel = kernel
+      this.session = kernel
       this.setupSocket(done)
     })
   }
@@ -150,6 +150,8 @@ export default class JupyterKernel extends Kernel {
     this.server.getSocket(this.kernel, this.docid, (err, socket) => {
       if (err) return done(err)
       this.socket = socket
+      this.status = 'connected'
+      this.emit('status')
       socket.addEventListener('message', this._onChannel.bind(this))
 
       socket.addEventListener('close', () => {
