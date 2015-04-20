@@ -17,8 +17,6 @@ module.exports = {
     'react/addons': 'React',
     less: 'less',
     babel: 'babel',
-    // levelup: 'levelup',
-    // bluebird: 'bluebird',
   },
 
   node: {
@@ -29,6 +27,8 @@ module.exports = {
   resolve: {
     alias: {
       'babel-runtime': MODULE + '/babel-runtime',
+      'react': MODULE + '/react',
+      'react/addons': MODULE + '/react/addons',
     },
   },
 
