@@ -12,9 +12,9 @@ export default {
       "type": "ipython",
       "children": [],
       "itreed": {
-        "server": "js",
-        "kernel": "js",
-        "variant": "clojurescript",
+        "server": "jupyter",
+        "kernel": "python2",
+        "variant": "hy",
       },
       "waiting": false,
       "started": 1429571707390,

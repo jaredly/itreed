@@ -95,6 +95,7 @@ export default class Kernel extends EventEmitter {
       }
       done(null, processed)
     }
+
     if (vObj.config) {
       vObj.preprocess(content, this.config.variants[variant], onProcessed)
     } else {
@@ -119,9 +120,24 @@ export default class Kernel extends EventEmitter {
           callbacks
         )
       }
-      this.sendRawShell(processed, callbacks)
+      this.sendRawShell(processed, variatedCallbacks(this, this.variants[variant], callbacks))
     })
   }
+}
+
+function variatedCallbacks(kernel, variant, callbacks) {
+  if (!variant || variant === true) return callbacks
+  const ncb = {}
+  for (let name in callbacks) {
+    ncb[name] = callbacks[name]
+  }
+  if (variant.postprocess) {
+    ncb.postprocess = variant.postprocess.bind(null, kernel)
+  }
+  if (variant.rawOutput) {
+    ncb.rawOutput = variant.rawOutput.bind(null, kernel)
+  }
+  return ncb
 }
 
 class VariantError {

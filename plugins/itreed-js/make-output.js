@@ -4,6 +4,13 @@ var safeString = require('./safe-string')
   , format = require('../../lib/format')
 
 module.exports = function (value, window, mime) {
+  if (mime === 'stdout' || mime === 'stderr') {
+    return {
+      type: 'stream',
+      stream: mime,
+      text: value + '',
+    }
+  }
   var out = format.format(value, window)
   if (mime) {
     out[mime] = value

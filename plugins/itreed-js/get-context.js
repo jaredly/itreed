@@ -74,7 +74,6 @@ function newContext() {
   }
   ctx._ih = []
   ctx._oh = {}
-  ctx.jsx = require('./jsx')
 
   // live updating
 

@@ -43,6 +43,7 @@ function run() {
         python2: {
           variants: {
             default: true,
+            hy: true,
           }
         }
       }

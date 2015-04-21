@@ -1,7 +1,7 @@
 
 import Kernel from '../lib/kernel'
 import exec from './exec'
-
+import CodeMirror from 'codemirror'
 
 export default class JsKernel extends Kernel {
   init(done) {
