@@ -8,6 +8,10 @@ export default class JupyterServer extends Server {
     super(config)
   }
 
+  static getSpecs(config, done) {
+    get(`http://${config.host}/api/kernelspecs`, done)
+  }
+
   init(done) {
     get(`http://${this.config.host}/api/kernelspecs`, (err, specs) => {
       if (err) {
@@ -62,7 +66,7 @@ export default class JupyterServer extends Server {
       }
       var matches = sessions.filter(session => {
         return session.notebook.name === docid &&
-          sessions.kernel.name === profile
+          session.kernel.name === profile
       })
       if (matches.length) {
         return done(null, matches[0].kernel.id)

@@ -4,45 +4,80 @@ import itreed from '..'
 import Treed from 'treed/classy'
 import MemPL from 'treed/pl/mem'
 
-import JS from '../plugins/itreed-js'
 import ListView from 'treed/views/list'
 import tests from './tests'
 import runTests from './run-tests'
 
-import {Form, Radio} from '../../form'
+import {Form, FormSection, Radio, Panes} from '../../form'
+import Config from '../config'
 import Modal from '../../modal'
 import deepCopy from 'deep-copy'
 
-itreed.register(JS)
+import setupPlugins from './setup-plugins'
+import fixture from './fixtures/basic'
 
+setupPlugins()
 run()
 
 function run() {
   let config = {
-    js: {}
+    js: {
+      kernels: {
+        js: {
+          variants: {
+            // default: true,
+            babel: {
+            },
+            clojurescript: {
+              compiler: 'http://localhost:4432',
+            },
+          }
+        }
+      }
+    },
+    jupyter: {
+      server: {
+        host: 'localhost:8888',
+      },
+      kernels: {
+        python2: {
+          variants: {
+            default: true,
+          }
+        }
+      }
+    }
   }
 
   function changeConfig() {
     Modal.show({
-      initialState: deepCopy(config),
+      initialState: {}, // deepCopy(config),
       body() {
-        return <div>
-          H1ll
-        </div>
-      },
-      buttons: {
-        Save: 'submit',
-        Cancel: 'cancel',
+        return <Form
+          onSubmit={value => this.props.onClose(null, value)}
+          initialData={config}>
+          <Config
+            variants={itreed.availableVariants}
+            plugins={itreed.availablePlugins} name='*'/>
+          <button type='submit'>
+            Submit
+          </button>
+        </Form>
       },
       done(err, newConfig) {
+        if (err || !newConfig) return console.error('Aborted config', err, newConfig)
+        console.log('Rerender on config')
         config = newConfig
         makeFull(config, changeConfig)
       }
     })
   }
 
+  // changeConfig()
   makeFull(config, changeConfig)
 }
+
+const pl = new MemPL()
 
 function makeFull(itConfig, onConfig) {
   const plugins = [
@@ -57,12 +92,8 @@ function makeFull(itConfig, onConfig) {
     itreed(itConfig)
   ]
 
-  const pl = new MemPL()
   const treed = new Treed({plugins: plugins})
-  treed.initStore({
-    content: 'Awesome',
-    children: []
-  }, {pl})
+  treed.initStore(fixture, {pl})
     .then(store => {
       const props = treed.addView({
         actions: ListView.actions,
@@ -70,19 +101,18 @@ function makeFull(itConfig, onConfig) {
       })
       treed.keyManager.listen(window)
       window.viewProps = props
+      window.treed = treed
 
       var headStore = treed.store.headerView()
 
       const heads = treed.options.plugins.map(plugin => {
         if (!plugin.view || !plugin.view.global) return null
-        return plugin.view.global(headStore, onConfig.bind(null, plugin.id))
+        return plugin.view.global(headStore, onConfig)
       })
 
       React.render(<div>
         <div className='Main_header'>
-          {treed.options.plugins.map(plugin =>
-            plugin.view && plugin.view.global && plugin.view.global(headStore)
-          )}
+          {heads}
         </div>
         <ListView {...props}/>
       </div>, document.getElementById("target"), () => {

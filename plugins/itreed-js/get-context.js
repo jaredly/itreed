@@ -113,11 +113,16 @@ function newContext() {
     if (!Array.isArray(filenames)) {
       filenames = [filenames]
     }
+    let numDone = 0
     filenames.forEach(src => {
       var node = window.document.createElement('script')
       node.src = src
       node.onload = function () {
-        output({'text/plain': "loaded js! " + src})
+        output && output({'text/plain': "loaded js! " + src})
+        numDone += 1
+        if (numDone === filenames.length) {
+          done()
+        }
       }
       window.document.head.appendChild(node)
     })

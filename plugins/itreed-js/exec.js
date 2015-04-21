@@ -38,7 +38,7 @@ function injectCSS(content, ctx) {
   ctx.document.head.appendChild(div.firstChild)
 }
 
-function execute(content, evt, ctx, callbacks) {
+function execute(content, ctx, callbacks) {
   var num = ctx._ih.length
   ctx._ih.push(content)
   callbacks.start()
@@ -74,6 +74,7 @@ function execute(content, evt, ctx, callbacks) {
     }
   }
 
+  /*
   try {
     content = jsx(content)
   } catch (e) {
@@ -81,6 +82,7 @@ function execute(content, evt, ctx, callbacks) {
     callbacks.end()
     return
   }
+  */
 
   const body = content
 

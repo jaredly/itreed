@@ -41,8 +41,8 @@ export default class JsKernel extends Kernel {
     this.ctx._sendLive(lid, [].slice.call(arguments, 1))
   }
 
-  sendShell(content, evt, callbacks) {
-    exec(content, evt, this.ctx, callbacks)
+  sendRawShell(content, callbacks) {
+    exec(content, this.ctx, callbacks)
   }
 }
 

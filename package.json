@@ -30,6 +30,7 @@
     "esprima": "~1.2.2",
     "eventemitter3": "~0.1.5",
     "highlight.js": "~8.2.0",
+    "immutable": "^3.7.2",
     "katex": "git+https://github.com/jaredly/KateX.git",
     "less": "^2.3.1",
     "majax": "git+https://github.com/jaredly/majaX.js",

@@ -91,7 +91,7 @@ export default class JupyterKernel extends Kernel {
     })
   }
 
-  sendShell(content, env, callbacks) {
+  sendRawShell(content, callbacks) {
     // TODO should I have a pluginable hook for output preprocessing?
     this._sendShell(content, {
       pyout: (m) => {
