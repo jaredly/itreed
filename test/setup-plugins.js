@@ -15,6 +15,7 @@ export default function setup() {
     id: 'babel',
     server: 'js',
     kernel: 'js',
+    syntax: 'javascript',
     init(kernel, done) {
       try {
         jsx('class Awesome {}')
@@ -33,6 +34,7 @@ export default function setup() {
     id: 'clojurescript',
     server: 'js',
     kernel: 'js',
+    syntax: 'clojure',
     config: {
       compiler: {
         title: 'Himera URL',

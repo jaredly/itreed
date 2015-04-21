@@ -16,6 +16,7 @@ export default class Kernel extends EventEmitter {
     this.status = 'disconnected'
     this.docid = docid
     this.title = spec.spec.display_name
+    this.language = spec.spec.language
   }
 
   init(done) {
