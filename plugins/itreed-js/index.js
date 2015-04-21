@@ -3,7 +3,7 @@ import Server from './server'
 
 export default {
   id: 'js',
-  displayName: 'in-browser js',
+  displayName: 'Browser Runtime',
   defaultConfig() {
     return {}
   },

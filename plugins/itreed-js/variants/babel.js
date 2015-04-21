@@ -3,6 +3,7 @@ import jsx from '../jsx'
 
 export default {
   id: 'babel',
+  displayName: 'Babel (es6+)',
   server: 'js',
   kernel: 'js',
   syntax: 'javascript',

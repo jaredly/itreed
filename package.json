@@ -26,6 +26,7 @@
     "babel": "^4.6.6",
     "classnames": "^1.2.0",
     "codemirror": "git+https://github.com/jaredly/CodeMirror.git",
+    "deep-equal": "^1.0.0",
     "escodegen": "~1.4.1",
     "esprima": "~1.2.2",
     "eventemitter3": "~0.1.5",

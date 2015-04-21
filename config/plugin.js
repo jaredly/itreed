@@ -1,72 +1,9 @@
 
 import React from 'react'
-import {Form, FormSection, Radio} from '../form'
+import {Form, FormSection, Radio} from '../../form'
 import {fromJS, Map} from 'immutable'
 
-function getDefaultConfig(spec) {
-  if (!spec) return true
-  const ret = {}
-  for (let name in spec) {
-    const val = spec[name]
-    if (val.type === 'section') {
-      ret[name] = getDefaultConfig(val.spec)
-    } else if (val.defaultValue) {
-      ret[name] = val.defaultValue
-    } else {
-      ret[name] = {
-        string: '',
-        checkbox: false,
-      }[val.type]
-    }
-  }
-  return ret
-}
-
-function renderVariants(available, configured, onChange) {
-  const names = Object.keys(available)
-
-  if (!names.length && !configured) {
-    return null
-  }
-  if (!configured) {
-    configured = Map()
-  }
-
-  function toggle(name) {
-    if (configured.get(name)) {
-      onChange(configured.delete(name))
-    } else {
-      if (name === 'default') {
-        onChange(configured.set(name, true))
-      } else {
-        onChange(configured.set(name, fromJS(getDefaultConfig(available[name].config))))
-      }
-    }
-  }
-
-  const unavailables = configured.keySeq().filter(v => !available[v]).cacheResult()
-  return <ul>
-    <li>
-      <input type='checkbox' checked={!!configured.get('default')}
-        onChange={_ => toggle('default')}/>
-      default
-    </li>
-    {names.map(name => <li>
-      <input type='checkbox' checked={!!configured.get(name)}
-        onChange={_ => toggle(name)}/>
-      {name}
-      {configured.get(name) && available[name].config && FormSection.fromSpec({
-        className: 'VariantConfig',
-        spec: available[name].config,
-        value: configured.get(name),
-        onChange: val => onChange(configured.set(name, val)),
-      })}
-    </li>)}
-  </ul>
-}
-
-
-class Plugin extends React.Component {
+export default class Plugin extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -124,7 +61,11 @@ class Plugin extends React.Component {
   toggleKernel(name) {
     const config = this.props.value.getIn(['kernels', name])
     if (!config) {
-      this.props.onChange(this.props.value.setIn(['kernels', name], !config))
+      this.props.onChange(this.props.value.setIn(['kernels', name], fromJS({
+        variants: {
+          default: true
+        }
+      })))
     } else {
       this.props.onChange(this.props.value.deleteIn(['kernels', name]))
     }
@@ -158,12 +99,12 @@ class Plugin extends React.Component {
           <input type='checkbox'
             checked={!!config.getIn(['kernels', name])}
             onChange={this.toggleKernel.bind(this, name)}/>
-          {name}
+          {specs[name].spec.display_name}
         </label>
-        {renderVariants(
+        {config.getIn(['kernels', name]) ? renderVariants(
           this.props.variants[name] || {},
           config.getIn(['kernels', name, 'variants']),
-          this.setVariants.bind(this, name))}
+          this.setVariants.bind(this, name)) : null}
       </li>)}
       {unavailables.size ? <li>Unavailable:</li> : null}
       {unavailables.size ? unavailables.map(name => <li>{name}</li>) : null}
@@ -176,7 +117,7 @@ class Plugin extends React.Component {
       <div className={'ITCPlugin_head'}>
         <label>
           <input type="checkbox" onChange={this.onToggleChecked.bind(this)} checked={!!value}/>
-          {name}
+          {plugin.displayName}
         </label>
         {value && plugin.serverConfig &&
           Form.fromSpec({
@@ -194,28 +135,71 @@ class Plugin extends React.Component {
   }
 }
 
-export default class Config extends React.Component {
-  renderPlugins() {
-    return Object.keys(this.props.plugins).map(id => {
-      return <li className='ITConfig_plugin'>
-        <Plugin name={id}
-          variants={this.props.variants[id] || {}}
-          plugin={this.props.plugins[id]}/>
-      </li>
-    })
+
+function getDefaultConfig(spec) {
+  if (!spec) return true
+  const ret = {}
+  for (let name in spec) {
+    const val = spec[name]
+    if (val.type === 'section') {
+      ret[name] = getDefaultConfig(val.spec)
+    } else if (val.defaultValue) {
+      ret[name] = val.defaultValue
+    } else {
+      ret[name] = {
+        string: '',
+        checkbox: false,
+      }[val.type]
+    }
+  }
+  return ret
+}
+
+
+function renderVariants(available, configured, onChange) {
+  const names = Object.keys(available)
+
+  if (!names.length && (!configured || configured.equals(Map({default: true})))) {
+    return null
+  }
+  if (!configured) {
+    configured = Map()
   }
 
-  render() {
-    return <FormSection {...this.props}>
-      <h1>iTreed Config</h1>
-      {this.renderPlugins()}
-      {/*
-      Configging
-      <pre>
-        {JSON.stringify(this.props.value.toJS(), null, 2)}
-      </pre>
-      */}
-    </FormSection>
+  function toggle(name) {
+    if (configured.get(name)) {
+      onChange(configured.delete(name))
+    } else {
+      if (name === 'default') {
+        onChange(configured.set(name, true))
+      } else {
+        onChange(configured.set(name, fromJS(getDefaultConfig(available[name].config))))
+      }
+    }
   }
+
+  const unavailables = configured.keySeq().filter(v => !available[v]).cacheResult()
+  return <ul>
+    <li>
+      <label className='text-label'>
+        <input type='checkbox' checked={!!configured.get('default')}
+          onChange={_ => toggle('default')}/>
+        default
+      </label>
+    </li>
+    {names.map(name => <li>
+      <label className='text-label'>
+        <input type='checkbox' checked={!!configured.get(name)}
+          onChange={_ => toggle(name)}/>
+        {available[name].displayName || name}
+      </label>
+      {configured.get(name) && available[name].config && FormSection.fromSpec({
+        className: 'VariantConfig',
+        spec: available[name].config,
+        value: configured.get(name),
+        onChange: val => onChange(configured.set(name, val)),
+      })}
+    </li>)}
+  </ul>
 }
 

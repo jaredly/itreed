@@ -1,6 +1,7 @@
 
 export default {
   id: 'hy',
+  displayName: 'Hy (lispy)',
   server: 'jupyter', 
   kernel: 'python2',
   syntax: 'clojure',

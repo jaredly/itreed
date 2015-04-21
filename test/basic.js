@@ -9,7 +9,7 @@ import tests from './tests'
 import runTests from './run-tests'
 
 import {Form, FormSection, Radio, Panes} from '../../form'
-import Config from '../config'
+import Config from '../config/'
 import Modal from '../../modal'
 import deepCopy from 'deep-copy'
 
@@ -52,6 +52,7 @@ function run() {
 
   function changeConfig() {
     Modal.show({
+      title: 'iTreed Config',
       initialState: {}, // deepCopy(config),
       body() {
         return <Form
@@ -74,8 +75,8 @@ function run() {
     })
   }
 
-  // changeConfig()
-  makeFull(config, changeConfig)
+  changeConfig()
+  // makeFull(config, changeConfig)
 }
 
 const pl = new MemPL()
