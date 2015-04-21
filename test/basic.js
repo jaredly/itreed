@@ -50,6 +50,18 @@ function run() {
     }
   }
 
+  config = {
+    js: {
+      kernels: {
+        js: {
+          variants: {
+            default: true
+          }
+        }
+      }
+    }
+  }
+
   function changeConfig() {
     Modal.show({
       title: 'iTreed Config',
