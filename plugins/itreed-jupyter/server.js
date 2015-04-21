@@ -65,7 +65,7 @@ export default class JupyterServer extends Server {
         return done(new Error('failed to connect'))
       }
       var matches = sessions.filter(session => {
-        return session.notebook.name === docid &&
+        return session.notebook.path === docid + profile &&
           session.kernel.name === profile
       })
       if (matches.length) {
@@ -82,14 +82,16 @@ export default class JupyterServer extends Server {
   startKernel(docid, profile, done) {
     const data = {
       notebook: {
-        name: docid, path: docid
+        path: docid + profile,
       },
       kernel: {
         id: null,
         name: profile,
       },
     }
-    post(`http://${this.config.host}/api/sessions`, null, data, (err, session) => {
+    post(`http://${this.config.host}/api/sessions`, {
+      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    }, data, (err, session) => {
       if (err) return done(err)
       done(null, session.kernel.id)
     })
@@ -98,10 +100,8 @@ export default class JupyterServer extends Server {
   getSocket(kernel, docid, done) {
     var sock = new WebSocket(`ws://${this.config.host}/api/kernels/${kernel}/channels?session_id=${docid}`)
     let good = false
+    let failed = false
     sock.addEventListener('open', () => {
-      good = true
-      sock.removeEventListener('close', fail)
-      sock.removeEventListener('error', fail)
       sock.send(JSON.stringify({
         header: {
           msg_id: uuid(),
@@ -116,11 +116,31 @@ export default class JupyterServer extends Server {
         parent_header: {},
         channel: 'shell',
       }))
-      done(null, sock)
+      const onMessage = event => {
+        if (failed) return
+        let data
+        try {
+          data = JSON.parse(event.data)
+        } catch (e) {
+          return fail(e)
+        }
+        if (data.msg_type === 'status') return
+        if (data.msg_type !== 'kernel_info_reply') {
+          console.error(data, kernel, docid)
+          return fail(new Error("Server didn't respond with kernel_info_reply"))
+        }
+        good = true
+        sock.removeEventListener('close', fail)
+        sock.removeEventListener('message', onMessage)
+        sock.removeEventListener('error', fail)
+        done(null, sock)
+      }
+      sock.addEventListener('message', onMessage)
     })
 
     function fail(error) {
       if (good) return
+      failed = true
       console.log('fail', error)
       sock.removeEventListener('close', fail)
       sock.removeEventListener('error', fail)

@@ -10,7 +10,7 @@ export default {
   config: {
     compiler: {
       title: 'Himera URL',
-      defaultValue: 'http://localhost:4432/compile',
+      defaultValue: 'http://localhost:4432',
       type: 'text',
     },
   },

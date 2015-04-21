@@ -15,8 +15,10 @@ export default class Kernel extends EventEmitter {
     }
     this.status = 'disconnected'
     this.docid = docid
+    this.spec = spec
     this.title = spec && spec.spec.display_name
     this.language = spec && spec.spec.language
+    this.username = 'username'
   }
 
   init(done) {
@@ -26,9 +28,15 @@ export default class Kernel extends EventEmitter {
   initVariants(variants, done) {
     this.variants = {}
     // this.variantObjs = variants
-    if (!this.config.variants || !variants) return done()
+    if (!this.config.variants || !variants) {
+      this.variants.default = true
+      return done()
+    }
     const vnames = Object.keys(this.config.variants)
-    if (!vnames.length) return done()
+    if (!vnames.length) {
+      this.variants.default = true
+      return done()
+    }
     const tasks = vnames.map(name => next => {
       if (name === 'default') {
         this.variants.default = true

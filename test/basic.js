@@ -14,7 +14,7 @@ import Modal from '../../modal'
 import deepCopy from 'deep-copy'
 
 import setupPlugins from './setup-plugins'
-import fixture from './fixtures/basic'
+import fixture from './fixtures/polyglot2'
 
 setupPlugins()
 run()
@@ -25,7 +25,7 @@ function run() {
       kernels: {
         js: {
           variants: {
-            // default: true,
+            default: true,
             babel: {
             },
             clojurescript: {
@@ -45,11 +45,17 @@ function run() {
             default: true,
             hy: true,
           }
-        }
+        },
+        'julia 0.3': {
+          variants: {
+            default: true,
+          },
+        },
       }
     }
   }
 
+  /*
   config = {
     js: {
       kernels: {
@@ -61,6 +67,7 @@ function run() {
       }
     }
   }
+  */
 
   function changeConfig() {
     Modal.show({
@@ -87,8 +94,8 @@ function run() {
     })
   }
 
-  changeConfig()
-  // makeFull(config, changeConfig)
+  // changeConfig()
+  makeFull(config, changeConfig)
 }
 
 const pl = new MemPL()
@@ -106,6 +113,7 @@ function makeFull(itConfig, onConfig) {
     itreed(itConfig)
   ]
 
+  fixture.id = 'basic-test-doc'
   const treed = new Treed({plugins: plugins})
   treed.initStore(fixture, {pl})
     .then(store => {

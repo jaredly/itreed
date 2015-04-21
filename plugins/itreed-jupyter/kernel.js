@@ -7,7 +7,7 @@ export default class JupyterKernel extends Kernel {
   init(done) {
     this.status = 'connecting'
     this.emit('status')
-    this.server.getKernel(this.docid, this.config.profile, (err, kernel) => {
+    this.server.getKernel(this.docid, this.spec.name, (err, kernel) => {
       if (err) return done(err)
       this.kernel = kernel
       this.session = kernel
@@ -46,7 +46,7 @@ export default class JupyterKernel extends Kernel {
       header: {
         msg_id: id,
         msg_type: 'complete_request',
-        session: this.ssession,
+        session: this.session,
         username: this.username,
         version: '5.0',
       },
@@ -178,7 +178,7 @@ export default class JupyterKernel extends Kernel {
       header: {
         msg_id: id,
         msg_type: 'execute_request',
-        session: this.ssession,
+        session: this.session,
         username: this.username,
         version: '5.0',
       },
