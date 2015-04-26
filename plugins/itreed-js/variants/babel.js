@@ -11,6 +11,7 @@ export default {
     try {
       jsx('class Awesome {}')
     } catch (e) {
+      console.error('Babel initialization error:', e)
       return done(new Error('babel compilation is missing or misconfigured'))
     }
     kernel.ctx.jsx = jsx

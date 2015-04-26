@@ -5,6 +5,7 @@ import Kernel from '../lib/kernel'
 export default class JupyterKernel extends Kernel {
 
   init(done) {
+    this.asyncComplete = true
     this.status = 'connecting'
     this.emit('status')
     this.server.getKernel(this.docid, this.spec.name, (err, kernel) => {
@@ -30,6 +31,10 @@ export default class JupyterKernel extends Kernel {
     this.server.shutdown(this.kernel, done)
   }
 
+  teardown() {
+    this.disconnect()
+  }
+
   disconnect() {
     if (this.socket) {
       this.socket.close()
@@ -40,7 +45,7 @@ export default class JupyterKernel extends Kernel {
     this.emit('session')
   }
 
-  complete(lineText, pos, done) {
+  complete(code, pos, cursor, variant, done) {
     var id = uuid()
     this._send('shell', {
       header: {
@@ -51,10 +56,12 @@ export default class JupyterKernel extends Kernel {
         version: '5.0',
       },
       content: {
-        code: lineText,
-        cursor_pos: pos.ch,
+        code: code,
+        cursor_pos: pos,
       },
-      metadata: {},
+      metadata: {
+        variant,
+      },
       parent_header: {},
     })
 
@@ -63,8 +70,8 @@ export default class JupyterKernel extends Kernel {
       if (message.content.status !== 'ok' || !message.content.matches.length) return done()
       done({
         list: message.content.matches,
-        from: {line: pos.line, ch: message.content.cursor_start},
-        to: {line: pos.line, ch: message.content.cursor_end},
+        from: {line: cursor.line, ch: cursor.ch - (pos - message.content.cursor_start)},
+        to: {line: cursor.line, ch: cursor.ch - (pos - message.content.cursor_end)},
       })
     }
     this.on(id + ':complete_reply', response)
@@ -215,10 +222,12 @@ export default class JupyterKernel extends Kernel {
     }
 
     var finishUp = function () {
-      // if (message.content.status === 'aborted') return 
-      for (var name in callbacks) {
-        this.off(id + ':' + name, callbacks[name])
-      }
+      // Forget about your output after a minute
+      setTimeout(() => {
+        for (var name in callbacks) {
+          this.off(id + ':' + name, callbacks[name])
+        }
+      }, 60 * 1000)
       this.off(id + ':status', status)
       this.off(id + ':execute_reply', reply)
       this.status = 'done'

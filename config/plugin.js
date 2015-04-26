@@ -2,6 +2,9 @@
 import React from 'react'
 import {Form, FormSection, Radio} from '../../form'
 import {fromJS, Map} from 'immutable'
+import renderVariants from './variants'
+import css from './css'
+import {shared, sharedDecs} from './shared'
 
 export default class Plugin extends React.Component {
   constructor(props) {
@@ -75,7 +78,7 @@ export default class Plugin extends React.Component {
     this.props.onChange(this.props.value.setIn(['kernels', kernel, 'variants'], variants))
   }
 
-  renderSpecs() {
+  renderKernels() {
     if (this.state.loading) {
       return 'Getting server information...'
     }
@@ -93,10 +96,10 @@ export default class Plugin extends React.Component {
     const names = Object.keys(specs)
     const unavailables = config.get('kernels').keySeq().filter(v => !specs[v]).cacheResult()
     const variants = this.props.variants
-    return <ul>
+    return <ul className={styles.kernels}>
       {names.map(name => <li key={name}>
-        <label className='checkbox-label'>
-          <input type='checkbox'
+        <label className={styles.kernelHead}>
+          <input className={shared.checkbox} type='checkbox'
             checked={!!config.getIn(['kernels', name])}
             onChange={this.toggleKernel.bind(this, name)}/>
           {specs[name].spec.display_name}
@@ -113,10 +116,10 @@ export default class Plugin extends React.Component {
 
   render() {
     const {name, value, plugin} = this.props
-    return <div className={'ITCPlugin'}>
-      <div className={'ITCPlugin_head'}>
-        <label>
-          <input type="checkbox" onChange={this.onToggleChecked.bind(this)} checked={!!value}/>
+    return <div className={styles.plugin}>
+      <div className={styles.head}>
+        <label className={styles.title}>
+          <input className={shared.checkbox} type="checkbox" onChange={this.onToggleChecked.bind(this)} checked={!!value}/>
           {plugin.displayName}
         </label>
         {value && plugin.serverConfig &&
@@ -126,15 +129,15 @@ export default class Plugin extends React.Component {
             value: value.get('server'),
             onSubmit: this.onChangeServer.bind(this),
             buttonText: '✓',
-          })}
+            styles: shared.form.styles
+        })}
       </div>
       {value ? <div className='ITCPlugin_body'>
-        {this.renderSpecs()}
+        {this.renderKernels()}
       </div> : null}
     </div>
   }
 }
-
 
 function getDefaultConfig(spec) {
   if (!spec) return true
@@ -155,51 +158,36 @@ function getDefaultConfig(spec) {
   return ret
 }
 
+const {styles, decs} = css`
+  head {
+    box-shadow: 0 2px 4px #ccc
+    margin-bottom: 5px
+    display: flex
 
-function renderVariants(available, configured, onChange) {
-  const names = Object.keys(available)
-
-  if (!names.length && (!configured || configured.equals(Map({default: true})))) {
-    return null
-  }
-  if (!configured) {
-    configured = Map()
-  }
-
-  function toggle(name) {
-    if (configured.get(name)) {
-      onChange(configured.delete(name))
-    } else {
-      if (name === 'default') {
-        onChange(configured.set(name, true))
-      } else {
-        onChange(configured.set(name, fromJS(getDefaultConfig(available[name].config))))
-      }
+    :hover {
+      backgroundColor: #eee
     }
   }
-
-  const unavailables = configured.keySeq().filter(v => !available[v]).cacheResult()
-  return <ul>
-    <li>
-      <label className='text-label'>
-        <input type='checkbox' checked={!!configured.get('default')}
-          onChange={_ => toggle('default')}/>
-        default
-      </label>
-    </li>
-    {names.map(name => <li>
-      <label className='text-label'>
-        <input type='checkbox' checked={!!configured.get(name)}
-          onChange={_ => toggle(name)}/>
-        {available[name].displayName || name}
-      </label>
-      {configured.get(name) && available[name].config && FormSection.fromSpec({
-        className: 'VariantConfig',
-        spec: available[name].config,
-        value: configured.get(name),
-        onChange: val => onChange(configured.set(name, val)),
-      })}
-    </li>)}
-  </ul>
-}
+  serverConfig {
+    padding: 10px
+  }
+  title {
+    cursor: pointer
+    padding: 10px
+    flex: 1
+  }
+  kernels {
+    margin: 0
+    padding: 0
+    list-style: none
+  }
+  kernel {
+  }
+  kernelHead {
+    padding: 10px
+    display: block
+    cursor: pointer
+    ${sharedDecs.head.style}
+  }
+`
 

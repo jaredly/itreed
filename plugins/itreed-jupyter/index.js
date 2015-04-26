@@ -8,7 +8,7 @@ export default {
   serverConfig: {
     host: {
       title: 'Host',
-      type: 'string',
+      type: 'text',
       defaultValue: 'localhost:8888',
     }
   },

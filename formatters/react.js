@@ -14,7 +14,7 @@ module.exports = {
   },
 
   format: function (value) {
-    if (React.isValidComponent(value)) {
+    if (React.isValidElement(value)) {
       var id = uuid()
       _cache[id] = value
       return id

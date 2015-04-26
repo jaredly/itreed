@@ -14,7 +14,7 @@
       [
         "babelify",
         {
-          "experimental": true
+          "stage": 0
         }
       ]
     ]

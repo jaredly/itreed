@@ -1,5 +1,6 @@
 
 import React from 'react'
+import RCSS from 'rcss'
 import itreed from '..'
 import Treed from 'treed/classy'
 import MemPL from 'treed/pl/mem'
@@ -20,6 +21,7 @@ setupPlugins()
 run()
 
 function run() {
+  /*
   let config = {
     js: {
       kernels: {
@@ -54,20 +56,32 @@ function run() {
       }
     }
   }
+ */
 
-  /*
-  config = {
-    js: {
+  let config = {
+    jupyter: {
+      server: {
+        host: 'localhost:8888',
+      },
       kernels: {
-        js: {
+        python2: {
           variants: {
-            default: true
+            default: true,
           }
-        }
+        },
+        nodejs: {
+          variants: {
+            babel: true,
+            clojurescript: {
+              compiler: 'http://localhost:4432',
+            },
+          },
+        },
       }
     }
   }
-  */
+
+  let treed
 
   function changeConfig() {
     Modal.show({
@@ -89,13 +103,14 @@ function run() {
         if (err || !newConfig) return console.error('Aborted config', err, newConfig)
         console.log('Rerender on config')
         config = newConfig
-        makeFull(config, changeConfig)
+        if (treed) treed.store.teardown()
+        treed = makeFull(config, changeConfig)
       }
     })
   }
 
-  // changeConfig()
-  makeFull(config, changeConfig)
+  changeConfig()
+  // treed = makeFull(config, changeConfig)
 }
 
 const pl = new MemPL()
@@ -142,5 +157,13 @@ function makeFull(itConfig, onConfig) {
         // runTests(tests, props.store.actions, treed.store.onDone.bind(treed.store), () => {})
       })
     })
+    .catch(err => {
+      setTimeout(() => {
+        console.log(err.stack)
+      }, 0)
+      console.warn('INIT FAIL', err)
+    })
+  return treed
 }
 
+RCSS.injectAll()

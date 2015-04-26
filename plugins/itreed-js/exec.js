@@ -24,7 +24,7 @@ function execute(content, ctx, callbacks) {
       callbacks.output({
         type: 'output',
         suppressable: false,
-        'json/log': [].map.call(arguments, arg => makeOutput(arg, ctx)),
+        'json/log': [].map.call(arguments, arg => makeOutput(arg, ctx, 'string' === typeof arg ? 'text/plain' : null)),
       })
     }
   }

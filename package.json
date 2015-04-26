@@ -24,6 +24,7 @@
     "ansi-to-html": "~0.2.0",
     "async": "~0.9.0",
     "babel": "^4.6.6",
+    "babelify": "^6.0.2",
     "classnames": "^1.2.0",
     "codemirror": "git+https://github.com/jaredly/CodeMirror.git",
     "deep-equal": "^1.0.0",
@@ -37,6 +38,7 @@
     "majax": "git+https://github.com/jaredly/majaX.js",
     "marked": "~0.3.2",
     "moment": "~2.8.3",
+    "rcss": "^0.1.5",
     "react": "^0.12.1",
     "treed": "git+https://github.com/jaredly/treed"
   },
@@ -59,7 +61,7 @@
       [
         "babelify",
         {
-          "experimental": true
+          "stage": 0
         }
       ]
     ]

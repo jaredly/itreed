@@ -44,11 +44,19 @@ export default class Kernel extends EventEmitter {
       }
       if (variants[name].config) {
         variants[name].init(this, this.config.variants[name], err => {
+          if (err) {
+            console.log('FAILED TO INIT')
+            console.log(err)
+          }
           this.variants[name] = err || variants[name]
           next()
         })
       } else {
         variants[name].init(this, err => {
+          if (err) {
+            console.log('FAILED TO INIT')
+            console.log(err)
+          }
           this.variants[name] = err || variants[name]
           next()
         })
@@ -82,11 +90,21 @@ export default class Kernel extends EventEmitter {
     if (this.variants[variant] instanceof Error) {
       return done(new VariantError(
         `Variant ${variant} is misconfigured`,
-        `Error: ${this.variants[variant].message};\nConfigure it by clicking the ${this.serverId} status indicator`
+        `Error: ${this.variants[variant].message};\nConfigure it by clicking the ${this.serverId} status indicator`,
+        this.variants[variant].stack
       ))
     }
     if (variant === 'default') return done(null, content)
     const vObj = this.variants[variant]
+    if (vObj instanceof Error) {
+      return done(new Error('Variant failed to initialize: ' + vObj.message))
+    }
+    if (vObj.ename && vObj.evalue) {
+      return done(new VariantError(
+        `Variant ${variant} failed to initialize`,
+        vObj.evalue,
+        `Variant ${variant} failed to initialize\n` + vObj.traceback))
+    }
     if (!vObj.asyncPreprocess) {
       let processed = ''
       try {
