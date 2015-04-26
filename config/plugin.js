@@ -118,7 +118,7 @@ export default class Plugin extends React.Component {
     const {name, value, plugin} = this.props
     return <div className={styles.plugin}>
       <div className={styles.head}>
-        <label className={styles.title}>
+        <label className={styles.title} title={plugin.description || null}>
           <input className={shared.checkbox} type="checkbox" onChange={this.onToggleChecked.bind(this)} checked={!!value}/>
           {plugin.displayName}
         </label>
@@ -178,7 +178,7 @@ const {styles, decs} = css`
   }
   kernels {
     margin: 0
-    padding: 0
+    padding: 0 10px
     list-style: none
   }
   kernel {

@@ -7,6 +7,7 @@ export default {
   server: 'js',
   kernel: 'js',
   syntax: 'javascript',
+  description: 'Transpile code using babel to take advantage of es6/7/+ syntactic awesome',
   init(kernel, done) {
     try {
       jsx('class Awesome {}')

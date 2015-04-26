@@ -5,6 +5,7 @@ export default {
   server: 'jupyter', 
   kernel: 'nodejs',
   syntax: 'clojure',
+  description: `Transpile clojurescript to javascript using a Himera server. This then gets evaluated in the NodeJS runtime`,
   config: {
     compiler: {
       title: 'Himera URL',

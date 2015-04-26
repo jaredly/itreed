@@ -19,7 +19,7 @@ export default class Config extends React.Component {
   }
 
   render() {
-    return <div>
+    return <div style={{maxHeight: '400px', overflow: 'auto'}}>
       {this.renderPlugins()}
     </div>
   }

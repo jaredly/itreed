@@ -7,6 +7,7 @@ export default {
   server: 'js',
   kernel: 'js',
   syntax: 'clojure',
+  description: 'Transpile clojurescript code using a Himera server, and then evaluate it in the browser environment.',
   config: {
     compiler: {
       title: 'Himera URL',

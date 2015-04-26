@@ -56,7 +56,7 @@ export default function renderVariants(available, configured, onChange) {
       </label>
     </li>
     {names.map(name => <li key={name} className={styles.variant}>
-      <label className={styles.variantHead}>
+      <label className={styles.variantHead} title={available[name].description}>
         <input type='checkbox' className={shared.checkbox} checked={!!configured.get(name)}
           onChange={_ => toggle(name)}/>
         {available[name].displayName || name}
